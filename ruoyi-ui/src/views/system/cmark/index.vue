@@ -70,6 +70,7 @@
 
     <el-table v-loading="loading" :data="cmarkList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
+      <el-table-column label="id" align="center" prop="id" />
       <el-table-column label="二级市场编码" align="center" prop="markChildCode" />
       <el-table-column label="二级市场名称" align="center" prop="markChildName" />
       <el-table-column label="运营主体名称" align="center" prop="perationName" />
@@ -115,12 +116,13 @@
           <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane label="用户管理" name="first">
               <el-form-item label="主市场编码" prop="markCode">
-                 <el-select v-model="form.markCode" placeholder="请输入主市场编码" clearable size="small">
+                 <el-select v-model="form.markCode" placeholder="请输入主市场编码" clearable  style="width
+                 :100%">
                     <el-option 
                        v-for="item in markDatas"
-                         :key="item.mark_code"
-                         :label="item.mark_name"
-                         :value="item.mark_code"
+                         :key="item.markCode"
+                         :label="item.markName"
+                         :value="item.markCode"
                      />
                 </el-select>
              </el-form-item>
@@ -135,28 +137,55 @@
                 <el-input v-model="form.perationName" placeholder="请输入运营主体名称" />
               </el-form-item>
               <el-form-item label="运营主体性质" prop="perationNature">
-              <el-select v-model="form.perationNature" placeholder="请选择运营主体性质" clearable size="small">
-                <el-option label="请选择字典生成" value="" />
-              </el-select>
+              <el-select v-model="form.perationNature" placeholder="请选择运营主体性质" style="width:100%">
+                <el-option
+                  v-for="dict in perationOptions"
+                  :key="dict.dictValue"
+                  :label="dict.dictLabel"
+                  :value="dict.dictValue"
+                ></el-option>
+          </el-select>
               </el-form-item>
               <el-form-item label="社会信用代码" prop="socialCreditCode">
                 <el-input v-model="form.socialCreditCode" placeholder="请输入社会信用代码" />
               </el-form-item>
           </el-tab-pane>
-          <el-tab-pane label="配置管理" name="second">
+          <el-tab-pane label="运营信息" name="second">
                 <el-form-item label="运营方式">
-                 <el-select v-model="form.operateType" placeholder="请选择运营方式">
-                   <el-option label="请选择字典生成" value="" />
+                 <el-select v-model="form.operateType" placeholder="请选择运营方式" style="width:100%">
+                   <el-option
+                  v-for="dict in operateOptions"
+                  :key="dict.dictValue"
+                  :label="dict.dictLabel"
+                  :value="dict.dictValue"
+                ></el-option>
                   </el-select>
               </el-form-item>
               <el-form-item label="开始时间" prop="operateStartTime">
-                <el-input v-model="form.operateStartTime" placeholder="请输入开始时间" />
+               <el-date-picker
+                clearable
+                style="width:100%"
+                v-model="form.operateStartTime"
+                type="date"
+                value-format="yyyy-MM-dd"
+                placeholder="请输入开始时间"
+              ></el-date-picker>
+                <!-- <el-input v-model="form.operateStartTime" placeholder="请输入开始时间" /> -->
               </el-form-item>
               <el-form-item label="结束时间" prop="operateEndTime">
-                <el-input v-model="form.operateEndTime" placeholder="请输入结束时间" />
+                 <el-date-picker
+                clearable
+                style="width:100%"
+                v-model="form.operateEndTime"
+                type="date"
+                value-format="yyyy-MM-dd"
+                placeholder="请输入结束时间"
+              ></el-date-picker>
+                <!-- <el-input v-model="form.operateEndTime" placeholder="请输入结束时间" /> -->
               </el-form-item>
-              <el-form-item label="租金" prop="operateMoney">
-                <el-input v-model="form.operateMoney" placeholder="请输入租金" />元/年
+              <el-form-item label="租金" prop="operateMoney" >
+                <el-input v-model="form.operateMoney" placeholder="请输入租金元/年" />
+              
               </el-form-item>
               <el-form-item label="现有商户数量" prop="markMerchantsCount">
                 <el-input v-model="form.markMerchantsCount" placeholder="请输入现有商户数量" />
@@ -199,6 +228,8 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      perationOptions:[],
+      operateOptions:[],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -227,7 +258,10 @@ export default {
         ],
          markChildName: [
           { required: true, message: "分类市场名称不能为空", trigger: "blur" }
-        ]
+        ],
+        markCode: [
+          { required: true, message: "主市场编码不能为空", trigger: "blur" }
+        ],
       }
     };
   },
@@ -237,6 +271,14 @@ export default {
       this.markDatas = response.data;
       console.log( this.markDatas)
     });
+    this.getDicts("sys_peration_type").then((response) => {
+      this.perationOptions = response.data;
+    });
+    this.getDicts("sys_operate_type").then((response) => {
+      this.operateOptions = response.data;
+    });
+   
+
   },
   methods: {
       handleClick(tab, event) {
@@ -307,7 +349,9 @@ export default {
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
+      console.log(id)
       getCmark(id).then(response => {
+        console.log(response.data)
         this.form = response.data;
         this.open = true;
         this.title = "修改二级市场信息";
@@ -317,6 +361,7 @@ export default {
     submitForm: function() {
       this.$refs["form"].validate(valid => {
         if (valid) {
+          
           if (this.form.id != undefined) {
             updateCmark(this.form).then(response => {
               if (response.code === 200) {

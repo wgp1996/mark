@@ -287,6 +287,9 @@ export default {
         });
       }
     },
+     handleClick(tab, event) {
+        //console.log(tab, event);
+      },
     /** 查询【市场信息】列表 */
     getList() {
       this.loading = true;
