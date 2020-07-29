@@ -6,7 +6,7 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title || '后台管理系统' // 标题
+const name = defaultSettings.title || '批发市场管理系统' // 标题
 
 const port = process.env.port || process.env.npm_config_port || 81 // 端口
 
@@ -33,7 +33,7 @@ module.exports = {
     proxy: {
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       [process.env.VUE_APP_BASE_API]: {
-        target: `http://ximxc2.natappfree.cc`,
+        target: `http://utezmn.natappfree.cc`,
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
