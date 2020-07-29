@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="100px">
       
       <el-form-item label="二级市场编码" prop="markChildCode">
         <el-input
@@ -115,8 +115,8 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
           <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane label="用户管理" name="first">
-              <el-form-item label="主市场编码" prop="markCode">
-                 <el-select v-model="form.markCode" placeholder="请输入主市场编码" clearable  style="width
+              <el-form-item label="主市场信息" prop="markCode">
+                 <el-select v-model="form.markCode" placeholder="请选择主市场" clearable  style="width
                  :100%">
                     <el-option 
                        v-for="item in markDatas"
@@ -127,7 +127,7 @@
                 </el-select>
              </el-form-item>
              
-              <el-form-item label="二级市场编码" prop="markChildCode">
+              <el-form-item label="二级市场编码" prop="markChildCode" >
                 <el-input v-model="form.markChildCode" placeholder="请输入二级市场编码" />
               </el-form-item>
               <el-form-item label="二级市场名称" prop="markChildName">
