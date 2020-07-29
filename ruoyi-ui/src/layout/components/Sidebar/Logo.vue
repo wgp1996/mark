@@ -26,7 +26,7 @@ export default {
   },
   data() {
     return {
-      title: '后台管理系统',
+      title: '批发市场管理系统',
       logo: logoImg
     }
   }
