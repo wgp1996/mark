@@ -60,7 +60,6 @@
 
     <el-table v-loading="loading" :data="infoList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="ID" align="center" prop="id" />
       <el-table-column label="市场编码" align="center" prop="markCode" />
       <el-table-column label="市场名称" align="center" prop="markName" />
       <el-table-column label="运营主体名称" align="center" prop="perationName" />

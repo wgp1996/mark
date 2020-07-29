@@ -70,7 +70,6 @@
 
     <el-table v-loading="loading" :data="cmarkList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="id" align="center" prop="id" />
       <el-table-column label="二级市场编码" align="center" prop="markChildCode" />
       <el-table-column label="二级市场名称" align="center" prop="markChildName" />
       <el-table-column label="运营主体名称" align="center" prop="perationName" />
@@ -80,7 +79,6 @@
       <el-table-column label="结束时间" align="center" prop="operateEndTime" />
       <el-table-column label="租金" align="center" prop="operateMoney" />
       <el-table-column label="现有商户数量" align="center" prop="markMerchantsCount" />
-      <el-table-column label="说明" align="center" prop="markNote" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button

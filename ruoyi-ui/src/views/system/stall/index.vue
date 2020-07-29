@@ -71,17 +71,15 @@
 
     <el-table v-loading="loading" :data="stallList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="id" align="center" prop="id" />
-      <el-table-column label="摊位名称" align="center" prop="stallName" />
       <el-table-column label="摊位编码" align="center" prop="stallCode" />
-      <el-table-column label="所属市场" align="center" prop="markCode" />
-      <el-table-column label="市场编码" align="center" prop="regionArea" />
+      <el-table-column label="摊位名称" align="center" prop="stallName" />
+      <el-table-column label="所属市场" align="center" prop="markChildName" />
+      <el-table-column label="市场面积" align="center" prop="regionArea" />
       <el-table-column label="摊位状态" align="center" prop="stallStatus" />
       <el-table-column label="开始期限" align="center" prop="stallStartTime" />
       <el-table-column label="结束期限" align="center" prop="stallEndTime" />
       <el-table-column label="租金(年)" align="center" prop="stallMoney" />
       <el-table-column label="租赁方" align="center" prop="stallLeaseholder" />
-      <el-table-column label="摊位说明" align="center" prop="stallNote" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
