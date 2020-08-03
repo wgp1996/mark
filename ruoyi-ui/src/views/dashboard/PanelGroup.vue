@@ -7,9 +7,9 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            访客
+            用户数量
           </div>
-          <count-to :start-val="0" :end-val="102400" :duration="2600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="325" :duration="2600" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -20,9 +20,9 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            消息
+            公告数量
           </div>
-          <count-to :start-val="0" :end-val="81212" :duration="3000" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="58" :duration="3000" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -33,9 +33,9 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            金额
+            合同总额
           </div>
-          <count-to :start-val="0" :end-val="9280" :duration="3200" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="12500" :duration="3200" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -46,9 +46,9 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            订单
+            合同数量
           </div>
-          <count-to :start-val="0" :end-val="13600" :duration="3600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="1" :duration="3600" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -141,6 +141,7 @@ export default {
     }
 
     .card-panel-description {
+      text-align: center;
       float: right;
       font-weight: bold;
       margin: 26px;

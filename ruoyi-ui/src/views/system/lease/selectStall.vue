@@ -38,7 +38,7 @@
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-delete"
+            icon="el-icon-check"
             @click="selectStallData(scope.row)"
           >选择</el-button>
         </template>
@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { cmarkData,listStall, getStall, delStall, addStall, updateStall, exportStall } from "@/api/system/stall";
+import { leaseStallList,cmarkData,listStall, getStall, delStall, addStall, updateStall, exportStall } from "@/api/system/stall";
 
 export default {
   // props:{
@@ -133,7 +133,7 @@ export default {
     /** 查询市场摊位信息列表 */
     getList() {
       this.loading = true;
-      listStall(this.queryParams).then(response => {
+      leaseStallList(this.queryParams).then(response => {
         this.stallList = response.rows;
         this.total = response.total;
         this.loading = false;

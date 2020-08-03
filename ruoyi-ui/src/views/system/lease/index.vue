@@ -136,14 +136,16 @@
               <el-input v-model="form.contractName" placeholder="请输入合同名称" />
             </el-form-item>
             <el-form-item label="租赁客户" prop="ownerName">
-              <el-select v-model="form.ownerCode" placeholder="请选择租赁客户"  @change="selectOwner" style="width:100%">
+              <el-select v-model="form.ownerCode" placeholder="请选择租赁客户" filterable  @change="selectOwner" style="width:100%">
                 <el-option
                   v-for="item in ownerList"
                   :key="item.ownerCode"
                   :label="item.ownerName"
                   :value="item.ownerCode">
-                  <span style="float: left">{{ item.ownerCode }}</span>
-                  <span style="float: right; color: #8492a6; font-size: 13px">{{ item.ownerName }}</span>
+                  <span style="float: left; color: #8492a6; font-size: 13px;width:33%">{{ item.ownerName }}</span>
+                  <span style="float: left;width:33%">{{ item.ownerCode }}</span>                 
+                  
+                  <span style="float: left;width:33%">{{ item.ownerLxrPhone }}</span>
                 </el-option>
               </el-select>
             </el-form-item>
@@ -285,6 +287,7 @@
                     :value="dict.dictValue"
                   ></el-option>
                 </el-select>
+                <span>{{scope.row.payType}}</span>
               </template>
             </el-table-column>
             <el-table-column label="备注" width="180">
@@ -449,6 +452,13 @@ export default {
     selectData(row) {
       //  this.selectStallDialog=false;
       this.$nextTick(() => {
+        //检查是否存在重复数据
+        for(let i=0;i<this.tableData.length;i++){
+          if(row.stallCode==this.tableData[i].stallCode){
+             this.msgError("摊位信息重复!");
+             return;
+          }
+        }
         let stallInfo = new Object();
         stallInfo.stallCode = row.stallCode;
         stallInfo.stallName = row.stallName;
@@ -552,6 +562,7 @@ export default {
                   this.msgSuccess("修改成功");
                   this.open = false;
                   this.getList();
+                  this.$refs.selectStall.getList();
                 } else {
                   this.msgError(response.msg);
                 }
@@ -562,6 +573,7 @@ export default {
                   this.msgSuccess("新增成功");
                   this.open = false;
                   this.getList();
+                  this.$refs.selectStall.getList();
                 } else {
                   this.msgError(response.msg);
                 }
@@ -625,6 +637,12 @@ export default {
   display: block;
 }
 .tb-edit .current-row .el-input + span {
+  display: none;
+}
+.tb-edit .current-row .el-select {
+  display: block;
+}
+.tb-edit .current-row .el-select + span {
   display: none;
 }
 </style>

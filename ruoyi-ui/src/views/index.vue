@@ -6,19 +6,21 @@
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
       <line-chart :chart-data="lineChartData" />
     </el-row>
-
+    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;height:340px">
+      <line-img  />
+    </el-row>
     <el-row :gutter="32">
-      <el-col :xs="24" :sm="24" :lg="8">
+      <el-col :xs="35" :sm="35" :lg="8">
         <div class="chart-wrapper">
           <raddar-chart />
         </div>
       </el-col>
-      <el-col :xs="24" :sm="24" :lg="8">
+      <el-col :xs="35" :sm="35" :lg="8">
         <div class="chart-wrapper">
           <pie-chart />
         </div>
       </el-col>
-      <el-col :xs="24" :sm="24" :lg="8">
+      <el-col :xs="35" :sm="35" :lg="8">
         <div class="chart-wrapper">
           <bar-chart />
         </div>
@@ -32,14 +34,15 @@
 <script>
 import PanelGroup from './dashboard/PanelGroup'
 import LineChart from './dashboard/LineChart'
+import LineImg from './dashboard/LineImg'
 import RaddarChart from './dashboard/RaddarChart'
 import PieChart from './dashboard/PieChart'
 import BarChart from './dashboard/BarChart'
 
 const lineChartData = {
   newVisitis: {
-    expectedData: [100, 120, 161, 134, 105, 160, 165],
-    actualData: [120, 82, 91, 154, 162, 140, 145]
+    expectedData: [2.5, 3.5, 3.15, 2.7, 5.78, 3.15, 4.25],
+    actualData: [2.7, 3.4, 2.98, 3.2, 4.99, 2.98, 4.75]
   },
   messages: {
     expectedData: [200, 192, 120, 144, 160, 130, 140],
@@ -60,6 +63,7 @@ export default {
   components: {
     PanelGroup,
     LineChart,
+    LineImg,
     RaddarChart,
     PieChart,
     BarChart

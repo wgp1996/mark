@@ -252,7 +252,7 @@ export default {
       this.markDatas = response.data;
       console.log(this.markDatas)
     });
-     this.getDicts("sys_operate_type").then((response) => {
+     this.getDicts("sys_stall_status").then((response) => {
       this.perationOptions = response.data;
       console.log(this.markDatas)
     });

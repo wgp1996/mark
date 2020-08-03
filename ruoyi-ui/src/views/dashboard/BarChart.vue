@@ -62,7 +62,7 @@ export default {
         },
         xAxis: [{
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: ['东昌府区', '阳谷县', '莘县', '东阿县', '冠县', '荏平县', '临清市'],
           axisTick: {
             alignWithLabel: true
           }
@@ -74,25 +74,25 @@ export default {
           }
         }],
         series: [{
-          name: 'pageA',
+          name: '追溯有效性',
           type: 'bar',
           stack: 'vistors',
           barWidth: '60%',
-          data: [79, 52, 200, 334, 390, 330, 220],
+          data: [79, 52, 77, 88, 52, 47, 99],
           animationDuration
         }, {
-          name: 'pageB',
+          name: '追溯合理性',
           type: 'bar',
           stack: 'vistors',
           barWidth: '60%',
-          data: [80, 52, 200, 334, 390, 330, 220],
+          data: [80, 52, 45, 58, 50, 48, 66],
           animationDuration
         }, {
-          name: 'pageC',
+          name: '追溯时效性',
           type: 'bar',
           stack: 'vistors',
           barWidth: '60%',
-          data: [30, 52, 200, 334, 390, 330, 220],
+          data: [30, 52, 28, 39, 50, 78, 80],
           animationDuration
         }]
       })

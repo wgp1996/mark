@@ -68,18 +68,18 @@ export default {
             }
           },
           indicator: [
-            { name: 'Sales', max: 10000 },
-            { name: 'Administration', max: 20000 },
-            { name: 'Information Techology', max: 20000 },
-            { name: 'Customer Support', max: 20000 },
-            { name: 'Development', max: 20000 },
-            { name: 'Marketing', max: 20000 }
+            { name: '追溯有效性', max: 50 },
+            { name: '追溯合理性', max: 50 },
+            { name: '追溯时效性', max: 50 },
+            { name: '扫码量', max: 50 },
+            { name: '扫码投诉', max: 50 },
+            { name: '扫码主体企业', max: 50 }
           ]
         },
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['Allocated Budget', 'Expected Spending', 'Actual Spending']
+          data: ['追溯有效性', '追溯合理性', '追溯时效性','扫码投诉','扫码量','扫码主体企业']
         },
         series: [{
           type: 'radar',
@@ -95,16 +95,8 @@ export default {
           },
           data: [
             {
-              value: [5000, 7000, 12000, 11000, 15000, 14000],
+              value: [38, 42, 45, 29, 35, 49],
               name: 'Allocated Budget'
-            },
-            {
-              value: [4000, 9000, 15000, 15000, 13000, 11000],
-              name: 'Expected Spending'
-            },
-            {
-              value: [5500, 11000, 12000, 15000, 12000, 12000],
-              name: 'Actual Spending'
             }
           ],
           animationDuration: animationDuration

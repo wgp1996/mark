@@ -29,14 +29,30 @@ module.exports = {
   lintOnSave: process.env.NODE_ENV === 'development',
   // 如果你不需要生产环境的 source map，可以将其设置为 false 以加速生产环境构建。
   productionSourceMap: false,
-  // webpack-dev-server 相关配置 类似Nginx 
+  // webpack-dev-server 相关配置 类似Nginx 部署
+  /*devServer: {
+    host: 'localhost',
+    port: 80,
+    proxy: {
+      // detail: https://cli.vuejs.org/config/#devserver-proxy
+      [process.env.VUE_APP_BASE_API]: {
+        target: `http://keboo.cn/`,
+        changeOrigin: true,
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_BASE_API]: ''
+        }
+      }
+    },
+    disableHostCheck: true
+  },*/
+  //本地
   devServer: {
     host: 'localhost',
     port: 81,
     proxy: {
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       [process.env.VUE_APP_BASE_API]: {
-        target: `http://keboo.cn/`,
+        target: `http://gfevay.natappfree.cc/`,
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
