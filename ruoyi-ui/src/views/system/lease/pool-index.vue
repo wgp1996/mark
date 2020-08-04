@@ -64,7 +64,7 @@
           @click="handleExport"
           v-hasPermi="['system:cmark:export']"
         >导出</el-button>
-      </el-col> -->
+      </el-col>-->
     </el-row>
 
     <el-table
@@ -89,7 +89,7 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="合同编码" align="center" prop="contractCode" />
       <el-table-column label="合同名称" align="center" prop="contractName" />
-      <el-table-column label="租赁客户" align="center" prop="ownerName" />
+      <el-table-column label="联营客户" align="center" prop="ownerName" />
       <el-table-column label="联营模式" align="center" prop="poolModel" />
       <el-table-column label="抽成率" align="center" prop="takeNum" />
       <el-table-column label="抽成结算方式" align="center" prop="takePayType" />
@@ -136,44 +136,53 @@
               <el-input v-model="form.contractName" placeholder="请输入合同名称" />
             </el-form-item>
             <el-form-item label="联营客户" prop="ownerName">
-              <el-select v-model="form.ownerCode" placeholder="请选择联营客户" filterable  @change="selectOwner" style="width:100%">
+              <el-select
+                v-model="form.ownerCode"
+                placeholder="请选择联营客户"
+                filterable
+                @change="selectOwner"
+                style="width:100%"
+              >
                 <el-option
                   v-for="item in ownerList"
                   :key="item.ownerCode"
                   :label="item.ownerName"
-                  :value="item.ownerCode">
-                  <span style="float: left; color: #8492a6; font-size: 13px;width:33%">{{ item.ownerName }}</span>
-                  <span style="float: left;width:33%">{{ item.ownerCode }}</span>                 
-                  
+                  :value="item.ownerCode"
+                >
+                  <span
+                    style="float: left; color: #8492a6; font-size: 13px;width:33%"
+                  >{{ item.ownerName }}</span>
+                  <span style="float: left;width:33%">{{ item.ownerCode }}</span>
+
                   <span style="float: left;width:33%">{{ item.ownerLxrPhone }}</span>
                 </el-option>
               </el-select>
             </el-form-item>
-              <el-form-item label="联营模式">
-                 <el-select v-model="form.poolModel" placeholder="请选择联营模式" style="width:100%">
-                   <el-option
+            <el-form-item label="联营模式">
+              <el-select v-model="form.poolModel" placeholder="请选择联营模式" style="width:100%">
+                <el-option
                   v-for="dict in poolModelOptions"
                   :key="dict.dictValue"
                   :label="dict.dictLabel"
                   :value="dict.dictValue"
                 ></el-option>
-                  </el-select>
-              </el-form-item>
+              </el-select>
+            </el-form-item>
             <el-form-item label="抽成率(%)" prop="contractMoney">
               <el-input v-model="form.takeNum" placeholder="请输入抽成率" />
             </el-form-item>
-              <el-form-item label="抽成结算方式">
-                 <el-select v-model="form.takePayType" placeholder="请选择结算方式" style="width:100%">
-                   <el-option
+            <el-form-item label="抽成结算方式">
+              <el-select v-model="form.takePayType" placeholder="请选择结算方式" style="width:100%">
+                <el-option
                   v-for="dict in takePayTypeOptions"
                   :key="dict.dictValue"
                   :label="dict.dictLabel"
                   :value="dict.dictValue"
                 ></el-option>
-                  </el-select>
-              </el-form-item>
+              </el-select>
+            </el-form-item>
             <el-form-item label="签约时间" prop="signTime">
-               <el-date-picker
+              <el-date-picker
                 clearable
                 style="width:100%"
                 v-model="form.signTime"
@@ -249,7 +258,7 @@
             <el-table-column label="计费日期" width="180">
               <template scope="scope">
                 <el-date-picker
-                clearable
+                  clearable
                   size="small"
                   v-model="scope.row.leaseTime"
                   type="date"
@@ -260,7 +269,7 @@
                 <span>{{scope.row.leaseTime}}</span>
               </template>
             </el-table-column>
-            <el-table-column label="抽成比例(%)" width="120">
+            <el-table-column label="抽成比例(%)" width="150">
               <template scope="scope">
                 <el-input
                   size="small"
@@ -294,6 +303,29 @@
             </el-table-column>
           </el-table>
         </el-tab-pane>
+        <el-tab-pane label="附件信息" name="three">
+          <el-row :gutter="15" class="mb8">
+            <el-col :span="1.5">
+              <el-upload
+                class="upload-demo"
+                :limit="1"
+                drag
+                :file-list="fileList"
+                :action="upload.url"
+                :headers="upload.headers"
+                :on-success="handleFileSuccess"
+                :on-remove="handleRemove"
+                :on-preview="clickFile"
+              >
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">
+                  将文件拖到此处，或
+                  <em>点击上传</em>
+                </div>
+              </el-upload>
+            </el-col>
+          </el-row>
+        </el-tab-pane>
       </el-tabs>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -314,9 +346,10 @@ import {
   addContract,
   updateContract,
   exportContract,
-  getOwnerList
+  getOwnerList,
 } from "@/api/system/pool";
 import poolStall from "./poolStall";
+import { getToken } from "@/utils/auth";
 export default {
   name: "Lease",
   components: {
@@ -324,9 +357,23 @@ export default {
   },
   data() {
     return {
-      
+      fileList: [],
+      upload: {
+        // 是否显示弹出层（用户导入）
+        open: false,
+        // 弹出层标题（用户导入）
+        title: "",
+        // 是否禁用上传
+        isUploading: false,
+        // 是否更新已经存在的用户数据
+        updateSupport: 0,
+        // 设置上传的请求头部
+        headers: { Authorization: "Bearer " + getToken() },
+        // 上传的地址
+        url: process.env.VUE_APP_BASE_API + "/common/upload",
+      },
       //业主列表
-      ownerList:[],
+      ownerList: [],
       //联营模式
       poolModelOptions: [],
       //抽成结算方式
@@ -390,16 +437,27 @@ export default {
     this.getDicts("sys_take_pay_type").then((response) => {
       this.takePayTypeOptions = response.data;
     });
-     getOwnerList().then((response) => {
+    getOwnerList().then((response) => {
       this.ownerList = response.data;
-      console.log( this.markDatas)
+      console.log(this.markDatas);
     });
   },
   methods: {
-    //选择客户
-    selectOwner(data){
-      
+    clickFile(file) {
+      if (file.url != "") {
+        window.location.href = file.url;
+      }
     },
+    handleFileSuccess(res, file, fileList) {
+      // 上传成功
+      console.log(res.url);
+      this.form.fileName = res.url;
+    },
+    handleRemove(file, fileList) {
+      this.form.fileName = "";
+    },
+    //选择客户
+    selectOwner(data) {},
     handleClick(tab, event) {
       // console.log(tab, event);
     },
@@ -410,10 +468,10 @@ export default {
       console.log(index, row);
     },
     handleChildDelete(index, row) {
-      if(row.id!=""&&row.id!=undefined&&row.id!=null){
+      if (row.id != "" && row.id != undefined && row.id != null) {
         delContractChild(row.id);
         this.tableData.splice(index, 1);
-      }else{
+      } else {
         this.tableData.splice(index, 1);
       }
       console.log(index, row);
@@ -430,10 +488,10 @@ export default {
       //  this.poolStallDialog=false;
       this.$nextTick(() => {
         //检查是否存在重复数据
-        for(let i=0;i<this.tableData.length;i++){
-          if(row.stallCode==this.tableData[i].stallCode){
-             this.msgError("摊位信息重复!");
-             return;
+        for (let i = 0; i < this.tableData.length; i++) {
+          if (row.stallCode == this.tableData[i].stallCode) {
+            this.msgError("摊位信息重复!");
+            return;
           }
         }
         let stallInfo = new Object();
@@ -480,10 +538,11 @@ export default {
         updateBy: undefined,
         updateTime: undefined,
         remark: undefined,
+        fileName: undefined,
         rows: "",
       };
       this.resetForm("form");
-      this.tableData=[];
+      this.tableData = [];
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -505,7 +564,7 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加租赁合同";
+      this.title = "添加联营合同";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -513,25 +572,36 @@ export default {
       const id = row.id || this.ids;
       getContract(id).then((response) => {
         this.form = response.data;
+        if (response.data.fileName != "") {
+          this.fileList = [];
+          let info = new Object();
+          info.name = response.data.fileName;
+          info.url = response.data.fileName;
+          this.fileList.push(info);
+        }
         getContractChild(this.form.contractCode).then((response) => {
           //this.form.rows = response.data;
-          this.tableData=response.data;
+          this.tableData = response.data;
         });
         this.open = true;
-        this.title = "修改租赁合同";
+        this.title = "修改联营合同";
       });
     },
     /** 提交按钮 */
     submitForm: function () {
       if (this.tableData.length > 0) {
         //检查子表信息
-        for(let i=0;i<this.tableData.length;i++){
-          if(this.tableData[i].leaseStartTime==""||this.tableData[i].leaseEndTime==""||this.tableData[i].rentMoney==""){
-               this.msgError("明细时间和金额信息不能为空!");
-               return
+        for (let i = 0; i < this.tableData.length; i++) {
+          if (
+            this.tableData[i].leaseStartTime == "" ||
+            this.tableData[i].leaseEndTime == "" ||
+            this.tableData[i].rentMoney == ""
+          ) {
+            this.msgError("明细时间和金额信息不能为空!");
+            return;
           }
         }
-        this.form.rows=JSON.stringify(this.tableData);
+        this.form.rows = JSON.stringify(this.tableData);
         this.$refs["form"].validate((valid) => {
           if (valid) {
             if (this.form.id != undefined) {
@@ -567,7 +637,7 @@ export default {
     handleDelete(row) {
       const ids = row.id || this.ids;
       this.$confirm(
-        '是否确认删除租赁合同编号为"' + ids + '"的数据项?',
+        '是否确认删除联营合同编号为"' + ids + '"的数据项?',
         "警告",
         {
           confirmButtonText: "确定",
@@ -587,7 +657,7 @@ export default {
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
-      this.$confirm("是否确认导出所有租赁合同数据项?", "警告", {
+      this.$confirm("是否确认导出所有联营合同数据项?", "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
@@ -622,5 +692,15 @@ export default {
 }
 .tb-edit .current-row .el-select + span {
   display: none;
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
 }
 </style>

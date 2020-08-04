@@ -64,7 +64,7 @@
           @click="handleExport"
           v-hasPermi="['system:cmark:export']"
         >导出</el-button>
-      </el-col> -->
+      </el-col>-->
     </el-row>
 
     <el-table
@@ -95,7 +95,7 @@
       <el-table-column label="合同金额" align="center" prop="contractMoney" />
       <el-table-column label="签约地点" align="center" prop="signAddress" />
       <el-table-column label="签约日期" align="center" prop="signTime" />
-       <el-table-column label="备注" align="center" prop="signTime" />
+      <el-table-column label="备注" align="center" prop="signTime" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -136,24 +136,33 @@
               <el-input v-model="form.contractName" placeholder="请输入合同名称" />
             </el-form-item>
             <el-form-item label="购买客户" prop="ownerName">
-              <el-select v-model="form.ownerCode" placeholder="请选择购买客户" filterable  @change="selectOwner" style="width:100%">
+              <el-select
+                v-model="form.ownerCode"
+                placeholder="请选择购买客户"
+                filterable
+                @change="selectOwner"
+                style="width:100%"
+              >
                 <el-option
                   v-for="item in ownerList"
                   :key="item.ownerCode"
                   :label="item.ownerName"
-                  :value="item.ownerCode">
-                  <span style="float: left; color: #8492a6; font-size: 13px;width:33%">{{ item.ownerName }}</span>
-                  <span style="float: left;width:33%">{{ item.ownerCode }}</span>                 
-                  
+                  :value="item.ownerCode"
+                >
+                  <span
+                    style="float: left; color: #8492a6; font-size: 13px;width:33%"
+                  >{{ item.ownerName }}</span>
+                  <span style="float: left;width:33%">{{ item.ownerCode }}</span>
+
                   <span style="float: left;width:33%">{{ item.ownerLxrPhone }}</span>
                 </el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="合同金额" prop="contractMoney">
-              <el-input v-model="form.contractMoney" placeholder="请输入合同金额" />
+              <el-input disabled="false" v-model="form.contractMoney" placeholder="请输入合同金额" />
             </el-form-item>
             <el-form-item label="签约时间" prop="signTime">
-               <el-date-picker
+              <el-date-picker
                 clearable
                 style="width:100%"
                 v-model="form.signTime"
@@ -229,7 +238,7 @@
             <el-table-column label="购买日期" width="180">
               <template scope="scope">
                 <el-date-picker
-                clearable
+                  clearable
                   size="small"
                   v-model="scope.row.leaseTime"
                   type="date"
@@ -240,28 +249,13 @@
                 <span>{{scope.row.leaseTime}}</span>
               </template>
             </el-table-column>
-            <!-- <el-table-column label="结束时间" width="180">
-              <template scope="scope">
-              
-                <el-date-picker
-                 clearable
-                  size="small"
-                  v-model="scope.row.leaseEndTime"
-                  type="date"
-                  @change="handleEdit(scope.$index, scope.row)"
-                  value-format="yyyy-MM-dd"
-                  placeholder="选择结束日期"
-                ></el-date-picker>
-                <span>{{scope.row.leaseEndTime}}</span>
-              </template>
-            </el-table-column> -->
-            <el-table-column label="购买金额" width="120">
+            <el-table-column label="购买金额" width="150">
               <template scope="scope">
                 <el-input
                   size="small"
                   v-model="scope.row.rentMoney"
                   placeholder="请输入购买金额"
-                  @change="handleEdits(scope.$index, scope.row)"
+                  @change="getSumMoney(scope.$index, scope.row)"
                 ></el-input>
                 <span>{{scope.row.rentMoney}}</span>
               </template>
@@ -313,13 +307,36 @@
             </el-table-column>
           </el-table>
         </el-tab-pane>
+        <el-tab-pane label="附件信息" name="three">
+          <el-row :gutter="15" class="mb8">
+            <el-col :span="1.5">
+              <el-upload
+                class="upload-demo"
+                :limit="1"
+                drag
+                :file-list="fileList"
+                :action="upload.url"
+                :headers="upload.headers"
+                :on-success="handleFileSuccess"
+                :on-remove="handleRemove"
+                :on-preview="clickFile"
+              >
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">
+                  将文件拖到此处，或
+                  <em>点击上传</em>
+                </div>
+              </el-upload>
+            </el-col>
+          </el-row>
+        </el-tab-pane>
       </el-tabs>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
-    <select-stall v-if="selectStallDialog" ref="selectStall" @selectData="selectData"></select-stall>
+    <sales-stall v-if="salesStallDialog" ref="salesStall" @selectData="selectData"></sales-stall>
   </div>
 </template>
 
@@ -333,24 +350,44 @@ import {
   addContract,
   updateContract,
   exportContract,
-  getOwnerList
+  getOwnerList,
 } from "@/api/system/sales";
-import selectStall from "./selectSales";
+import salesStall from "./salesStall";
+import { getToken } from "@/utils/auth";
 export default {
   name: "Lease",
   components: {
-    selectStall,
+    salesStall,
   },
   data() {
     return {
-      
+      fileList: [],
+      upload: {
+        // 是否显示弹出层（用户导入）
+        open: false,
+        // 弹出层标题（用户导入）
+        title: "",
+        // 是否禁用上传
+        isUploading: false,
+        // 是否更新已经存在的用户数据
+        updateSupport: 0,
+        // 设置上传的请求头部
+        headers: { Authorization: "Bearer " + getToken() },
+        // 上传的地址
+        url: process.env.VUE_APP_BASE_API + "/common/upload",
+      },
+      clickFile(file) {
+        if (file.url != "") {
+          window.location.href = file.url;
+        }
+      },
       //业主列表
-      ownerList:[],
+      ownerList: [],
       //支付方式
       payTypeList: [],
       // 遮罩层
       loading: false,
-      selectStallDialog: false,
+      salesStallDialog: false,
       //选取主市场
       markDatas: [],
       // 选中数组
@@ -398,13 +435,13 @@ export default {
     };
   },
   created() {
-     this.getList();
+    this.getList();
     this.getDicts("sys_pay_type").then((response) => {
       this.payTypeList = response.data;
     });
-     getOwnerList().then((response) => {
+    getOwnerList().then((response) => {
       this.ownerList = response.data;
-      console.log( this.markDatas)
+      console.log(this.markDatas);
     });
     //
     // getMark().then((response) => {
@@ -419,10 +456,16 @@ export default {
     // });
   },
   methods: {
-    //选择客户
-    selectOwner(data){
-      
+    handleFileSuccess(res, file, fileList) {
+      // 上传成功
+      console.log(res.url);
+      this.form.fileName = res.url;
     },
+    handleRemove(file, fileList) {
+      this.form.fileName = "";
+    },
+    //选择客户
+    selectOwner(data) {},
     handleClick(tab, event) {
       // console.log(tab, event);
     },
@@ -432,40 +475,46 @@ export default {
     handleEdit(index, row) {
       //console.log(index, row);
     },
-     handleEdits(index, row) {
-       this.form.contractMoney=(Number(this.form.contractMoney)+Number(row.rentMoney)).toString()
+    getSumMoney(index, row) {
+      //计算总金额
+      let sumMoney = 0;
+      for (let i = 0; i < this.tableData.length; i++) {
+        if (this.tableData[i].rentMoney != "") {
+          sumMoney += parseFloat(this.tableData[i].rentMoney);
+        }
+      }
+      this.form.contractMoney = sumMoney.toString();
       console.log(this.form);
       // console.log(row.rentMoney);
-      
     },
     handleChildDelete(index, row) {
-      if(row.id!=""&&row.id!=undefined&&row.id!=null){
+      if (row.id != "" && row.id != undefined && row.id != null) {
         delContractChild(row.id);
         this.tableData.splice(index, 1);
-      }else{
+      } else {
         this.tableData.splice(index, 1);
       }
       //console.log(index, row);
     },
     /** 操作 */
     stallSelect() {
-      this.selectStallDialog = true;
+      this.salesStallDialog = true;
       this.$nextTick(() => {
-        this.$refs.selectStall.visible = true;
+        this.$refs.salesStall.visible = true;
       });
     },
     //选择数据
     selectData(row) {
-      //  this.selectStallDialog=false;
+      //  this.salesStallDialog=false;
       //console.log(row)
       this.$nextTick(() => {
         //检查是否存在重复数据
-        for(let i=0;i<this.tableData.length;i++){
-          console.log("1")
-          console.log(this.tableData)
-          if(row.stallCode==this.tableData[i].stallCode){
-             this.msgError("摊位信息重复!");
-             return;
+        for (let i = 0; i < this.tableData.length; i++) {
+          console.log("1");
+          console.log(this.tableData);
+          if (row.stallCode == this.tableData[i].stallCode) {
+            this.msgError("摊位信息重复!");
+            return;
           }
         }
         let stallInfo = new Object();
@@ -473,12 +522,11 @@ export default {
         stallInfo.stallName = row.stallName;
         stallInfo.stallArea = row.regionArea;
         stallInfo.leaseTime = "";
-  
         stallInfo.rentMoney = "";
         stallInfo.payType = "";
         stallInfo.contractBz = "";
         this.tableData.push(stallInfo);
-        this.$refs.selectStall.visible = false;
+        this.$refs.salesStall.visible = false;
       });
     },
     /** 查询二级市场信息列表 */
@@ -511,10 +559,11 @@ export default {
         updateBy: undefined,
         updateTime: undefined,
         remark: undefined,
+        fileName: undefined,
         rows: "",
       };
       this.resetForm("form");
-      this.tableData=[];
+      this.tableData = [];
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -528,7 +577,7 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      console.log(selection)
+      console.log(selection);
       this.ids = selection.map((item) => item.id);
       this.single = selection.length != 1;
       this.multiple = !selection.length;
@@ -545,9 +594,16 @@ export default {
       const id = row.id || this.ids;
       getContract(id).then((response) => {
         this.form = response.data;
+        if (response.data.fileName != "") {
+          this.fileList = [];
+          let info = new Object();
+          info.name = response.data.fileName;
+          info.url = response.data.fileName;
+          this.fileList.push(info);
+        }
         getContractChild(this.form.contractCode).then((response) => {
           //this.form.rows = response.data;
-          this.tableData=response.data;
+          this.tableData = response.data;
         });
         this.open = true;
         this.title = "修改销售合同";
@@ -557,40 +613,39 @@ export default {
     submitForm: function () {
       if (this.tableData.length > 0) {
         //检查子表信息
-        for(let i=0;i<this.tableData.length;i++){
-          if(this.tableData[i].leaseTime==""||this.tableData[i].rentMoney==""){
-               this.msgError("明细时间和金额信息不能为空!");
-               return
+        for (let i = 0; i < this.tableData.length; i++) {
+          if (
+            this.tableData[i].leaseTime == "" ||
+            this.tableData[i].rentMoney == ""
+          ) {
+            this.msgError("明细时间和金额信息不能为空!");
+            return;
           }
         }
-        this.form.rows=JSON.stringify(this.tableData);
+        this.form.rows = JSON.stringify(this.tableData);
         this.$refs["form"].validate((valid) => {
           if (valid) {
-          
             if (this.form.id != undefined) {
-            
               updateContract(this.form).then((response) => {
                 if (response.code === 200) {
                   this.msgSuccess("修改成功");
                   this.open = false;
                   this.getList();
-                  // this.$refs.selectStall.getList();
+                  // this.$refs.salesStall.getList();
                 } else {
                   this.msgError(response.msg);
                 }
               });
             } else {
-            
               addContract(this.form).then((response) => {
                 if (response.code === 200) {
-                  console.log("debugger")
-                   console.log(this.tableData)
+                  console.log("debugger");
+                  console.log(this.tableData);
                   this.msgSuccess("新增成功");
-                     
+
                   this.open = false;
                   this.getList();
-                  // this.$refs.selectStall.getList();
-            
+                  // this.$refs.salesStall.getList();
                 } else {
                   this.msgError(response.msg);
                 }
