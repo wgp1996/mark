@@ -222,7 +222,7 @@
             <el-table-column label="摊位编号" width="120">
               <template scope="scope">
                 <el-input
-                  disabled="false"
+                  :disabled="true"
                   size="small"
                   v-model="scope.row.stallCode"
                   placeholder="请输入内容"
@@ -234,7 +234,7 @@
             <el-table-column label="摊位名称" width="120">
               <template scope="scope">
                 <el-input
-                  disabled="false"
+                  :disabled="true"
                   size="small"
                   v-model="scope.row.stallName"
                   placeholder="请输入内容"
@@ -246,7 +246,7 @@
             <el-table-column prop="stallArea" label="面积" width="120">
               <template scope="scope">
                 <el-input
-                  disabled="false"
+                  :disabled="true"
                   size="small"
                   v-model="scope.row.stallArea"
                   placeholder="请输入内容"

@@ -159,7 +159,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="合同金额" prop="contractMoney">
-              <el-input disabled="false" v-model="form.contractMoney" placeholder="请输入合同金额" />
+              <el-input :disabled="true" v-model="form.contractMoney" placeholder="请输入合同金额" />
             </el-form-item>
             <el-form-item label="签约时间" prop="signTime">
               <el-date-picker
@@ -202,7 +202,7 @@
             <el-table-column label="摊位编号" width="120">
               <template scope="scope">
                 <el-input
-                  :disabled="false"
+                  :disabled="true"
                   size="small"
                   v-model="scope.row.stallCode"
                   placeholder="请输入内容"
@@ -214,7 +214,7 @@
             <el-table-column label="摊位名称" width="120">
               <template scope="scope">
                 <el-input
-                  :disabled="false"
+                  :disabled="true"
                   size="small"
                   v-model="scope.row.stallName"
                   placeholder="请输入内容"
@@ -226,7 +226,7 @@
             <el-table-column prop="stallArea" label="面积" width="120">
               <template scope="scope">
                 <el-input
-                  :disabled="false"
+                  :disabled="true"
                   size="small"
                   v-model="scope.row.stallArea"
                   placeholder="请输入内容"
@@ -272,7 +272,7 @@
                   v-model="scope.row.payType"
                   placeholder="请选择支付方式"
                   style="width:100%"
-                  @change="handleEdit(scope.$index, scope.row)"
+                  @change="handleEdit(scope.$index, scope.row)" 
                 >
                   <el-option
                     v-for="dict in payTypeList"
@@ -281,7 +281,7 @@
                     :value="dict.dictValue"
                   ></el-option>
                 </el-select>
-                <span>{{scope.row.payType}}</span>
+                <span style="  position: relative;top:-13px;">{{scope.row.payType}}</span>
               </template>
             </el-table-column>
             <el-table-column label="备注" width="180">
@@ -510,7 +510,7 @@ export default {
       this.$nextTick(() => {
         //检查是否存在重复数据
         for (let i = 0; i < this.tableData.length; i++) {
-          console.log("1");
+          //console.log("1");
           console.log(this.tableData);
           if (row.stallCode == this.tableData[i].stallCode) {
             this.msgError("摊位信息重复!");
@@ -717,4 +717,5 @@ export default {
 .tb-edit .current-row .el-select + span {
   display: none;
 }
+
 </style>
