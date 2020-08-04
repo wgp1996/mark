@@ -80,9 +80,9 @@
             <el-table-column label="摊位编号" align="center" prop="stallCode" />
             <el-table-column label="摊位名称" align="center" prop="stallName" />
             <el-table-column label="面积(平方米)" align="center" prop="stallArea" />
-            <el-table-column label="开始日期" align="center" prop="leaseStartTime" />
-            <el-table-column label="结束日期" align="center" prop="leaseEndTime" />
-            <el-table-column label="租金(元)" align="center" prop="rentMoney" />
+            <el-table-column label="购买日期" align="center" prop="leaseTime" />
+            <!-- <el-table-column label="结束日期" align="center" prop="leaseEndTime" /> -->
+            <el-table-column label="购买金额" align="center" prop="rentMoney" />
             <el-table-column label="缴费方式" align="center" prop="payType" />
             <el-table-column label="备注" align="center" prop="contractBz" />
           </el-table>
@@ -91,11 +91,11 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="合同编码" align="center" prop="contractCode" />
       <el-table-column label="合同名称" align="center" prop="contractName" />
-      <el-table-column label="租赁客户" align="center" prop="ownerName" />
+      <el-table-column label="购买客户" align="center" prop="ownerName" />
       <el-table-column label="合同金额" align="center" prop="contractMoney" />
       <el-table-column label="签约地点" align="center" prop="signAddress" />
       <el-table-column label="签约日期" align="center" prop="signTime" />
-
+       <el-table-column label="备注" align="center" prop="signTime" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -135,8 +135,8 @@
             <el-form-item label="合同名称" prop="contractName">
               <el-input v-model="form.contractName" placeholder="请输入合同名称" />
             </el-form-item>
-            <el-form-item label="租赁客户" prop="ownerName">
-              <el-select v-model="form.ownerCode" placeholder="请选择租赁客户" filterable  @change="selectOwner" style="width:100%">
+            <el-form-item label="购买客户" prop="ownerName">
+              <el-select v-model="form.ownerCode" placeholder="请选择购买客户" filterable  @change="selectOwner" style="width:100%">
                 <el-option
                   v-for="item in ownerList"
                   :key="item.ownerCode"
@@ -193,7 +193,7 @@
             <el-table-column label="摊位编号" width="120">
               <template scope="scope">
                 <el-input
-                  disabled="false"
+                  :disabled="false"
                   size="small"
                   v-model="scope.row.stallCode"
                   placeholder="请输入内容"
@@ -205,7 +205,7 @@
             <el-table-column label="摊位名称" width="120">
               <template scope="scope">
                 <el-input
-                  disabled="false"
+                  :disabled="false"
                   size="small"
                   v-model="scope.row.stallName"
                   placeholder="请输入内容"
@@ -217,7 +217,7 @@
             <el-table-column prop="stallArea" label="面积" width="120">
               <template scope="scope">
                 <el-input
-                  disabled="false"
+                  :disabled="false"
                   size="small"
                   v-model="scope.row.stallArea"
                   placeholder="请输入内容"
@@ -226,21 +226,21 @@
                 <span>{{scope.row.stallArea}}</span>
               </template>
             </el-table-column>
-            <el-table-column label="开始时间" width="180">
+            <el-table-column label="购买日期" width="180">
               <template scope="scope">
                 <el-date-picker
                 clearable
                   size="small"
-                  v-model="scope.row.leaseStartTime"
+                  v-model="scope.row.leaseTime"
                   type="date"
                   @change="handleEdit(scope.$index, scope.row)"
                   value-format="yyyy-MM-dd"
-                  placeholder="选择开始日期"
+                  placeholder="选择购买日期"
                 ></el-date-picker>
-                <span>{{scope.row.leaseStartTime}}</span>
+                <span>{{scope.row.leaseTime}}</span>
               </template>
             </el-table-column>
-            <el-table-column label="结束时间" width="180">
+            <!-- <el-table-column label="结束时间" width="180">
               <template scope="scope">
               
                 <el-date-picker
@@ -254,14 +254,14 @@
                 ></el-date-picker>
                 <span>{{scope.row.leaseEndTime}}</span>
               </template>
-            </el-table-column>
-            <el-table-column label="租金" width="120">
+            </el-table-column> -->
+            <el-table-column label="购买金额" width="120">
               <template scope="scope">
                 <el-input
                   size="small"
                   v-model="scope.row.rentMoney"
-                  placeholder="请输入租金"
-                  @change="handleEdit(scope.$index, scope.row)"
+                  placeholder="请输入购买金额"
+                  @change="handleEdits(scope.$index, scope.row)"
                 ></el-input>
                 <span>{{scope.row.rentMoney}}</span>
               </template>
@@ -334,8 +334,8 @@ import {
   updateContract,
   exportContract,
   getOwnerList
-} from "@/api/system/contract";
-import selectStall from "./selectStall";
+} from "@/api/system/sales";
+import selectStall from "./selectSales";
 export default {
   name: "Lease",
   components: {
@@ -398,7 +398,7 @@ export default {
     };
   },
   created() {
-    this.getList();
+     this.getList();
     this.getDicts("sys_pay_type").then((response) => {
       this.payTypeList = response.data;
     });
@@ -427,10 +427,16 @@ export default {
       // console.log(tab, event);
     },
     handleCurrentChange(row, event, column) {
-      console.log(row, event, column, event.currentTarget);
+      //console.log(row, event, column, event.currentTarget);
     },
     handleEdit(index, row) {
-      console.log(index, row);
+      //console.log(index, row);
+    },
+     handleEdits(index, row) {
+       this.form.contractMoney=(Number(this.form.contractMoney)+Number(row.rentMoney)).toString()
+      console.log(this.form);
+      // console.log(row.rentMoney);
+      
     },
     handleChildDelete(index, row) {
       if(row.id!=""&&row.id!=undefined&&row.id!=null){
@@ -439,7 +445,7 @@ export default {
       }else{
         this.tableData.splice(index, 1);
       }
-      console.log(index, row);
+      //console.log(index, row);
     },
     /** 操作 */
     stallSelect() {
@@ -451,9 +457,12 @@ export default {
     //选择数据
     selectData(row) {
       //  this.selectStallDialog=false;
+      //console.log(row)
       this.$nextTick(() => {
         //检查是否存在重复数据
         for(let i=0;i<this.tableData.length;i++){
+          console.log("1")
+          console.log(this.tableData)
           if(row.stallCode==this.tableData[i].stallCode){
              this.msgError("摊位信息重复!");
              return;
@@ -463,8 +472,8 @@ export default {
         stallInfo.stallCode = row.stallCode;
         stallInfo.stallName = row.stallName;
         stallInfo.stallArea = row.regionArea;
-        stallInfo.leaseStartTime = "";
-        stallInfo.leaseEndTime = "";
+        stallInfo.leaseTime = "";
+  
         stallInfo.rentMoney = "";
         stallInfo.payType = "";
         stallInfo.contractBz = "";
@@ -519,6 +528,7 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
+      console.log(selection)
       this.ids = selection.map((item) => item.id);
       this.single = selection.length != 1;
       this.multiple = !selection.length;
@@ -527,7 +537,7 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加租赁合同";
+      this.title = "添加销售合同";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -540,7 +550,7 @@ export default {
           this.tableData=response.data;
         });
         this.open = true;
-        this.title = "修改租赁合同";
+        this.title = "修改销售合同";
       });
     },
     /** 提交按钮 */
@@ -548,7 +558,7 @@ export default {
       if (this.tableData.length > 0) {
         //检查子表信息
         for(let i=0;i<this.tableData.length;i++){
-          if(this.tableData[i].leaseStartTime==""||this.tableData[i].leaseEndTime==""||this.tableData[i].rentMoney==""){
+          if(this.tableData[i].leaseTime==""||this.tableData[i].rentMoney==""){
                this.msgError("明细时间和金额信息不能为空!");
                return
           }
@@ -556,24 +566,31 @@ export default {
         this.form.rows=JSON.stringify(this.tableData);
         this.$refs["form"].validate((valid) => {
           if (valid) {
+          
             if (this.form.id != undefined) {
+            
               updateContract(this.form).then((response) => {
                 if (response.code === 200) {
                   this.msgSuccess("修改成功");
                   this.open = false;
                   this.getList();
-                  this.$refs.selectStall.getList();
+                  // this.$refs.selectStall.getList();
                 } else {
                   this.msgError(response.msg);
                 }
               });
             } else {
+            
               addContract(this.form).then((response) => {
                 if (response.code === 200) {
+                  console.log("debugger")
+                   console.log(this.tableData)
                   this.msgSuccess("新增成功");
+                     
                   this.open = false;
                   this.getList();
-                  this.$refs.selectStall.getList();
+                  // this.$refs.selectStall.getList();
+            
                 } else {
                   this.msgError(response.msg);
                 }
