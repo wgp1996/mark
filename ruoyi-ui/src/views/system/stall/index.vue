@@ -170,7 +170,7 @@
               ></el-date-picker>
         </el-form-item>
         <el-form-item label="租金(年)" prop="stallMoney">
-          <el-input v-model="form.stallMoney" placeholder="请输入租金(年)" />
+          <el-input v-model="form.stallMoney" placeholder="请输入租金(年)" @change="form.stallMoney=form.stallMoney.replace(/[^\d.]/g,'')"/>
         </el-form-item>
         <el-form-item label="租赁方" prop="stallLeaseholder">
           <el-input v-model="form.stallLeaseholder" placeholder="请输入租赁方" />

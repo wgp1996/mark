@@ -182,11 +182,11 @@
                 <!-- <el-input v-model="form.operateEndTime" placeholder="请输入结束时间" /> -->
               </el-form-item>
               <el-form-item label="租金" prop="operateMoney" >
-                <el-input v-model="form.operateMoney" placeholder="请输入租金元/年" />
+                <el-input v-model="form.operateMoney" placeholder="请输入租金元/年" @change="form.operateMoney=form.operateMoney.replace(/[^\d.]/g,'')"/>
               
               </el-form-item>
               <el-form-item label="现有商户数量" prop="markMerchantsCount">
-                <el-input v-model="form.markMerchantsCount" placeholder="请输入现有商户数量" />
+                <el-input v-model="form.markMerchantsCount" type="number" placeholder="请输入现有商户数量" />
               </el-form-item>
           </el-tab-pane>
         </el-tabs>

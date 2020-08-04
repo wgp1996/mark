@@ -255,6 +255,7 @@
                   size="small"
                   v-model="scope.row.rentMoney"
                   placeholder="请输入购买金额"
+                  :onkeyup="scope.row.rentMoney=scope.row.rentMoney.replace(/[^\d.]/g,'')"
                   @change="getSumMoney(scope.$index, scope.row)"
                 ></el-input>
                 <span>{{scope.row.rentMoney}}</span>

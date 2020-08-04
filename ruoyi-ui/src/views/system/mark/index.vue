@@ -132,7 +132,7 @@
             <el-form-item label="现有商户数量" prop="markMerchantsCount">
               <el-input
                 v-model="form.markMerchantsCount"
-                :rules="[{ type: 'number', message: '年龄必须为数字值'}]"
+               type="number"
                 placeholder="请输入现有商户数量"
               />
             </el-form-item>

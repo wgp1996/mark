@@ -169,7 +169,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="抽成率(%)" prop="contractMoney">
-              <el-input v-model="form.takeNum" placeholder="请输入抽成率" />
+              <el-input  v-model="form.takeNum" placeholder="请输入抽成率" @change="form.takeNum=form.takeNum.replace(/[^\d.]/g,'')"></el-input>
             </el-form-item>
             <el-form-item label="抽成结算方式">
               <el-select v-model="form.takePayType" placeholder="请选择结算方式" style="width:100%">
@@ -276,6 +276,7 @@
                   v-model="scope.row.takeNum"
                   placeholder="请输入抽成比例"
                   @change="handleEdit(scope.$index, scope.row)"
+                  :onkeyup="scope.row.takeNum=scope.row.takeNum.replace(/[^\d.]/g,'')"
                 ></el-input>
                 <span>{{scope.row.takeNum}}</span>
               </template>

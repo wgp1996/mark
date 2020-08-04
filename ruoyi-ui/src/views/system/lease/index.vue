@@ -270,6 +270,7 @@
                   v-model="scope.row.rentMoney"
                   placeholder="请输入租金"
                   @change="getSumMoney(scope.$index, scope.row)"
+                  :onkeyup="scope.row.rentMoney=scope.row.rentMoney.replace(/[^\d.]/g,'')"
                 ></el-input>
                 <span>{{scope.row.rentMoney}}</span>
               </template>
