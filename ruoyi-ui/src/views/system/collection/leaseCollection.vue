@@ -427,6 +427,7 @@ export default {
         })
         .then(() => {
           this.getList();
+           this.$refs.leaseCollection.getList();
           this.msgSuccess("删除成功");
         })
         .catch(function () {});
