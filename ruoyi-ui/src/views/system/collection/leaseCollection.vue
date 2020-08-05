@@ -1,6 +1,6 @@
 <template>
-  <div class="appContainer">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
+  <div class="app-container">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="100px">
       <el-form-item label="收款单号" prop="collectionCode">
         <el-input
           v-model="queryParams.collectionCode"
@@ -19,60 +19,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="合同编码" prop="contractCode">
-        <el-input
-          v-model="queryParams.contractCode"
-          placeholder="请输入合同编码"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="客户编码" prop="ownerCode">
-        <el-input
-          v-model="queryParams.ownerCode"
-          placeholder="请输入客户编码"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="客户名称" prop="ownerName">
-        <el-input
-          v-model="queryParams.ownerName"
-          placeholder="请输入客户名称"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="摊位编码" prop="stallCode">
-        <el-input
-          v-model="queryParams.stallCode"
-          placeholder="请输入摊位编码"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="摊位名称" prop="stallName">
-        <el-input
-          v-model="queryParams.stallName"
-          placeholder="请输入摊位名称"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="合同金额" prop="contractMoney">
-        <el-input
-          v-model="queryParams.contractMoney"
-          placeholder="请输入合同金额"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+
+ 
+
+    
       <el-form-item label="合同开始时间" prop="contractStartTime">
         <el-input
           v-model="queryParams.contractStartTime"
@@ -91,20 +41,8 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="收款金额" prop="collectionMoney">
-        <el-input
-          v-model="queryParams.collectionMoney"
-          placeholder="请输入收款金额"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="收款方式" prop="collectionPayType">
-        <el-select v-model="queryParams.collectionPayType" placeholder="请选择收款方式" clearable size="small">
-          <el-option label="请选择字典生成" value="" />
-        </el-select>
-      </el-form-item>
+
+
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -198,37 +136,30 @@
     <!-- 添加或修改租赁收款对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px">
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="收款单号" prop="collectionCode">
+        <!-- <el-form-item label="收款单号" prop="collectionCode">
           <el-input v-model="form.collectionCode" placeholder="请输入收款单号" />
-        </el-form-item>
-        <el-form-item label="收款单号" prop="id">
-          <el-input v-model="form.id" placeholder="请输入收款单号" />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="合同名称" prop="contractName">
           <el-input v-model="form.contractName" placeholder="请输入合同名称" />
         </el-form-item>
         <el-form-item label="合同编码" prop="contractCode">
           <el-input v-model="form.contractCode" placeholder="请输入合同编码" />
         </el-form-item>
-        <el-form-item label="客户编码" prop="ownerCode">
-          <el-input v-model="form.ownerCode" placeholder="请输入客户编码" />
-        </el-form-item>
+  
         <el-form-item label="客户名称" prop="ownerName">
           <el-input v-model="form.ownerName" placeholder="请输入客户名称" />
         </el-form-item>
-        <el-form-item label="摊位编码" prop="stallCode">
-          <el-input v-model="form.stallCode" placeholder="请输入摊位编码" />
-        </el-form-item>
+     
         <el-form-item label="摊位名称" prop="stallName">
           <el-input v-model="form.stallName" placeholder="请输入摊位名称" />
         </el-form-item>
         <el-form-item label="合同金额" prop="contractMoney">
           <el-input v-model="form.contractMoney" placeholder="请输入合同金额" />
         </el-form-item>
-        <el-form-item label="合同开始时间" prop="contractStartTime">
+        <el-form-item label="合同开始时间" prop="contractStartTime" label-width="100px">
           <el-input v-model="form.contractStartTime" placeholder="请输入合同开始时间" />
         </el-form-item>
-        <el-form-item label="合同结束时间" prop="contractEndTime">
+        <el-form-item label="合同结束时间" prop="contractEndTime" label-width="100px">
           <el-input v-model="form.contractEndTime" placeholder="请输入合同结束时间" />
         </el-form-item>
         <el-form-item label="收款金额" prop="collectionMoney">
@@ -303,6 +234,7 @@ export default {
     getList() {
       this.loading = true;
       listLeaseCollection(this.queryParams).then(response => {
+        console.log()
         this.leaseCollectionList = response.rows;
         this.total = response.total;
         this.loading = false;
