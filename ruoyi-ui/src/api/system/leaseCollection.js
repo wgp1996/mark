@@ -9,6 +9,14 @@ export function listLeaseCollection(query) {
   })
 }
 
+// 租赁收款选择租赁合同信息
+export function getLeaseContractlist(query) {
+  return request({
+    url: '/system/leasechild/getLeaseContractlist' ,
+    method: 'get',
+    params: query
+  })
+}
 // 查询租赁收款详细
 export function getLeaseCollection(collectionCode) {
   return request({
