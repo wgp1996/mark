@@ -30,9 +30,10 @@
       <el-table-column label="摊位名称" align="center" prop="stallName" />
       <el-table-column label="所属市场" align="center" prop="markChildName" />
       <el-table-column label="市场面积" align="center" prop="regionArea" />
-      <el-table-column label="摊位状态" align="center" prop="stallStatus" />
+      <el-table-column label="添加日期" align="center" prop="createTime" />
+      <!-- <el-table-column label="摊位状态" align="center" prop="stallStatus" />
       <el-table-column label="租金(年)" align="center" prop="stallMoney" />
-      <el-table-column label="租赁方" align="center" prop="stallLeaseholder" />
+      <el-table-column label="租赁方" align="center" prop="stallLeaseholder" /> -->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button

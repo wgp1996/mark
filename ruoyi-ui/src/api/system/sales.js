@@ -50,6 +50,14 @@ export function updateContract(data) {
   })
 }
 
+// 修改租赁合同状态
+export function updateContractStatus(id) {
+  return request({
+    url: '/system/sales/effect/' + id,
+    method: 'delete'
+  })
+}
+
 // 删除销售合同
 export function delContract(id) {
   return request({

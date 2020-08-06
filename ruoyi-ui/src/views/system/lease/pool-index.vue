@@ -33,7 +33,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['system:cmark:add']"
+          v-hasPermi="['system:pool:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -43,7 +43,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['system:cmark:edit']"
+          v-hasPermi="['system:pool:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -53,8 +53,18 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['system:cmark:remove']"
+          v-hasPermi="['system:pool:remove']"
         >删除</el-button>
+      </el-col>
+       <el-col :span="1.5">
+        <el-button
+          type="warning"
+          icon="el-icon-s-promotion"
+          size="mini"
+          :disabled="multiple"
+          @click="handleEffect"
+          v-hasPermi="['system:pool:effect']"
+        >生效</el-button>
       </el-col>
       <!-- <el-col :span="1.5">
         <el-button
@@ -62,7 +72,7 @@
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['system:cmark:export']"
+          v-hasPermi="['system:pool:export']"
         >导出</el-button>
       </el-col>-->
     </el-row>
@@ -87,6 +97,7 @@
         </template>
       </el-table-column>
       <el-table-column type="selection" width="55" align="center" />
+       <el-table-column label="合同状态" align="center" prop="contractStatus" />
       <el-table-column label="合同编码" align="center" prop="contractCode" />
       <el-table-column label="合同名称" align="center" prop="contractName" />
       <el-table-column label="联营客户" align="center" prop="ownerName" />
@@ -103,14 +114,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:cmark:edit']"
+            v-hasPermi="['system:pool:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['system:cmark:remove']"
+            v-hasPermi="['system:pool:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -346,6 +357,7 @@ import {
   delContractChild,
   addContract,
   updateContract,
+  updateContractStatus,
   exportContract,
   getOwnerList,
 } from "@/api/system/pool";
@@ -633,6 +645,27 @@ export default {
       } else {
         this.msgError("请填写子表信息!");
       }
+    },
+     /** 生效按钮操作 */
+    handleEffect(row) {
+      const ids = row.id || this.ids;
+      this.$confirm(
+        '是否确认租赁合同编号为"' + ids + '"的数据项已生效?',
+        "警告",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      )
+        .then(function () {
+          return updateContractStatus(ids);
+        })
+        .then(() => {
+          this.getList();
+          this.msgSuccess("操作成功");
+        })
+        .catch(function () {});
     },
     /** 删除按钮操作 */
     handleDelete(row) {

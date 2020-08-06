@@ -75,11 +75,11 @@
       <el-table-column label="摊位名称" align="center" prop="stallName" />
       <el-table-column label="所属市场" align="center" prop="markChildName" />
       <el-table-column label="市场面积" align="center" prop="regionArea" />
-      <el-table-column label="摊位状态" align="center" prop="stallStatus" />
-      <el-table-column label="开始期限" align="center" prop="stallStartTime" />
+      <el-table-column label="摊位状态" align="center" prop="stallStatusName" />
+      <el-table-column label="开始期限/销售日期" align="center" prop="stallStartTime" />
       <el-table-column label="结束期限" align="center" prop="stallEndTime" />
-      <el-table-column label="租金(年)" align="center" prop="stallMoney" />
-      <el-table-column label="租赁方" align="center" prop="stallLeaseholder" />
+      <el-table-column label="租金(年)/销售金额" align="center" prop="stallMoney" />
+      <el-table-column label="租赁方/销售方" align="center" prop="stallLeaseholder" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -133,10 +133,7 @@
           <el-input v-model="form.regionArea" placeholder="请输入区域面积" style="width:80%"/>
           <label>平方/米</label>
         </el-form-item>
-        <el-form-item label="摊位状态">
-          <!-- <el-radio-group v-model="form.stallStatus">
-            <el-radio label="1">请选择字典生成</el-radio>
-          </el-radio-group> -->
+        <!-- <el-form-item label="摊位状态">
             <el-select v-model="form.stallStatus" placeholder="请选择摊位状态" clearable  style="width
                  :100%">
                     <el-option 
@@ -148,7 +145,6 @@
                 </el-select>
         </el-form-item>
         <el-form-item label="开始期限" prop="stallStartTime">
-          <!-- <el-input v-model="form.stallStartTime" placeholder="请输入开始期限" /> -->
           <el-date-picker
                 clearable
                 style="width:100%"
@@ -159,7 +155,6 @@
               ></el-date-picker>
         </el-form-item>
         <el-form-item label="结束期限" prop="stallEndTime">
-          <!-- <el-input v-model="form.stallEndTime" placeholder="请输入结束期限" /> -->
             <el-date-picker
                 clearable
                 style="width:100%"
@@ -174,13 +169,10 @@
         </el-form-item>
         <el-form-item label="租赁方" prop="stallLeaseholder">
           <el-input v-model="form.stallLeaseholder" placeholder="请输入租赁方" />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="摊位说明" prop="stallNote">
           <el-input v-model="form.stallNote" placeholder="请输入摊位说明" />
         </el-form-item>
-        <!-- <el-form-item label="摊位说明" prop="createUser">
-          <el-input v-model="form.createUser" placeholder="请输入摊位说明" />
-        </el-form-item> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
