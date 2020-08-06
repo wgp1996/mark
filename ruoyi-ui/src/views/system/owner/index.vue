@@ -107,7 +107,7 @@
 
     <!-- 添加或修改业户信息对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="600px">
-      <el-form ref="form" :model="form" :rules="rules" label-width="130px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="140px">
            <el-tabs v-model="activeName" >
           <el-tab-pane label="基础信息" name="first">
         <el-form-item label="业主编号" prop="ownerCode">
