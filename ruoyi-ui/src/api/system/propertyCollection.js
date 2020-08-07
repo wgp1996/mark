@@ -8,7 +8,14 @@ export function listPropertyCollection(query) {
     params: query
   })
 }
-
+// 物业收款选择合同信息
+export function getLeaseContractList(query) {
+  return request({
+    url: '/system/leasechild/getLeaseContractListAll' ,
+    method: 'get',
+    params: query
+  })
+}
 // 查询物业收款详细
 export function getPropertyCollection(collectionCode) {
   return request({

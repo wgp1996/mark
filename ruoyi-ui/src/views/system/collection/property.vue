@@ -20,7 +20,7 @@
         />
       </el-form-item>
 
-      <el-form-item label="合同开始时间" prop="contract_start_time">
+      <el-form-item label="开始时间" prop="contractStartTime">
         <el-date-picker
           clearable
           style="width:100%"
@@ -31,7 +31,7 @@
           @keyup.enter.native="handleQuery"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item label="合同结束时间" prop="contractEndTime">
+      <el-form-item label="结束时间" prop="contractEndTime">
         <el-date-picker
           clearable
           style="width:100%"
@@ -102,7 +102,7 @@
       <el-tableColumn label="客户名称" align="center" prop="ownerName" />
       <el-tableColumn label="摊位名称" align="center" prop="stallName" />
       <!-- <el-tableColumn label="合同金额" align="center" prop="contractMoney" /> -->
-      <el-tableColumn label="收费开始时间" align="center" prop="contract_start_time" />
+      <el-tableColumn label="收费开始时间" align="center" prop="contractStartTime" />
       <el-tableColumn label="收费结束时间" align="center" prop="contractEndTime" />
       <el-tableColumn label="收款金额" align="center" prop="collectionMoney" />
       <el-tableColumn label="收款方式" align="center" prop="collectionPayType" />
@@ -168,15 +168,6 @@
             </el-col>
           </el-row>
         </el-form-item>
-        <!-- <el-form-item label="合同金额" prop="contractMoney">
-          <el-input v-model="form.contractMoney" placeholder="请输入合同金额" :disabled="true" />
-        </el-form-item> -->
-        <el-form-item label="合同开始时间" prop="contract_start_time">
-          <el-input v-model="form.contract_start_time" placeholder="请输入合同开始时间" :disabled="true" />
-        </el-form-item>
-        <el-form-item label="合同结束时间" prop="contractEndTime">
-          <el-input v-model="form.contractEndTime" placeholder="请输入合同结束时间" :disabled="true" />
-        </el-form-item>
         <el-form-item label="收款金额" prop="collectionMoney">
           <el-input v-model="form.collectionMoney" placeholder="请输入收款金额" />
         </el-form-item>
@@ -189,6 +180,26 @@
               :value="dict.dictValue"
             ></el-option>
           </el-select>
+        </el-form-item>
+         <el-form-item label="有效开始时间" prop="contractStartTime">
+            <el-date-picker
+            clearable
+            style="width:100%"
+            v-model="form.contractStartTime"
+            type="date"
+            value-format="yyyy-MM-dd"
+            placeholder="请选择收费有效开始时间"
+          ></el-date-picker>
+        </el-form-item>
+        <el-form-item label="有效结束时间" prop="contractEndTime">
+            <el-date-picker
+            clearable
+            style="width:100%"
+            v-model="form.contractEndTime"
+            type="date"
+            value-format="yyyy-MM-dd"
+            placeholder="请选择收费有效结束时间"
+          ></el-date-picker>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -249,7 +260,7 @@ export default {
         stallCode: undefined,
         stallName: undefined,
         // contractMoney: undefined,
-        contract_start_time: undefined,
+        contractStartTime: undefined,
         contractEndTime: undefined,
         collectionMoney: undefined,
         collectionPayType: undefined,
@@ -301,9 +312,7 @@ export default {
         this.form.stallCode = row.stallCode;
         this.form.stallName = row.stallName;
         // this.form.contractMoney = row.rentMoney;
-        this.form.collectionMoney = row.rentMoney;
-        this.form.contract_start_time = row.leaseStartTime;
-        this.form.contractEndTime = row.leaseEndTime;
+        //this.form.collectionMoney = row.rentMoney;
         this.form.leaseMxId = row.id;
         this.$refs.leaseCollection.visible = false;
       });
@@ -335,7 +344,7 @@ export default {
         stallCode: undefined,
         stallName: undefined,
         // contractMoney: undefined,
-        contract_start_time: undefined,
+        contractStartTime: undefined,
         contractEndTime: undefined,
         collectionMoney: undefined,
         collectionPayType: undefined,

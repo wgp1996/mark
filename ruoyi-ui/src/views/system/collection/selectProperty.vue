@@ -39,13 +39,12 @@
       :data="leaseCollectionList"
       @selection-change="handleSelectionChange"
     >
+      <el-table-column label="合同类型" align="center" prop="contractType" />
       <el-table-column label="合同编码" align="center" prop="contractCode" />
       <el-table-column label="合同名称" align="center" prop="contractName" />
       <el-table-column label="租赁客户" align="center" prop="ownerName" />
       <el-table-column label="摊位" align="center" prop="stallName" />
       <el-table-column label="合同金额" align="center" prop="rentMoney" />
-      <el-table-column label="合同开始日期" align="center" prop="leaseStartTime" />
-      <el-table-column label="合同结束日期" align="center" prop="leaseEndTime" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
        <template slot-scope="scope">
           <el-button
@@ -69,7 +68,7 @@
 </template>
 
 <script>
-import { getLeaseContractlist } from "@/api/system/propertyCollection";
+import { getLeaseContractList } from "@/api/system/propertyCollection";
 
 export default {
   // props:{
@@ -133,7 +132,7 @@ export default {
     /** 查询市场摊位信息列表 */
     getList() {
       this.loading = true;
-      getLeaseContractlist(this.queryParams).then(response => {
+      getLeaseContractList(this.queryParams).then(response => {
         this.leaseCollectionList = response.rows;
         this.total = response.total;
         this.loading = false;

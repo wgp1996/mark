@@ -134,7 +134,7 @@ export default {
     /** 查询市场摊位信息列表 */
     getList() {
       this.loading = true;
-      listStall(this.queryParams).then(response => {
+      leaseStallList(this.queryParams).then(response => {
         this.stallList = response.rows;
         this.total = response.total;
         this.loading = false;
