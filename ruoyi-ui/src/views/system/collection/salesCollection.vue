@@ -56,7 +56,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['system:propertyCollection:add']"
+          v-hasPermi="['system:leaseCollection:add']"
         >新增</el-button>
       </elCol>
       <elCol :span="1.5">
@@ -66,7 +66,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['system:propertyCollection:edit']"
+          v-hasPermi="['system:leaseCollection:edit']"
         >修改</el-button>
       </elCol>
       <elCol :span="1.5">
@@ -76,7 +76,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['system:propertyCollection:remove']"
+          v-hasPermi="['system:leaseCollection:remove']"
         >删除</el-button>
       </elCol>
       <elCol :span="1.5">
@@ -85,14 +85,14 @@
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['system:propertyCollection:export']"
+          v-hasPermi="['system:leaseCollection:export']"
         >导出</el-button>
       </elCol>
     </el-row>
 
     <el-table
       v-loading="loading"
-      :data="propertyCollectionList"
+      :data="leaseCollectionList"
       @selection-change="handleSelectionChange"
     >
      <el-table-column type="selection" width="55" align="center" />
@@ -113,14 +113,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:propertyCollection:edit']"
+            v-hasPermi="['system:leaseCollection:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['system:propertyCollection:remove']"
+            v-hasPermi="['system:leaseCollection:remove']"
           >删除</el-button>
         </template>
       </el-tableColumn>
@@ -134,7 +134,7 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改物业收款对话框 -->
+    <!-- 添加或修改销售收款对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="600px">
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-form-item label="选择合同" prop="contractName">
@@ -143,7 +143,7 @@
               <el-input v-model="form.contractName" placeholder="点击选择合同" :disabled="true" />
             </el-col>
             <el-col :span="2" :offset="2">
-              <i @click="propertyCollectionSelect" class="el-icon-plus" style="font-size:20px"></i>
+              <i @click="leaseCollectionSelect" class="el-icon-plus" style="font-size:20px"></i>
             </el-col>
           </el-row>
         </el-form-item>
@@ -153,7 +153,7 @@
               <el-input v-model="form.ownerName" placeholder="点击选择客户" :disabled="true" />
             </el-col>
             <el-col :span="2" :offset="2">
-              <i @click="propertyCollectionSelect" class="el-icon-plus" style="font-size:20px"></i>
+              <i @click="leaseCollectionSelect" class="el-icon-plus" style="font-size:20px"></i>
             </el-col>
           </el-row>
         </el-form-item>
@@ -164,7 +164,7 @@
               <el-input v-model="form.stallName" placeholder="点击选择摊位" :disabled="true" />
             </el-col>
             <el-col :span="2" :offset="2">
-              <i @click="propertyCollectionSelect" class="el-icon-plus" style="font-size:20px"></i>
+              <i @click="leaseCollectionSelect" class="el-icon-plus" style="font-size:20px"></i>
             </el-col>
           </el-row>
         </el-form-item>
@@ -207,29 +207,29 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
-    <select-property v-if="propertyCollection" ref="propertyCollection" @selectData="selectData"></select-property>
+    <select-sales v-if="leaseCollection" ref="leaseCollection" @selectData="selectData"></select-sales>
   </div>
 </template>
 
 <script>
 import {
-  listPropertyCollection,
-  getPropertyCollection,
-  delPropertyCollection,
-  addPropertyCollection,
-  updatePropertyCollection,
-  exportPropertyCollection,
-} from "@/api/system/propertyCollection";
-import selectProperty from "./selectProperty";
+  listSalesCollection,
+  getSalesCollection,
+  delSalesCollection,
+  addSalesCollection,
+  updateSalesCollection,
+  exportSalesCollection,
+} from "@/api/system/salesCollection";
+import selectSales from "./selectSales";
 export default {
   name: "property",
   components: {
-    selectProperty,
+    selectSales,
   },
   data() {
     return {
       tableData: [],
-      propertyCollection: false,
+      leaseCollection: false,
       //收款方式
       payTypeOptions: [],
       // 遮罩层
@@ -242,8 +242,8 @@ export default {
       multiple: true,
       // 总条数
       total: 0,
-      // 物业收款表格数据
-      propertyCollectionList: [],
+      // 销售收款表格数据
+      leaseCollectionList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -295,15 +295,15 @@ export default {
   },
   methods: {
     /** 操作 */
-    propertyCollectionSelect() {
-      this.propertyCollection = true;
+    leaseCollectionSelect() {
+      this.leaseCollection = true;
       this.$nextTick(() => {
-        this.$refs.propertyCollection.visible = true;
+        this.$refs.leaseCollection.visible = true;
       });
     },
     //选择数据
     selectData(row) {
-      //  this.propertyCollection=false;
+      //  this.leaseCollection=false;
       this.$nextTick(() => {
         this.form.contractCode = row.contractCode;
         this.form.contractName = row.contractName;
@@ -314,15 +314,15 @@ export default {
         // this.form.contractMoney = row.rentMoney;
         //this.form.collectionMoney = row.rentMoney;
         this.form.leaseMxId = row.id;
-        this.$refs.propertyCollection.visible = false;
+        this.$refs.leaseCollection.visible = false;
       });
     },
-    /** 查询物业收款列表 */
+    /** 查询销售收款列表 */
     getList() {
       this.loading = true;
-      listPropertyCollection(this.queryParams).then((response) => {
+      listSalesCollection(this.queryParams).then((response) => {
         console.log(response);
-        this.propertyCollectionList = response.rows;
+        this.leaseCollectionList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
@@ -377,17 +377,17 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加物业收款";
+      this.title = "添加销售收款";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       const collectionCode = row.collectionCode || this.ids;
-      getPropertyCollection(collectionCode).then((response) => {
+      getSalesCollection(collectionCode).then((response) => {
         this.form = response.data;
     
         this.open = true;
-        this.title = "修改物业收款";
+        this.title = "修改销售收款";
       });
     },
     /** 提交按钮 */
@@ -395,23 +395,23 @@ export default {
       this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.collectionCode != undefined) {
-            updatePropertyCollection(this.form).then((response) => {
+            updateSalesCollection(this.form).then((response) => {
               if (response.code === 200) {
                 this.msgSuccess("修改成功");
                 this.open = false;
                 this.getList();
-                this.$refs.propertyCollection.getList();
+                this.$refs.leaseCollection.getList();
               } else {
                 this.msgError(response.msg);
               }
             });
           } else {
-            addPropertyCollection(this.form).then((response) => {
+            addSalesCollection(this.form).then((response) => {
               if (response.code === 200) {
                 this.msgSuccess("新增成功");
                 this.open = false;
                 this.getList();
-                this.$refs.propertyCollection.getList();
+                this.$refs.leaseCollection.getList();
               } else {
                 this.msgError(response.msg);
               }
@@ -424,7 +424,7 @@ export default {
     handleDelete(row) {
       const collectionCodes = row.collectionCode || this.ids;
       this.$confirm(
-        '是否确认删除物业收款编号为"' + collectionCodes + '"的数据项?',
+        '是否确认删除销售收款编号为"' + collectionCodes + '"的数据项?',
         "警告",
         {
           confirmButtonText: "确定",
@@ -433,11 +433,11 @@ export default {
         }
       )
         .then(function () {
-          return delPropertyCollection(collectionCodes);
+          return delSalesCollection(collectionCodes);
         })
         .then(() => {
           this.getList();
-           this.$refs.propertyCollection.getList();
+           this.$refs.leaseCollection.getList();
           this.msgSuccess("删除成功");
         })
         .catch(function () {});
@@ -445,13 +445,13 @@ export default {
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
-      this.$confirm("是否确认导出所有物业收款数据项?", "警告", {
+      this.$confirm("是否确认导出所有销售收款数据项?", "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(function () {
-          return exportPropertyCollection(queryParams);
+          return exportSalesCollection(queryParams);
         })
         .then((response) => {
           this.download(response.msg);
