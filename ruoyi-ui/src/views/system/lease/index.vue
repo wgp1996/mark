@@ -697,6 +697,7 @@ export default {
         .then(() => {
           this.getList();
           this.msgSuccess("删除成功");
+          this.$refs.selectStall.getList();
         })
         .catch(function () {});
     },

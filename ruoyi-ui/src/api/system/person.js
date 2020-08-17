@@ -8,7 +8,14 @@ export function listPerson(query) {
     params: query
   })
 }
-
+// 查询供应商下拉信息列表
+export function getPersonAll(query) {
+  return request({
+    url: '/system/person/getPersonAll',
+    method: 'get',
+    params: query
+  })
+}
 // 查询供应商建档详细
 export function getPerson(id) {
   return request({

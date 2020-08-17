@@ -9,6 +9,17 @@ export function listGoodsType(query) {
   })
 }
 
+// 查询商品分类树
+export function goodsTypeTree(query) {
+  return request({
+    url: '/system/goodsType/treeselect',
+    method: 'get',
+    params: query
+  })
+}
+
+
+
 // 查询商品分类详细
 export function getGoodsType(goodsTypeId) {
   return request({

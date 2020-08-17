@@ -9,6 +9,15 @@ export function listStall(query) {
   })
 }
 
+// 查询市场摊位下拉信息列表
+export function getStallAll(query) {
+  return request({
+    url: '/system/stall/getStallAll',
+    method: 'get',
+    params: query
+  })
+}
+
 // 合同选择市场摊位信息列表
 export function leaseStallList(query) {
   return request({

@@ -644,7 +644,7 @@ export default {
                   this.msgSuccess("修改成功");
                   this.open = false;
                   this.getList();
-                  // this.$refs.salesStall.getList();
+                   this.$refs.salesStall.getList();
                 } else {
                   this.msgError(response.msg);
                 }
@@ -658,7 +658,7 @@ export default {
 
                   this.open = false;
                   this.getList();
-                  // this.$refs.salesStall.getList();
+                   this.$refs.salesStall.getList();
                 } else {
                   this.msgError(response.msg);
                 }
@@ -709,6 +709,7 @@ export default {
         .then(() => {
           this.getList();
           this.msgSuccess("删除成功");
+           this.$refs.salesStall.getList();
         })
         .catch(function () {});
     },
