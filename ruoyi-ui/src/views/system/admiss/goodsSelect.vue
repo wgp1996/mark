@@ -97,7 +97,7 @@ export default {
   components: { Treeselect },
   data() {
     return {
-       goodsList:[],
+      goodsList:[],
        goodsTypeOptions:[],
        visible: false,
       // 遮罩层

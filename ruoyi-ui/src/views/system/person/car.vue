@@ -1,28 +1,24 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
-      <el-form-item label="商品编码" prop="goodsCode">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="100px">
+      <el-form-item label="车牌号" prop="carNumber">
         <el-input
-          v-model="queryParams.goodsCode"
-          placeholder="请输入商品编码"
+          v-model="queryParams.carNumber"
+          placeholder="请输入车牌号"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="商品名称" prop="goodsName">
+      <el-form-item label="发动机号" prop="carCode">
         <el-input
-          v-model="queryParams.goodsName"
-          placeholder="请输入商品名称"
+          v-model="queryParams.carCode"
+          placeholder="请输入发动机号"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-   
-  
- 
-
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -36,7 +32,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['system:ownerGoods:add']"
+          v-hasPermi="['system:car:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -46,7 +42,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['system:ownerGoods:edit']"
+          v-hasPermi="['system:car:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -56,7 +52,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['system:ownerGoods:remove']"
+          v-hasPermi="['system:car:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -65,24 +61,20 @@
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
-          v-hasPermi="['system:ownerGoods:export']"
+          v-hasPermi="['system:car:export']"
         >导出</el-button>
       </el-col>
     </el-row>
 
-    <el-table v-loading="loading" :data="ownerGoodsList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="carList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <!-- <el-table-column label="是否推送磅房" align="center" prop="id" /> -->
-      <el-table-column label="商品编码" align="center" prop="goodsCode" />
-      <el-table-column label="商品名称" align="center" prop="goodsName" />
-      <el-table-column label="副单位" align="center" prop="goodsViceDw" />
-      <el-table-column label="主单位" align="center" prop="goodsDw" />
-      <!-- <el-table-column label="图片地址" align="center" prop="goodsImg" /> -->
-     <!-- <el-table-column label="商品分类" align="center" prop="goodsType" /> -->
-      <el-table-column label="主进货地" align="center" prop="goodsAddress" />
-      <el-table-column label="规格" align="center" prop="goodsGg" />
-      <el-table-column label="是否推送磅房" align="center" prop="isSend" />
-       <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column label="车牌号" align="center" prop="carNumber" />
+      <el-table-column label="载重(KG)" align="center" prop="carWeight" />
+      <el-table-column label="体积(㎥)" align="center" prop="carVolume" />
+      <el-table-column label="发动机号" align="center" prop="carCode" />
+      <el-table-column label="联系人" align="center" prop="carOwner" />
+      <el-table-column label="联系人电话" align="center" prop="carOwnerPhone" />
+      <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -90,14 +82,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:ownerGoods:edit']"
+            v-hasPermi="['system:car:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['system:ownerGoods:remove']"
+            v-hasPermi="['system:car:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -111,50 +103,30 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改业户商品建档对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px">
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-       
-        <el-form-item label="商品名称" prop="goodsName">
-          <el-input v-model="form.goodsName" placeholder="请输入商品名称" />
+    <!-- 添加或修改车辆档案对话框 -->
+    <el-dialog :title="title" :visible.sync="open" width="550px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
+        <el-form-item label="车牌号" prop="carNumber">
+          <el-input v-model="form.carNumber" placeholder="请输入车牌号" />
         </el-form-item>
-          <el-form-item label="主单位" prop="goodsDw">
-          <!-- <el-input v-model="form.goodsDw" placeholder="请输入主单位" /> -->
-          <el-select v-model="form.goodsDw" placeholder="请输入主单位" style="width:100%">
-                <el-option
-                  v-for="dict in perationOptions"
-                  :key="dict.dictValue"
-                  :label="dict.dictLabel"
-                  :value="dict.dictValue"
-                ></el-option>
-              </el-select>
+        <el-form-item label="载重(KG)" prop="carWeight">
+          <el-input v-model="form.carWeight" placeholder="请输入载重" />
         </el-form-item>
-          <el-form-item label="主进货地" prop="goodsAddress">
-          <el-input v-model="form.goodsAddress" placeholder="请输入主进货地" />
+        <el-form-item label="体积(㎥)" prop="carVolume">
+          <el-input v-model="form.carVolume" placeholder="请输入体积" />
         </el-form-item>
-        <el-form-item label="规格" prop="goodsGg">
-          <el-input v-model="form.goodsGg" placeholder="请输入规格" />
+        <el-form-item label="发动机号" prop="carCode">
+          <el-input v-model="form.carCode" placeholder="请输入发动机号" />
         </el-form-item>
-        <el-form-item label="辅助单位" prop="goodsViceDw">
-          <!-- <el-input v-model="form.goodsViceDw" placeholder="请输入辅助单位" /> -->
-          <el-select v-model="form.goodsViceDw" placeholder="请输入辅助单位" style="width:100%">
-                <el-option
-                  v-for="dict in perationOptions"
-                  :key="dict.dictValue"
-                  :label="dict.dictLabel"
-                  :value="dict.dictValue"
-                ></el-option>
-              </el-select>
+        <el-form-item label="联系人" prop="carOwner">
+          <el-input v-model="form.carOwner" placeholder="请输入联系人" />
         </el-form-item>
-       <el-form-item label="是否推送磅房" prop="isSend"    label-width="100px">
-         <el-radio-group v-model="form.isSend">
-            <el-radio :label="0" >否</el-radio>
-            <el-radio :label="1">是</el-radio>
-         </el-radio-group>
-       </el-form-item>
-        <el-form-item label="备注" prop="remark" >
-         <el-input v-model="form.remark" placeholder="请输入备注" type="textarea"/>
-       </el-form-item>
+        <el-form-item label="联系人电话" prop="carOwnerPhone">
+          <el-input v-model="form.carOwnerPhone" placeholder="请输入联系人电话" />
+        </el-form-item>
+         <el-form-item label="备注" prop="carOwnerPhone">
+          <el-input v-model="form.remark" placeholder="请输入备注" />
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -165,10 +137,10 @@
 </template>
 
 <script>
-import { listOwnerGoods, getOwnerGoods, delOwnerGoods, addOwnerGoods, updateOwnerGoods, exportOwnerGoods } from "@/api/system/ownerGoods";
+import { listCar, getCar, delCar, addCar, updateCar, exportCar } from "@/api/system/car";
 
 export default {
-  name: "OwnerGoods",
+  name: "Car",
   data() {
     return {
       // 遮罩层
@@ -181,10 +153,8 @@ export default {
       multiple: true,
       // 总条数
       total: 0,
-       // 主体性质字典
-      perationOptions:[],
-      // 业户商品建档表格数据
-      ownerGoodsList: [],
+      // 车辆档案表格数据
+      carList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -193,47 +163,34 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        goodsCode: undefined,
-        goodsName: undefined,
-        goodsViceDw: undefined,
-        goodsDw: undefined,
-        goodsImg: undefined,
-        goodsType: undefined,
-        goodsAddress: undefined,
-        goodsGg: undefined,
-        isSend: undefined
+        carNumber: undefined,
+        carWeight: undefined,
+        carVolume: undefined,
+        carCode: undefined,
+        carOwner: undefined,
+        carOwnerPhone: undefined,
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
-         goodsName: [
-          { required: true, message: "请输入商品名称", trigger: "blur" },
-        ],
-        goodsDw: [
-          { required: true, message: "请输入主单位", trigger: "blur" },
+         carNumber: [
+          { required: true, message: "请输入车牌号", trigger: "blur" },
         ],
       }
     };
   },
   created() {
     this.getList();
-     this.getDicts("sys_dw").then((response) => {
-       console.log(response)
-      this.perationOptions = response.data;
-
-    });
   },
   methods: {
-    /** 查询业户商品建档列表 */
+    /** 查询车辆档案列表 */
     getList() {
       this.loading = true;
-      listOwnerGoods(this.queryParams).then(response => {
-    
-        this.ownerGoodsList = response.rows;
+      listCar(this.queryParams).then(response => {
+        this.carList = response.rows;
         this.total = response.total;
         this.loading = false;
-       
       });
     },
     // 取消按钮
@@ -245,20 +202,17 @@ export default {
     reset() {
       this.form = {
         id: undefined,
-        goodsCode: undefined,
-        goodsName: undefined,
-        goodsViceDw: undefined,
-        goodsDw: undefined,
-        goodsImg: undefined,
+        carNumber: undefined,
+        carWeight: undefined,
+        carVolume: undefined,
+        carCode: undefined,
+        carOwner: undefined,
+        carOwnerPhone: undefined,
         createBy: undefined,
         createTime: undefined,
         updateBy: undefined,
         updateTime: undefined,
-        remark: undefined,
-        goodsType: undefined,
-        goodsAddress: undefined,
-        goodsGg: undefined,
-        isSend: undefined
+        remark: undefined
       };
       this.resetForm("form");
     },
@@ -281,18 +235,17 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
-      this.form.isSend=0;//默认否
       this.open = true;
-      this.title = "添加业户商品建档";
+      this.title = "添加车辆档案";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
-      getOwnerGoods(id).then(response => {
+      getCar(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改业户商品建档";
+        this.title = "修改车辆档案";
       });
     },
     /** 提交按钮 */
@@ -300,7 +253,7 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != undefined) {
-            updateOwnerGoods(this.form).then(response => {
+            updateCar(this.form).then(response => {
               if (response.code === 200) {
                 this.msgSuccess("修改成功");
                 this.open = false;
@@ -310,7 +263,7 @@ export default {
               }
             });
           } else {
-            addOwnerGoods(this.form).then(response => {
+            addCar(this.form).then(response => {
               if (response.code === 200) {
                 this.msgSuccess("新增成功");
                 this.open = false;
@@ -326,12 +279,12 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$confirm('是否确认删除业户商品建档编号为"' + ids + '"的数据项?', "警告", {
+      this.$confirm('是否确认删除车辆档案编号为"' + ids + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(function() {
-          return delOwnerGoods(ids);
+          return delCar(ids);
         }).then(() => {
           this.getList();
           this.msgSuccess("删除成功");
@@ -340,12 +293,12 @@ export default {
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
-      this.$confirm('是否确认导出所有业户商品建档数据项?', "警告", {
+      this.$confirm('是否确认导出所有车辆档案数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(function() {
-          return exportOwnerGoods(queryParams);
+          return exportCar(queryParams);
         }).then(response => {
           this.download(response.msg);
         }).catch(function() {});

@@ -70,13 +70,13 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="业主编号" align="center" prop="ownerCode" />
       <el-table-column label="业主名称" align="center" prop="ownerName" />
+      <el-table-column label="关联账号" align="center" prop="userName" />
       <el-table-column label="组织类型" align="center" prop="ownerOrg" />
       <el-table-column label="机构性质" align="center" prop="ownerOrgNature" />
       <el-table-column label="信用代码/身份证号" align="center" prop="ownerPersonId" />
       <el-table-column label="经营方式" align="center" prop="ownerMangerType" />
       <el-table-column label="联系人" align="center" prop="ownerLxr" />
       <el-table-column label="电话" align="center" prop="ownerLxrPhone" />
-      <el-table-column label="微信" align="center" prop="ownerLxrWx" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -115,6 +115,9 @@
         </el-form-item>
         <el-form-item label="业主名称" prop="ownerName">
           <el-input v-model="form.ownerName" placeholder="请输入业主名称" />
+        </el-form-item>
+         <el-form-item label="关联账号" prop="userName">
+          <el-input v-model="form.userName" placeholder="请输入关联账号" />
         </el-form-item>
         <el-form-item label="组织类型" prop="ownerOrg">
           <el-select v-model="form.ownerOrg" placeholder="请选择组织类型" style="width:100%">
@@ -261,7 +264,8 @@ export default {
         fileName1: undefined,
         fileTitle1: undefined,
         fileName2: undefined,
-        fileTitle2: undefined
+        fileTitle2: undefined,
+        userName:undefined
       },
       // 表单参数
       form: {},
@@ -272,7 +276,11 @@ export default {
         ],
         ownerName: [
           { required: true, message: "请输入业户名称", trigger: "blur" }
+        ],
+         userName: [
+          { required: true, message: "请输入关联账号", trigger: "blur" }
         ]
+        
       }
     };
   },
@@ -339,7 +347,8 @@ export default {
         fileName1: undefined,
         fileTitle1: undefined,
         fileName2: undefined,
-        fileTitle2: undefined
+        fileTitle2: undefined,
+        userName:undefined
       };
       this.resetForm("form");
     },
