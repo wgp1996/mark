@@ -293,6 +293,7 @@ export default {
     getList() {
       this.loading = true;
       listInfo(this.queryParams).then((response) => {
+        console.log(response)
         this.infoList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -375,6 +376,7 @@ export default {
               }
             });
           } else {
+            //console.log(this.form)
             addInfo(this.form).then((response) => {
               if (response.code === 200) {
                 this.msgSuccess("新增成功");
