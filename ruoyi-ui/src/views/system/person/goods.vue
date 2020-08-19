@@ -19,65 +19,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="副单位" prop="goodsViceDw">
-        <el-input
-          v-model="queryParams.goodsViceDw"
-          placeholder="请输入副单位"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="主单位" prop="goodsDw">
-        <el-input
-          v-model="queryParams.goodsDw"
-          placeholder="请输入主单位"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="图片地址" prop="goodsImg">
-        <el-input
-          v-model="queryParams.goodsImg"
-          placeholder="请输入图片地址"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="商品分类" prop="goodsType">
-        <el-select v-model="queryParams.goodsType" placeholder="请选择商品分类" clearable size="small">
-          <el-option label="请选择字典生成" value="" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="主进货地" prop="goodsAddress">
-        <el-input
-          v-model="queryParams.goodsAddress"
-          placeholder="请输入主进货地"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="规格" prop="goodsGg">
-        <el-input
-          v-model="queryParams.goodsGg"
-          placeholder="请输入规格"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="是否推送磅房" prop="isSend">
-        <el-input
-          v-model="queryParams.isSend"
-          placeholder="请输入是否推送磅房"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+   
+  
+ 
+
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -127,17 +72,17 @@
 
     <el-table v-loading="loading" :data="ownerGoodsList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="是否推送磅房" align="center" prop="id" />
+      <!-- <el-table-column label="是否推送磅房" align="center" prop="id" /> -->
       <el-table-column label="商品编码" align="center" prop="goodsCode" />
       <el-table-column label="商品名称" align="center" prop="goodsName" />
       <el-table-column label="副单位" align="center" prop="goodsViceDw" />
       <el-table-column label="主单位" align="center" prop="goodsDw" />
-      <el-table-column label="图片地址" align="center" prop="goodsImg" />
-      <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="商品分类" align="center" prop="goodsType" />
+      <!-- <el-table-column label="图片地址" align="center" prop="goodsImg" /> -->
+     <!-- <el-table-column label="商品分类" align="center" prop="goodsType" /> -->
       <el-table-column label="主进货地" align="center" prop="goodsAddress" />
       <el-table-column label="规格" align="center" prop="goodsGg" />
       <el-table-column label="是否推送磅房" align="center" prop="isSend" />
+       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -169,35 +114,45 @@
     <!-- 添加或修改业户商品建档对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px">
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="商品编码" prop="goodsCode">
-          <el-input v-model="form.goodsCode" placeholder="请输入商品编码" />
-        </el-form-item>
+       
         <el-form-item label="商品名称" prop="goodsName">
           <el-input v-model="form.goodsName" placeholder="请输入商品名称" />
         </el-form-item>
-        <el-form-item label="副单位" prop="goodsViceDw">
-          <el-input v-model="form.goodsViceDw" placeholder="请输入副单位" />
+          <el-form-item label="主单位" prop="goodsDw">
+          <!-- <el-input v-model="form.goodsDw" placeholder="请输入主单位" /> -->
+          <el-select v-model="form.goodsDw" placeholder="请输入主单位" style="width:100%">
+                <el-option
+                  v-for="dict in perationOptions"
+                  :key="dict.dictValue"
+                  :label="dict.dictLabel"
+                  :value="dict.dictValue"
+                ></el-option>
+              </el-select>
         </el-form-item>
-        <el-form-item label="主单位" prop="goodsDw">
-          <el-input v-model="form.goodsDw" placeholder="请输入主单位" />
-        </el-form-item>
-        <el-form-item label="图片地址" prop="goodsImg">
-          <el-input v-model="form.goodsImg" placeholder="请输入图片地址" />
-        </el-form-item>
-        <el-form-item label="商品分类">
-          <el-select v-model="form.goodsType" placeholder="请选择商品分类">
-            <el-option label="请选择字典生成" value="" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="主进货地" prop="goodsAddress">
+          <el-form-item label="主进货地" prop="goodsAddress">
           <el-input v-model="form.goodsAddress" placeholder="请输入主进货地" />
         </el-form-item>
         <el-form-item label="规格" prop="goodsGg">
           <el-input v-model="form.goodsGg" placeholder="请输入规格" />
         </el-form-item>
-        <el-form-item label="是否推送磅房" prop="isSend">
-          <el-input v-model="form.isSend" placeholder="请输入是否推送磅房" />
+        <el-form-item label="辅助单位" prop="goodsViceDw">
+          <!-- <el-input v-model="form.goodsViceDw" placeholder="请输入辅助单位" /> -->
+          <el-select v-model="form.goodsViceDw" placeholder="请输入辅助单位" style="width:100%">
+                <el-option
+                  v-for="dict in perationOptions"
+                  :key="dict.dictValue"
+                  :label="dict.dictLabel"
+                  :value="dict.dictValue"
+                ></el-option>
+              </el-select>
         </el-form-item>
+       <el-form-item label="是否推送磅房" prop="isSend" label-width="100px">
+          <el-radio v-model="form.isSend" label="0">否</el-radio>
+            <el-radio v-model="form.isSend" label="1">是</el-radio>
+       </el-form-item>
+        <el-form-item label="备注" prop="remark" >
+         <el-input v-model="form.remark" placeholder="请输入备注" type="textarea"/>
+       </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -224,6 +179,8 @@ export default {
       multiple: true,
       // 总条数
       total: 0,
+       // 主体性质字典
+      perationOptions:[],
       // 业户商品建档表格数据
       ownerGoodsList: [],
       // 弹出层标题
@@ -248,20 +205,33 @@ export default {
       form: {},
       // 表单校验
       rules: {
+         goodsName: [
+          { required: true, message: "请输入商品名称", trigger: "blur" },
+        ],
+        goodsDw: [
+          { required: true, message: "请输入主单位", trigger: "blur" },
+        ],
       }
     };
   },
   created() {
     this.getList();
+     this.getDicts("sys_dw").then((response) => {
+       console.log(response)
+      this.perationOptions = response.data;
+
+    });
   },
   methods: {
     /** 查询业户商品建档列表 */
     getList() {
       this.loading = true;
       listOwnerGoods(this.queryParams).then(response => {
+    
         this.ownerGoodsList = response.rows;
         this.total = response.total;
         this.loading = false;
+       
       });
     },
     // 取消按钮
