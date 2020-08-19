@@ -27,7 +27,7 @@ export function delCgrkdChild(id) {
 
 export function getCgrkdChild(dj_number) {
   return request({
-    url: '/system/cgrkdchild/getCgrkdChild?dj_number' + dj_number,
+    url: '/system/cgrkdchild/getCgrkdChild?djNumber=' + dj_number,
     method: 'get'
   })
 }
