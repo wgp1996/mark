@@ -181,7 +181,7 @@
                   v-model="scope.row.ownerCode"
                   placeholder="请选择业主"
                   filterable
-                  @change="ownerSelect(data,scope.$index, scope.row)"
+                  @change="ownerSelect($event,scope.$index, scope.row)"
                 >
                   <el-option
                     v-for="item in ownerList"
@@ -203,7 +203,8 @@
                   v-model="scope.row.goodsCode"
                   placeholder="请选择商品"
                   filterable
-                  @change="handleEdit(scope.$index, scope.row)"
+                 @change="selectGoods($event,scope.$index, scope.row)"
+                 @visible-change="selectGoods($event,scope.$index, scope.row)"
                 >
                   <el-option
                     v-for="item in goodsList"
@@ -213,7 +214,7 @@
                   >
                     <span
                       style="float: left; color: #8492a6; font-size: 13px;width:100%"
-                    >{{ scope.row.goodsName }}</span>
+                    >{{ item.goodsName }}</span>
                   </el-option>
                 </el-select>
                 <span>{{scope.row.goodsName}}</span>
@@ -346,6 +347,8 @@ export default {
       userName: "",
       //业主列表
       ownerList: [],
+      //商品列表
+      goodsList:[],
       fileList: [],
       upload: {
         // 是否显示弹出层（用户导入）
@@ -395,7 +398,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        type:0,//单业户
+        type:1,//多业户
         markCode: undefined,
         djNumber: undefined,
         djTime: undefined,
@@ -502,8 +505,42 @@ export default {
     handleEdit(index, row) {
       console.log(index, row);
     },
+    //选择业主带出商品
     ownerSelect(data,index,row){
-      alert(data)
+      for (let i = 0; i < this.ownerList.length; i++) {
+        if (this.ownerList[i].ownerCode == data) {
+          row.ownerName = this.ownerList[i].ownerName;
+          // let userName = this.ownerList[i].userName;
+          // if (userName != "" && userName != null && userName != undefined) {
+          //   let queryParams = { createBy: userName, isSend: 1 };
+          //   listOwnerGoods(queryParams).then((response) => {
+          //     this.goodsList = response.rows;
+          //   });
+          // }
+        }
+      }
+    },
+    //选择商品
+    selectGoods(data,index,row){
+      if(row.ownerCode!=""&&row.ownerCode!=null&&row.ownerCode!=undefined){
+        for (let i = 0; i < this.ownerList.length; i++) {
+        if (this.ownerList[i].ownerCode == row.ownerCode) {
+            row.ownerName = this.ownerList[i].ownerName;
+            let userName = this.ownerList[i].userName;
+            if (userName != "" && userName != null && userName != undefined) {
+              let queryParams = { createBy: userName, isSend: 1 };
+              listOwnerGoods(queryParams).then((response) => {
+                this.goodsList = response.rows;
+              });
+            }
+          }
+        }
+      }
+      for (let i = 0; i < this.goodsList.length; i++) {
+        if (this.goodsList[i].goodsCode == data) {
+          row.goodsName = this.goodsList[i].goodsName;
+        }
+      }
     },
     handleEditPerson(data, index, row) {
       //根据编码找产地
@@ -515,18 +552,6 @@ export default {
         }
       }
     },
-    getSum(index, row) {
-      //计算总金额
-      let sum = 0;
-      for (let i = 0; i < this.tableData.length; i++) {
-        if (this.tableData[i].goodsNum != "") {
-          sum += parseFloat(this.tableData[i].goodsNum);
-        }
-      }
-      this.form.roomNum = sum.toString();
-      console.log(this.form);
-      // console.log(row.goodsNum);
-    },
     handleChildDelete(index, row) {
       if (row.id != "" && row.id != undefined && row.id != null) {
         delAdmissChild(row.id);
@@ -536,8 +561,9 @@ export default {
       }
       console.log(index, row);
     },
-    /** 操作 */
+    /** 新增明细操作 */
     goodsSelect() {
+       this.goodsList=[];
        let goodsInfo = new Object();
         goodsInfo.ownerCode = "";
         goodsInfo.ownerName = "";
@@ -551,53 +577,8 @@ export default {
         goodsInfo.remark = "";
         this.tableData.push(goodsInfo);
     },
-    //选择数据
-    selectData(row) {
-      //  this.selectGoodsDialog=false;
-      this.$nextTick(() => {
-        //检查是否存在重复数据
-        // for (let i = 0; i < this.tableData.length; i++) {
-        //   if (row.goodsCode == this.tableData[i].goodsCode) {
-        //     this.msgError("信息重复!");
-        //     return;
-        //   }
-        // }
-        let goodsInfo = new Object();
-        goodsInfo.goodsCode = row.goodsCode;
-        goodsInfo.goodsName = row.goodsName;
-        goodsInfo.goodsDw = row.goodsDw;
-        goodsInfo.personCode = "";
-        goodsInfo.personName = "";
-        goodsInfo.goodsNum = "";
-        goodsInfo.goodsWeight = "";
-        goodsInfo.remark = "";
-        this.tableData.push(goodsInfo);
-        this.$refs.selectGoods.visible = false;
-      });
-    },
-    //选择数据
-    addGoodsData() {
-      if (this.userName != "") {
-        let queryParams = { createBy: this.userName, isSend: 1 };
-        listOwnerGoods(queryParams).then((response) => {
-          let goodsList = response.rows;
-          this.tableData = [];
-          for (let i = 0; i < goodsList.length; i++) {
-            let goodsInfo = new Object();
-            goodsInfo.goodsCode = goodsList[i].goodsCode;
-            goodsInfo.goodsName = goodsList[i].goodsName;
-            goodsInfo.goodsDw = goodsList[i].goodsDw;
-            goodsInfo.personCode = "";
-            goodsInfo.personName = "";
-            goodsInfo.goodsNum = "";
-            goodsInfo.goodsAddress = goodsList[i].goodsAddress;
-            goodsInfo.remark = "";
-            this.tableData.push(goodsInfo);
-          }
-        });
-      }
-    },
-    /** 查询二级市场信息列表 */
+ 
+    /** 查询信息列表 */
     getList() {
       this.loading = true;
       listAdmiss(this.queryParams).then((response) => {
@@ -679,6 +660,7 @@ export default {
         //检查子表信息
         for (let i = 0; i < this.tableData.length; i++) {
           if (
+            this.tableData[i].ownerCode == "" ||
             this.tableData[i].goodsCode == "" ||
             this.tableData[i].personCode == "" ||
             this.tableData[i].goodsAddress == "" ||
@@ -691,14 +673,13 @@ export default {
         this.form.rows = JSON.stringify(this.tableData);
         this.$refs["form"].validate((valid) => {
           if (valid) {
-            this.form.type=0;//单业户
+            this.form.type=1;//多业户
             if (this.form.id != undefined) {
               updateAdmiss(this.form).then((response) => {
                 if (response.code === 200) {
                   this.msgSuccess("修改成功");
                   this.open = false;
                   this.getList();
-                  this.$refs.selectGoods.getList();
                 } else {
                   this.msgError(response.msg);
                 }
@@ -709,7 +690,6 @@ export default {
                   this.msgSuccess("新增成功");
                   this.open = false;
                   this.getList();
-                  this.$refs.selectGoods.getList();
                 } else {
                   this.msgError(response.msg);
                 }

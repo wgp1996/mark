@@ -12,7 +12,7 @@ export function listAdmiss(query) {
 // 查询磅房入场单明细详细
 export function getAdmissChild(djNumber) {
   return request({
-    url: '/system/admissChild/getAdmissChild?djNumber' + djNumber,
+    url: '/system/admissChild/getAdmissChild?djNumber=' + djNumber,
     method: 'get'
   })
 }
