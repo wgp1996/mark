@@ -1,25 +1,15 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="100px">
-      <el-form-item label="合同编号" prop="contractCode">
+      <el-form-item label="单据编号" prop="djNumber">
         <el-input
-          v-model="queryParams.contractCode"
-          placeholder="请输入合同编号"
+          v-model="queryParams.djNumber"
+          placeholder="请输入单据编号"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="合同名称" prop="contractName">
-        <el-input
-          v-model="queryParams.contractName"
-          placeholder="请输入合同名称"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -33,7 +23,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['system:contract:add']"
+          v-hasPermi="['system:admiss:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -43,7 +33,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['system:contract:edit']"
+          v-hasPermi="['system:admiss:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -53,28 +43,19 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['system:contract:remove']"
+          v-hasPermi="['system:admiss:remove']"
         >删除</el-button>
-        </el-col>
-        <el-col :span="1.5">
+      </el-col>
+      <el-col :span="1.5">
         <el-button
           type="warning"
           icon="el-icon-s-promotion"
           size="mini"
           :disabled="multiple"
           @click="handleEffect"
-          v-hasPermi="['system:contract:effect']"
+          v-hasPermi="['system:admiss:effect']"
         >生效</el-button>
       </el-col>
-      <!-- <el-col :span="1.5">
-        <el-button
-          type="warning"
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['system:contract:export']"
-        >导出</el-button>
-      </el-col>-->
     </el-row>
 
     <el-table
@@ -87,26 +68,25 @@
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-table style="padding:0;margin:0" :data="props.row.childrenList" id="special">
-            <el-table-column label="摊位编号" align="center" prop="stallCode" />
-            <el-table-column label="摊位名称" align="center" prop="stallName" />
-            <el-table-column label="面积(平方米)" align="center" prop="stallArea" />
-            <el-table-column label="开始日期" align="center" prop="leaseStartTime" />
-            <el-table-column label="结束日期" align="center" prop="leaseEndTime" />
-            <el-table-column label="租金(元)" align="center" prop="rentMoney" />
-            <el-table-column label="缴费方式" align="center" prop="payType" />
-            <el-table-column label="备注" align="center" prop="contractBz" />
+            <el-table-column label="业主名称" align="center" prop="ownerName" />
+            <el-table-column label="商品编号" align="center" prop="goodsCode" />
+            <el-table-column label="商品名称" align="center" prop="goodsName" />
+            <el-table-column label="供应商编号" align="center" prop="personCode" />
+            <el-table-column label="供应商名称" align="center" prop="personName" />
+             <el-table-column label="产地" align="center" prop="goodsAddress" />
+            <el-table-column label="数量" align="center" prop="goodsNum" />
+            <el-table-column label="备注" align="center" prop="remark" />
           </el-table>
         </template>
       </el-table-column>
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="合同状态" align="center" prop="contractStatus" />
-      <el-table-column label="合同编码" align="center" prop="contractCode" />
-      <el-table-column label="合同名称" align="center" prop="contractName" />
-      <el-table-column label="租赁客户" align="center" prop="ownerName" />
-      <el-table-column label="合同金额" align="center" prop="contractMoney" />
-      <el-table-column label="签约地点" align="center" prop="signAddress" />
-      <el-table-column label="签约日期" align="center" prop="signTime" />
-
+      <el-table-column label="单据状态" align="center" prop="djStatusName" />
+      <el-table-column label="单据编号" align="center" prop="djNumber" />
+      <el-table-column label="车牌号" align="center" prop="carNumber" />
+      <el-table-column label="产地" align="center" prop="roomAddress" />
+      <el-table-column label="数量(公斤)" align="center" prop="roomNum" />
+      <el-table-column label="制单人" align="center" prop="createBy" />
+      <el-table-column label="制单日期" align="center" prop="createTime" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -114,14 +94,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:contract:edit']"
+            v-hasPermi="['system:admiss:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['system:contract:remove']"
+            v-hasPermi="['system:admiss:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -140,57 +120,41 @@
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="基础信息" name="first">
           <el-form ref="form" :model="form" :rules="rules" label-width="120px">
-            <el-form-item label="合同编号" prop="contractCode">
-              <el-input v-model="form.contractCode" placeholder="请输入合同编号" />
+            <el-form-item label="单据编号" prop="djNumber">
+              <el-input v-model="form.djNumber" :disabled="true" placeholder="后台自动生成" />
             </el-form-item>
-            <el-form-item label="合同名称" prop="contractName">
-              <el-input v-model="form.contractName" placeholder="请输入合同名称" />
-            </el-form-item>
-            <el-form-item label="租赁客户" prop="ownerName">
-              <el-select
-                v-model="form.ownerCode"
-                placeholder="请选择租赁客户"
-                filterable
-                @change="selectOwner"
-                style="width:100%"
-              >
+            <el-form-item label="选择车辆" prop="carNumber">
+              <el-select v-model="form.carNumber" placeholder="请选择车辆" filterable style="width:100%">
                 <el-option
-                  v-for="item in ownerList"
-                  :key="item.ownerCode"
-                  :label="item.ownerName"
-                  :value="item.ownerCode"
+                  v-for="item in carList"
+                  :key="item.carNumber"
+                  :label="item.carNumber"
+                  :value="item.carNumber"
                 >
                   <span
                     style="float: left; color: #8492a6; font-size: 13px;width:33%"
-                  >{{ item.ownerName }}</span>
-                  <span style="float: left;width:33%">{{ item.ownerCode }}</span>
+                  >{{ item.carNumber }}</span>
+                  <span style="float: left;width:33%">{{ item.carOwner }}</span>
 
-                  <span style="float: left;width:33%">{{ item.ownerLxrPhone }}</span>
+                  <span style="float: left;width:33%">{{ item.carOwnerPhone }}</span>
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="合同金额" prop="contractMoney">
-              <el-input :disabled="true" v-model="form.contractMoney" placeholder="请输入合同金额" />
+            <el-form-item label="产地" prop="roomAddress">
+              <el-input v-model="form.roomAddress" placeholder="请输入产地"></el-input>
             </el-form-item>
-            <el-form-item label="签约时间" prop="signTime">
-              <el-date-picker
-                clearable
-                style="width:100%"
-                v-model="form.signTime"
-                type="date"
-                value-format="yyyy-MM-dd"
-                placeholder="请选择签约时间"
-              ></el-date-picker>
+            <el-form-item label="数量(公斤)" prop="roomNum">
+              <el-input size="small" v-model="form.roomNum" placeholder="请输入数量" type="number"></el-input>
             </el-form-item>
-            <el-form-item label="签约地点" prop="signAddress">
-              <el-input v-model="form.signAddress" placeholder="请输入签约地点" />
+            <el-form-item label="备注信息" prop="createBy">
+              <el-input v-model="form.remark" placeholder="请输入备注信息" />
             </el-form-item>
           </el-form>
         </el-tab-pane>
         <el-tab-pane label="明细信息" name="second">
           <el-row :gutter="10" class="mb8">
             <el-col :span="1.5">
-              <el-button type="primary" icon="el-icon-plus" size="mini" @click="stallSelect">新增摊位</el-button>
+              <el-button type="primary" icon="el-icon-plus" size="mini" @click="goodsSelect">新增明细</el-button>
             </el-col>
             <!-- <el-col :span="1.5">
         <el-button
@@ -209,119 +173,109 @@
             style="width: 100%"
             highlight-current-row
             @row-click="handleCurrentChange"
+            :header-cell-class-name="starAdd"
           >
-            <el-table-column label="摊位编号" width="120">
+          <el-table-column prop="ownerCode" label="选择业主" width="200">
               <template scope="scope">
-                <el-input
-                  :disabled="true"
-                  size="small"
-                  v-model="scope.row.stallCode"
-                  placeholder="请输入内容"
-                  @change="handleEdit(scope.$index, scope.row)"
-                ></el-input>
-                <span>{{scope.row.stallCode}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="摊位名称" width="120">
-              <template scope="scope">
-                <el-input
-                  :disabled="true"
-                  size="small"
-                  v-model="scope.row.stallName"
-                  placeholder="请输入内容"
-                  @change="handleEdit(scope.$index, scope.row)"
-                ></el-input>
-                <span>{{scope.row.stallName}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="stallArea" label="面积" width="120">
-              <template scope="scope">
-                <el-input
-                  :disabled="true"
-                  size="small"
-                  v-model="scope.row.stallArea"
-                  placeholder="请输入内容"
-                  @change="handleEdit(scope.$index, scope.row)"
-                ></el-input>
-                <span>{{scope.row.stallArea}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="开始时间" width="180">
-              <template scope="scope">
-                <el-date-picker
-                  clearable
-                  size="small"
-                  v-model="scope.row.leaseStartTime"
-                  type="date"
-                  @change="handleEdit(scope.$index, scope.row)"
-                  value-format="yyyy-MM-dd"
-                  placeholder="选择开始日期"
-                ></el-date-picker>
-                <span>{{scope.row.leaseStartTime}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="结束时间" width="180">
-              <template scope="scope">
-                <el-date-picker
-                  clearable
-                  size="small"
-                  v-model="scope.row.leaseEndTime"
-                  type="date"
-                  @change="handleEdit(scope.$index, scope.row)"
-                  value-format="yyyy-MM-dd"
-                  placeholder="选择结束日期"
-                ></el-date-picker>
-                <span>{{scope.row.leaseEndTime}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="租金" width="150">
-              <template scope="scope">
-                <el-input
-                  size="small"
-                  v-model="scope.row.rentMoney"
-                  placeholder="请输入租金"
-                  @change="getSumMoney(scope.$index, scope.row)"
-                  :onkeyup="scope.row.rentMoney=scope.row.rentMoney.replace(/[^\d.]/g,'')"
-                ></el-input>
-                <span>{{scope.row.rentMoney}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="支付方式" width="180">
-              <template scope="scope">
-                <!-- <el-input
-                size="small"
-                v-model="scope.row.payType"
-                placeholder="请选择支付方式"
-                @change="handleEdit(scope.$index, scope.row)"
-                ></el-input>-->
                 <el-select
-                  v-model="scope.row.payType"
-                  placeholder="请选择支付方式"
-                  style="width:100%"
+                  v-model="scope.row.ownerCode"
+                  placeholder="请选择业主"
+                  filterable
+                  @change="ownerSelect(data,scope.$index, scope.row)"
+                >
+                  <el-option
+                    v-for="item in ownerList"
+                    :key="item.ownerCode"
+                    :label="item.ownerName"
+                    :value="item.ownerCode"
+                  >
+                    <span
+                      style="float: left; color: #8492a6; font-size: 13px;width:100%"
+                    >{{ item.ownerName }}</span>
+                  </el-option>
+                </el-select>
+                <span>{{scope.row.ownerName}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="goodsCode" label="选择商品" width="200">
+              <template scope="scope">
+                <el-select
+                  v-model="scope.row.goodsCode"
+                  placeholder="请选择商品"
+                  filterable
                   @change="handleEdit(scope.$index, scope.row)"
                 >
                   <el-option
-                    v-for="dict in payTypeList"
-                    :key="dict.dictValue"
-                    :label="dict.dictLabel"
-                    :value="dict.dictValue"
-                  ></el-option>
+                    v-for="item in goodsList"
+                    :key="item.goodsCode"
+                    :label="item.goodsName"
+                    :value="item.goodsCode"
+                  >
+                    <span
+                      style="float: left; color: #8492a6; font-size: 13px;width:100%"
+                    >{{ scope.row.goodsName }}</span>
+                  </el-option>
                 </el-select>
-                <span  style="position: relative;top:-13px;">{{scope.row.payType}}</span>
+                <span>{{scope.row.goodsName}}</span>
               </template>
             </el-table-column>
-            <el-table-column label="备注" width="180">
+            <el-table-column label="产地信息" width="200">
+              <template scope="scope">
+                <el-input
+                  :disabled="true"
+                  size="small"
+                  v-model="scope.row.goodsAddress"
+                  placeholder="请输入产地信息"
+                  @change="handleEdit(scope.$index, scope.row)"
+                ></el-input>
+                <span>{{scope.row.goodsAddress}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="personCode" label="选择供应商" width="200">
+              <template scope="scope">
+                <el-select
+                  v-model="scope.row.personCode"
+                  placeholder="选择供应商"
+                  filterable
+                  @change="handleEditPerson($event,scope.$index, scope.row)"
+                  style="width:100%"
+                >
+                  <el-option
+                    v-for="item in personList"
+                    :key="item.personCode"
+                    :label="item.personName"
+                    :value="item.personCode"
+                  >
+                    <span style="float: left;width:100%">{{ item.personName }}</span>
+                  </el-option>
+                </el-select>
+                <span style="position: relative;top:-13px;">{{scope.row.personName}}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column label="数量" width="120">
               <template scope="scope">
                 <el-input
                   size="small"
-                  v-model="scope.row.contractBz"
+                  v-model="scope.row.goodsNum"
+                  placeholder="请输入数量"
+                  :onkeyup="scope.row.goodsNum=scope.row.goodsNum.replace(/[^\d.]/g,'')"
+                ></el-input>
+                <span>{{scope.row.goodsNum}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="备注" width="150">
+              <template scope="scope">
+                <el-input
+                  size="small"
+                  v-model="scope.row.remark"
                   placeholder="请输入备注"
                   @change="handleEdit(scope.$index, scope.row)"
                 ></el-input>
-                <span>{{scope.row.contractBz}}</span>
+                <span>{{scope.row.remark}}</span>
               </template>
             </el-table-column>
-            <el-table-column label="操作">
+            <el-table-column label="操作" >
               <template scope="scope">
                 <!--<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
                 <el-button v-if="checkStatus"
@@ -333,7 +287,7 @@
             </el-table-column>
           </el-table>
         </el-tab-pane>
-        <el-tab-pane label="附件信息" name="three">
+        <!-- <el-tab-pane label="附件信息" name="three">
           <el-row :gutter="15" class="mb8">
             <el-col :span="1.5">
               <el-upload
@@ -355,40 +309,43 @@
               </el-upload>
             </el-col>
           </el-row>
-        </el-tab-pane>
+        </el-tab-pane> -->
       </el-tabs>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
-    <select-stall v-if="selectStallDialog" ref="selectStall" @selectData="selectData"></select-stall>
   </div>
 </template>
 
 <script>
 import {
-  listContract,
-  getContract,
-  getContractChild,
-  delContract,
-  delContractChild,
-  addContract,
-  updateContract,
-  updateContractStatus,
-  exportContract,
-  getOwnerList,
-} from "@/api/system/contract";
-import selectStall from "./selectStall";
+  listAdmiss,
+  getAdmiss,
+  getAdmissChild,
+  delAdmiss,
+  delAdmissChild,
+  addAdmiss,
+  updateAdmiss,
+  updateAdmissStatus,
+  exportAdmiss,
+} from "@/api/system/admiss";
+
+import { getOwnerList } from "@/api/system/pool";
+import { listOwnerGoods } from "@/api/system/ownerGoods";
+import { listCar } from "@/api/system/car";
+import { getPersonAll } from "@/api/system/person";
 import { getToken } from "@/utils/auth";
 export default {
   name: "Lease",
-  components: {
-    selectStall,
-  },
   data() {
     return {
       checkStatus:true,
+      //关联账号
+      userName: "",
+      //业主列表
+      ownerList: [],
       fileList: [],
       upload: {
         // 是否显示弹出层（用户导入）
@@ -405,14 +362,16 @@ export default {
         url: process.env.VUE_APP_BASE_API + "/common/upload",
       },
       //业主列表
-      ownerList: [],
-      //支付方式
-      payTypeList: [],
+      stallList: [],
+      //供应商
+      personList: [],
       // 遮罩层
       loading: false,
-      selectStallDialog: false,
+      selectGoodsDialog: false,
       //选取主市场
       markDatas: [],
+      //车辆列表
+      carList: [],
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -436,49 +395,63 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        type:0,//单业户
         markCode: undefined,
-        contractCode: undefined,
-        contractName: undefined,
+        djNumber: undefined,
+        djTime: undefined,
       },
-      // 表单参数
+      // 表单参数m
       form: {},
       activeName: "first",
       // 表单校验
       rules: {
-        contractCode: [
-          { required: true, message: "合同编号不能为空", trigger: "blur" },
+        carNumber: [
+          { required: true, message: "车辆不能为空", trigger: "blur" },
         ],
-        contractName: [
-          { required: true, message: "合同名称不能为空", trigger: "blur" },
+        roomAddress: [
+          { required: true, message: "产地不能为空", trigger: "blur" },
         ],
-        ownerCode: [
-          { required: true, message: "业户不能为空", trigger: "blur" },
-        ],
+        roomNum: [{ required: true, message: "数量不能为空", trigger: "blur" }],
       },
     };
   },
   created() {
     this.getList();
-    this.getDicts("sys_pay_type").then((response) => {
-      this.payTypeList = response.data;
+    getPersonAll(this.queryParams).then((response) => {
+      this.personList = response.rows;
     });
     getOwnerList().then((response) => {
       this.ownerList = response.data;
       console.log(this.markDatas);
     });
-    //
-    // getMark().then((response) => {
-    //   this.markDatas = response.data;
-    //   console.log( this.markDatas)
-    // });
-    // this.getDicts("sys_peration_type").then((response) => {
-    //   this.perationOptions = response.data;
-    // });
-    // this.getDicts("sys_operate_type").then((response) => {
-    //   this.operateOptions = response.data;
-    // });
+    this.getCarList();
   },
   methods: {
+    //根据业户选择车辆数据
+    // getCarList(createBy) {
+    //   let queryParams = { createBy: createBy };
+    //   listCar(queryParams).then((response) => {
+    //     this.carList = response.rows;
+    //   });
+    // },
+    getCarList() {
+      let queryParams = {  };
+      listCar(queryParams).then((response) => {
+        this.carList = response.rows;
+      });
+    },
+    //追加子表必填样式
+    starAdd(obj) {
+      if (
+        obj.columnIndex === 0 ||
+        obj.columnIndex === 1 ||
+        obj.columnIndex === 2 ||
+        obj.columnIndex === 3 ||
+        obj.columnIndex === 4
+      ) {
+        return "star";
+      }
+    },
     clickFile(file) {
       if (file.url != "") {
         window.location.href = file.url;
@@ -493,7 +466,33 @@ export default {
       this.form.fileName = "";
     },
     //选择客户
-    selectOwner(data) {},
+    selectOwner(data) {
+      //根据ownerCode查找关联业户账号
+      for (let i = 0; i < this.ownerList.length; i++) {
+        if (this.ownerList[i].ownerCode == data) {
+          this.form.ownerName = this.ownerList[i].ownerName;
+          let userName = this.ownerList[i].userName;
+          if (userName != "" && userName != null && userName != undefined) {
+            this.userName = userName;
+            this.getCarList(userName);
+          }
+        }
+      }
+      //带出该业主下推送磅房等商品信息
+      this.addGoodsData();
+    },
+    //选择供应商
+    selectPerson(data) {},
+    //选择摊位
+    selectStall(data) {
+      //根据摊位编码查找摊位名称
+      for (let i = 0; i < this.stallList.length; i++) {
+        if (this.stallList[i].stallCode == data) {
+          this.form.stallName = this.stallList[i].stallName;
+          break;
+        }
+      }
+    },
     handleClick(tab, event) {
       // console.log(tab, event);
     },
@@ -503,21 +502,34 @@ export default {
     handleEdit(index, row) {
       console.log(index, row);
     },
-    getSumMoney(index, row) {
-      //计算总金额
-      let sumMoney = 0;
-      for (let i = 0; i < this.tableData.length; i++) {
-        if (this.tableData[i].rentMoney != "") {
-          sumMoney += parseFloat(this.tableData[i].rentMoney);
+    ownerSelect(data,index,row){
+      alert(data)
+    },
+    handleEditPerson(data, index, row) {
+      //根据编码找产地
+      for (let i = 0; i < this.personList.length; i++) {
+        if (this.personList[i].personCode == data) {
+          row.goodsAddress = this.personList[i].personGoodsAddress;
+          row.personName = this.personList[i].personName;
+          break;
         }
       }
-      this.form.contractMoney = sumMoney.toString();
+    },
+    getSum(index, row) {
+      //计算总金额
+      let sum = 0;
+      for (let i = 0; i < this.tableData.length; i++) {
+        if (this.tableData[i].goodsNum != "") {
+          sum += parseFloat(this.tableData[i].goodsNum);
+        }
+      }
+      this.form.roomNum = sum.toString();
       console.log(this.form);
-      // console.log(row.rentMoney);
+      // console.log(row.goodsNum);
     },
     handleChildDelete(index, row) {
       if (row.id != "" && row.id != undefined && row.id != null) {
-        delContractChild(row.id);
+        delAdmissChild(row.id);
         this.tableData.splice(index, 1);
       } else {
         this.tableData.splice(index, 1);
@@ -525,40 +537,70 @@ export default {
       console.log(index, row);
     },
     /** 操作 */
-    stallSelect() {
-      this.selectStallDialog = true;
-      this.$nextTick(() => {
-        this.$refs.selectStall.visible = true;
-      });
+    goodsSelect() {
+       let goodsInfo = new Object();
+        goodsInfo.ownerCode = "";
+        goodsInfo.ownerName = "";
+        goodsInfo.goodsCode = "";
+        goodsInfo.goodsName = "";
+        goodsInfo.goodsDw = "";
+        goodsInfo.personCode = "";
+        goodsInfo.personName = "";
+        goodsInfo.goodsNum = "";
+        goodsInfo.goodsWeight = "";
+        goodsInfo.remark = "";
+        this.tableData.push(goodsInfo);
     },
     //选择数据
     selectData(row) {
-      //  this.selectStallDialog=false;
+      //  this.selectGoodsDialog=false;
       this.$nextTick(() => {
         //检查是否存在重复数据
-        for (let i = 0; i < this.tableData.length; i++) {
-          if (row.stallCode == this.tableData[i].stallCode) {
-            this.msgError("摊位信息重复!");
-            return;
-          }
-        }
-        let stallInfo = new Object();
-        stallInfo.stallCode = row.stallCode;
-        stallInfo.stallName = row.stallName;
-        stallInfo.stallArea = row.regionArea;
-        stallInfo.leaseStartTime = "";
-        stallInfo.leaseEndTime = "";
-        stallInfo.rentMoney = "";
-        stallInfo.payType = "";
-        stallInfo.contractBz = "";
-        this.tableData.push(stallInfo);
-        this.$refs.selectStall.visible = false;
+        // for (let i = 0; i < this.tableData.length; i++) {
+        //   if (row.goodsCode == this.tableData[i].goodsCode) {
+        //     this.msgError("信息重复!");
+        //     return;
+        //   }
+        // }
+        let goodsInfo = new Object();
+        goodsInfo.goodsCode = row.goodsCode;
+        goodsInfo.goodsName = row.goodsName;
+        goodsInfo.goodsDw = row.goodsDw;
+        goodsInfo.personCode = "";
+        goodsInfo.personName = "";
+        goodsInfo.goodsNum = "";
+        goodsInfo.goodsWeight = "";
+        goodsInfo.remark = "";
+        this.tableData.push(goodsInfo);
+        this.$refs.selectGoods.visible = false;
       });
+    },
+    //选择数据
+    addGoodsData() {
+      if (this.userName != "") {
+        let queryParams = { createBy: this.userName, isSend: 1 };
+        listOwnerGoods(queryParams).then((response) => {
+          let goodsList = response.rows;
+          this.tableData = [];
+          for (let i = 0; i < goodsList.length; i++) {
+            let goodsInfo = new Object();
+            goodsInfo.goodsCode = goodsList[i].goodsCode;
+            goodsInfo.goodsName = goodsList[i].goodsName;
+            goodsInfo.goodsDw = goodsList[i].goodsDw;
+            goodsInfo.personCode = "";
+            goodsInfo.personName = "";
+            goodsInfo.goodsNum = "";
+            goodsInfo.goodsAddress = goodsList[i].goodsAddress;
+            goodsInfo.remark = "";
+            this.tableData.push(goodsInfo);
+          }
+        });
+      }
     },
     /** 查询二级市场信息列表 */
     getList() {
       this.loading = true;
-      listContract(this.queryParams).then((response) => {
+      listAdmiss(this.queryParams).then((response) => {
         this.leaseList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -573,13 +615,12 @@ export default {
     reset() {
       this.form = {
         id: undefined,
-        contractCode: undefined,
-        contractName: undefined,
-        ownerCode: undefined,
+        djNumber: undefined,
+        carNumber: undefined,
         ownerName: undefined,
-        contractMoney: undefined,
-        signAddress: undefined,
-        signTime: undefined,
+        ownerCode: undefined,
+        roomAddress: undefined,
+        roomNum: undefined,
         createBy: undefined,
         createTime: undefined,
         updateBy: undefined,
@@ -588,9 +629,10 @@ export default {
         fileName: undefined,
         rows: "",
       };
+      this.ownerName = "";
       this.resetForm("form");
       this.tableData = [];
-       this.checkStatus=true;
+      this.checkStatus=true;
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -612,30 +654,23 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加租赁合同";
+      this.title = "添加磅房入场单";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids;
-      getContract(id).then((response) => {
+      getAdmiss(id).then((response) => {
         this.form = response.data;
-        if(response.data.contractStatus=="已生效"){
+        if(response.data.status==1){
           this.checkStatus=false;
         }
-        if (response.data.fileName != "") {
-          this.fileList = [];
-          let info = new Object();
-          info.name = response.data.fileName;
-          info.url = response.data.fileName;
-          this.fileList.push(info);
-        }
-        getContractChild(this.form.contractCode).then((response) => {
+        getAdmissChild(this.form.djNumber).then((response) => {
           //this.form.rows = response.data;
-          this.tableData = response.data;
+          this.tableData = response.rows;
         });
         this.open = true;
-        this.title = "修改租赁合同";
+        this.title = "修改磅房入场单";
       });
     },
     /** 提交按钮 */
@@ -644,35 +679,37 @@ export default {
         //检查子表信息
         for (let i = 0; i < this.tableData.length; i++) {
           if (
-            this.tableData[i].leaseStartTime == "" ||
-            this.tableData[i].leaseEndTime == "" ||
-            this.tableData[i].rentMoney == ""
+            this.tableData[i].goodsCode == "" ||
+            this.tableData[i].personCode == "" ||
+            this.tableData[i].goodsAddress == "" ||
+            this.tableData[i].goodsNum == ""
           ) {
-            this.msgError("明细时间和金额信息不能为空!");
+            this.msgError("检查明细信息必填项!");
             return;
           }
         }
         this.form.rows = JSON.stringify(this.tableData);
         this.$refs["form"].validate((valid) => {
           if (valid) {
+            this.form.type=0;//单业户
             if (this.form.id != undefined) {
-              updateContract(this.form).then((response) => {
+              updateAdmiss(this.form).then((response) => {
                 if (response.code === 200) {
                   this.msgSuccess("修改成功");
                   this.open = false;
                   this.getList();
-                  this.$refs.selectStall.getList();
+                  this.$refs.selectGoods.getList();
                 } else {
                   this.msgError(response.msg);
                 }
               });
             } else {
-              addContract(this.form).then((response) => {
+              addAdmiss(this.form).then((response) => {
                 if (response.code === 200) {
                   this.msgSuccess("新增成功");
                   this.open = false;
                   this.getList();
-                  this.$refs.selectStall.getList();
+                  this.$refs.selectGoods.getList();
                 } else {
                   this.msgError(response.msg);
                 }
@@ -688,7 +725,7 @@ export default {
     handleDelete(row) {
       const ids = row.id || this.ids;
       this.$confirm(
-        '是否确认删除租赁合同编号为"' + ids + '"的数据项?',
+        '是否确认删除单据编号为"' + ids + '"的数据项?',
         "警告",
         {
           confirmButtonText: "确定",
@@ -697,20 +734,19 @@ export default {
         }
       )
         .then(function () {
-          return delContract(ids);
+          return delAdmiss(ids);
         })
         .then(() => {
           this.getList();
           this.msgSuccess("删除成功");
-          this.$refs.selectStall.getList();
         })
         .catch(function () {});
     },
-     /** 生效按钮操作 */
+    /** 生效按钮操作 */
     handleEffect(row) {
       const ids = row.id || this.ids;
       this.$confirm(
-        '是否确认租赁合同编号为"' + ids + '"的数据项已生效?',
+        '是否确认单据编号为"' + ids + '"的数据项已生效?',
         "警告",
         {
           confirmButtonText: "确定",
@@ -719,7 +755,7 @@ export default {
         }
       )
         .then(function () {
-          return updateContractStatus(ids);
+          return updateAdmissStatus(ids);
         })
         .then(() => {
           this.getList();
@@ -730,13 +766,13 @@ export default {
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
-      this.$confirm("是否确认导出所有租赁合同数据项?", "警告", {
+      this.$confirm("是否确认导出所有单据数据项?", "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(function () {
-          return exportContract(queryParams);
+          return exportAdmiss(queryParams);
         })
         .then((response) => {
           this.download(response.msg);
@@ -765,5 +801,9 @@ export default {
 }
 .tb-edit .current-row .el-select + span {
   display: none;
+}
+table th.star div::after {
+  content: "*";
+  color: red;
 }
 </style>

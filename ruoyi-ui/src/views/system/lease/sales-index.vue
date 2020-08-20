@@ -310,7 +310,7 @@
             <el-table-column label="操作">
               <template scope="scope">
                 <!--<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
-                <el-button
+                <el-button v-if="checkStatus"
                   size="small"
                   type="danger"
                   @click="handleChildDelete(scope.$index, scope.row)"
@@ -374,6 +374,7 @@ export default {
   },
   data() {
     return {
+      checkStatus:true,
       fileList: [],
       upload: {
         // 是否显示弹出层（用户导入）
@@ -577,6 +578,7 @@ export default {
       };
       this.resetForm("form");
       this.tableData = [];
+       this.checkStatus=true;
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -607,6 +609,9 @@ export default {
       const id = row.id || this.ids;
       getContract(id).then((response) => {
         this.form = response.data;
+        if(response.data.contractStatus=="已生效"){
+          this.checkStatus=false;
+        }
         if (response.data.fileName != "") {
           this.fileList = [];
           let info = new Object();

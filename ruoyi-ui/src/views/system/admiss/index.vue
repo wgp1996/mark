@@ -279,10 +279,10 @@
                 <span>{{scope.row.remark}}</span>
               </template>
             </el-table-column>
-            <el-table-column label="操作">
+            <el-table-column label="操作" >
               <template scope="scope">
                 <!--<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
-                <el-button
+                <el-button v-if="checkStatus"
                   size="small"
                   type="danger"
                   @click="handleChildDelete(scope.$index, scope.row)"
@@ -350,6 +350,7 @@ export default {
   },
   data() {
     return {
+      checkStatus:true,
       //关联账号
       userName: "",
       //业主列表
@@ -403,6 +404,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        type:0,//单业户
         markCode: undefined,
         djNumber: undefined,
         djTime: undefined,
@@ -434,11 +436,18 @@ export default {
       this.ownerList = response.data;
       console.log(this.markDatas);
     });
+    this.getCarList();
   },
   methods: {
     //根据业户选择车辆数据
-    getCarList(createBy) {
-      let queryParams = { createBy: createBy };
+    // getCarList(createBy) {
+    //   let queryParams = { createBy: createBy };
+    //   listCar(queryParams).then((response) => {
+    //     this.carList = response.rows;
+    //   });
+    // },
+    getCarList() {
+      let queryParams = {  };
       listCar(queryParams).then((response) => {
         this.carList = response.rows;
       });
@@ -632,6 +641,7 @@ export default {
       this.ownerName = "";
       this.resetForm("form");
       this.tableData = [];
+      this.checkStatus=true;
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -661,6 +671,9 @@ export default {
       const id = row.id || this.ids;
       getAdmiss(id).then((response) => {
         this.form = response.data;
+        if(response.data.status==1){
+          this.checkStatus=false;
+        }
         getAdmissChild(this.form.djNumber).then((response) => {
           //this.form.rows = response.data;
           this.tableData = response.rows;
@@ -687,6 +700,7 @@ export default {
         this.form.rows = JSON.stringify(this.tableData);
         this.$refs["form"].validate((valid) => {
           if (valid) {
+            this.form.type=0;//单业户
             if (this.form.id != undefined) {
               updateAdmiss(this.form).then((response) => {
                 if (response.code === 200) {
