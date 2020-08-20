@@ -10,16 +10,6 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="单据名称" prop="djTime">
-        <el-input
-          v-model="queryParams.djTime"
-          placeholder="请输入单据名称"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -33,7 +23,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['system:cgrkd:add']"
+          v-hasPermi="['system:admiss:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -43,7 +33,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['system:cgrkd:edit']"
+          v-hasPermi="['system:admiss:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -53,7 +43,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['system:cgrkd:remove']"
+          v-hasPermi="['system:admiss:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -63,7 +53,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleEffect"
-          v-hasPermi="['system:cgrkd:effect']"
+          v-hasPermi="['system:admiss:effect']"
         >生效</el-button>
       </el-col>
     </el-row>
@@ -82,19 +72,19 @@
             <el-table-column label="商品名称" align="center" prop="goodsName" />
             <el-table-column label="供应商编号" align="center" prop="personCode" />
             <el-table-column label="供应商名称" align="center" prop="personName" />
-            <el-table-column label="商品单位" align="center" prop="goodsDw" />
+             <el-table-column label="产地" align="center" prop="goodsAddress" />
             <el-table-column label="数量" align="center" prop="goodsNum" />
-            <el-table-column label="总重量" align="center" prop="goodsWeight" />
             <el-table-column label="备注" align="center" prop="remark" />
           </el-table>
         </template>
       </el-table-column>
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="单据状态" align="center" prop="djStatusName" />
-      <el-table-column label="入库单号" align="center" prop="djNumber" />
-      <el-table-column label="单据日期" align="center" prop="djTime" />
-      <el-table-column label="摊位编码" align="center" prop="stallCode" />
-      <el-table-column label="摊位名称" align="center" prop="stallName" />
+      <el-table-column label="单据编号" align="center" prop="djNumber" />
+      <el-table-column label="业主名称" align="center" prop="ownerName" />
+      <el-table-column label="车牌号" align="center" prop="carNumber" />
+      <el-table-column label="产地" align="center" prop="roomAddress" />
+      <el-table-column label="数量(公斤)" align="center" prop="roomNum" />
       <el-table-column label="制单人" align="center" prop="createBy" />
       <el-table-column label="制单日期" align="center" prop="createTime" />
 
@@ -105,14 +95,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:cgrkd:edit']"
+            v-hasPermi="['system:admiss:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['system:cgrkd:remove']"
+            v-hasPermi="['system:admiss:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -177,7 +167,7 @@
             <el-form-item label="产地" prop="roomAddress">
               <el-input v-model="form.roomAddress" placeholder="请输入产地"></el-input>
             </el-form-item>
-            <el-form-item label="数量" prop="roomNum">
+            <el-form-item label="数量(公斤)" prop="roomNum">
               <el-input size="small" v-model="form.roomNum" placeholder="请输入数量" type="number"></el-input>
             </el-form-item>
             <el-form-item label="备注信息" prop="createBy">
@@ -301,7 +291,7 @@
             </el-table-column>
           </el-table>
         </el-tab-pane>
-        <el-tab-pane label="附件信息" name="three">
+        <!-- <el-tab-pane label="附件信息" name="three">
           <el-row :gutter="15" class="mb8">
             <el-col :span="1.5">
               <el-upload
@@ -323,7 +313,7 @@
               </el-upload>
             </el-col>
           </el-row>
-        </el-tab-pane>
+        </el-tab-pane> -->
       </el-tabs>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -336,16 +326,16 @@
 
 <script>
 import {
-  listCgrkd,
-  getCgrkd,
-  getCgrkdChild,
-  delCgrkd,
-  delCgrkdChild,
-  addCgrkd,
-  updateCgrkd,
-  updateCgrkdStatus,
-  exportCgrkd,
-} from "@/api/system/cgrkd";
+  listAdmiss,
+  getAdmiss,
+  getAdmissChild,
+  delAdmiss,
+  delAdmissChild,
+  addAdmiss,
+  updateAdmiss,
+  updateAdmissStatus,
+  exportAdmiss,
+} from "@/api/system/admiss";
 
 import { getOwnerList } from "@/api/system/pool";
 import { listOwnerGoods } from "@/api/system/ownerGoods";
@@ -417,7 +407,7 @@ export default {
         djNumber: undefined,
         djTime: undefined,
       },
-      // 表单参数
+      // 表单参数m
       form: {},
       activeName: "first",
       // 表单校验
@@ -458,9 +448,9 @@ export default {
       if (
         obj.columnIndex === 0 ||
         obj.columnIndex === 1 ||
+        obj.columnIndex === 2 ||
         obj.columnIndex === 3 ||
-        obj.columnIndex === 5 ||
-        obj.columnIndex === 6
+        obj.columnIndex === 4
       ) {
         return "star";
       }
@@ -525,21 +515,21 @@ export default {
         }
       }
     },
-    getSumMoney(index, row) {
+    getSum(index, row) {
       //计算总金额
-      let sumMoney = 0;
+      let sum = 0;
       for (let i = 0; i < this.tableData.length; i++) {
         if (this.tableData[i].goodsNum != "") {
-          sumMoney += parseFloat(this.tableData[i].goodsNum);
+          sum += parseFloat(this.tableData[i].goodsNum);
         }
       }
-      this.form.stallName = sumMoney.toString();
+      this.form.roomNum = sum.toString();
       console.log(this.form);
       // console.log(row.goodsNum);
     },
     handleChildDelete(index, row) {
       if (row.id != "" && row.id != undefined && row.id != null) {
-        delCgrkdChild(row.id);
+        delAdmissChild(row.id);
         this.tableData.splice(index, 1);
       } else {
         this.tableData.splice(index, 1);
@@ -610,7 +600,7 @@ export default {
     /** 查询二级市场信息列表 */
     getList() {
       this.loading = true;
-      listCgrkd(this.queryParams).then((response) => {
+      listAdmiss(this.queryParams).then((response) => {
         this.leaseList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -669,16 +659,9 @@ export default {
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids;
-      getCgrkd(id).then((response) => {
+      getAdmiss(id).then((response) => {
         this.form = response.data;
-        if (response.data.fileName != "") {
-          this.fileList = [];
-          let info = new Object();
-          info.name = response.data.fileName;
-          info.url = response.data.fileName;
-          this.fileList.push(info);
-        }
-        getCgrkdChild(this.form.djNumber).then((response) => {
+        getAdmissChild(this.form.djNumber).then((response) => {
           //this.form.rows = response.data;
           this.tableData = response.rows;
         });
@@ -694,7 +677,7 @@ export default {
           if (
             this.tableData[i].goodsCode == "" ||
             this.tableData[i].personCode == "" ||
-            this.tableData[i].goodsWeight == "" ||
+            this.tableData[i].goodsAddress == "" ||
             this.tableData[i].goodsNum == ""
           ) {
             this.msgError("检查明细信息必填项!");
@@ -705,7 +688,7 @@ export default {
         this.$refs["form"].validate((valid) => {
           if (valid) {
             if (this.form.id != undefined) {
-              updateCgrkd(this.form).then((response) => {
+              updateAdmiss(this.form).then((response) => {
                 if (response.code === 200) {
                   this.msgSuccess("修改成功");
                   this.open = false;
@@ -716,7 +699,7 @@ export default {
                 }
               });
             } else {
-              addCgrkd(this.form).then((response) => {
+              addAdmiss(this.form).then((response) => {
                 if (response.code === 200) {
                   this.msgSuccess("新增成功");
                   this.open = false;
@@ -737,7 +720,7 @@ export default {
     handleDelete(row) {
       const ids = row.id || this.ids;
       this.$confirm(
-        '是否确认删除租赁单据编号为"' + ids + '"的数据项?',
+        '是否确认删除单据编号为"' + ids + '"的数据项?',
         "警告",
         {
           confirmButtonText: "确定",
@@ -746,7 +729,7 @@ export default {
         }
       )
         .then(function () {
-          return delCgrkd(ids);
+          return delAdmiss(ids);
         })
         .then(() => {
           this.getList();
@@ -758,7 +741,7 @@ export default {
     handleEffect(row) {
       const ids = row.id || this.ids;
       this.$confirm(
-        '是否确认租赁单据编号为"' + ids + '"的数据项已生效?',
+        '是否确认单据编号为"' + ids + '"的数据项已生效?',
         "警告",
         {
           confirmButtonText: "确定",
@@ -767,7 +750,7 @@ export default {
         }
       )
         .then(function () {
-          return updateCgrkdStatus(ids);
+          return updateAdmissStatus(ids);
         })
         .then(() => {
           this.getList();
@@ -778,13 +761,13 @@ export default {
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
-      this.$confirm("是否确认导出所有租赁单据数据项?", "警告", {
+      this.$confirm("是否确认导出所有单据数据项?", "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(function () {
-          return exportCgrkd(queryParams);
+          return exportAdmiss(queryParams);
         })
         .then((response) => {
           this.download(response.msg);

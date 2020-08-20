@@ -152,6 +152,18 @@
             <el-radio :label="1">是</el-radio>
          </el-radio-group>
        </el-form-item>
+       <el-form-item label="图片信息">
+              <el-upload
+                class="avatar-uploader"
+                  :action="upload.url"
+                  :headers="upload.headers"
+                :show-file-list="false"
+                :on-success="handleImageSuccess">
+                <img width="100%" v-if="form.goodsImg" :src="form.goodsImg" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
+          </el-form-item>
+          
         <el-form-item label="备注" prop="remark" >
          <el-input v-model="form.remark" placeholder="请输入备注" type="textarea"/>
        </el-form-item>
@@ -166,11 +178,25 @@
 
 <script>
 import { listOwnerGoods, getOwnerGoods, delOwnerGoods, addOwnerGoods, updateOwnerGoods, exportOwnerGoods } from "@/api/system/ownerGoods";
-
+import { getToken } from "@/utils/auth";
 export default {
   name: "OwnerGoods",
   data() {
     return {
+        upload: {
+        // 是否显示弹出层（用户导入）
+        open: false,
+        // 弹出层标题（用户导入）
+        title: "",
+        // 是否禁用上传
+        isUploading: false,
+        // 是否更新已经存在的用户数据
+        updateSupport: 0,
+        // 设置上传的请求头部
+        headers: { Authorization: "Bearer " + getToken() },
+        // 上传的地址
+        url: process.env.VUE_APP_BASE_API + "/common/upload"
+      },
       // 遮罩层
       loading: true,
       // 选中数组
@@ -225,6 +251,11 @@ export default {
     });
   },
   methods: {
+     handleImageSuccess(res, file, fileList) {
+      this.form.goodsImg = res.url;
+      // 上传成功
+      console.log(res.url);
+    },
     /** 查询业户商品建档列表 */
     getList() {
       this.loading = true;
@@ -353,3 +384,32 @@ export default {
   }
 };
 </script>
+
+<style>
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
+  .el-upload-dragger{
+    height: auto !important;
+  }
+</style>
