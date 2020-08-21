@@ -779,12 +779,18 @@ export default {
 };
 </script>
 <style>
+.cell .el-select+span{
+  display: none;
+}
+.cell .el-input+span{
+  display: none;
+}
 .el-table__expanded-cell {
   padding: 0 !important;
   margin: 0 !important;
 }
 .tb-edit .el-input {
-  display: none;
+  display: block;
 }
 .tb-edit .current-row .el-input {
   display: block;
