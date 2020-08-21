@@ -117,7 +117,14 @@
           <el-input v-model="form.goodsGg" placeholder="请输入商品规格" />
         </el-form-item>
         <el-form-item label="商品单位" prop="goodsDw">
-          <el-input v-model="form.goodsDw" placeholder="请输入商品单位" />
+           <el-select v-model="form.goodsDw" placeholder="请输入商品单位" style="width:100%">
+                <el-option
+                  v-for="dict in perationOptions"
+                  :key="dict.dictValue"
+                  :label="dict.dictLabel"
+                  :value="dict.dictValue"
+                ></el-option>
+              </el-select>
         </el-form-item>
          <el-form-item label="产地" prop="goodsDw">
           <el-input v-model="form.goodsAddress" placeholder="请输入产地" />
@@ -157,6 +164,7 @@ export default {
   data() {
     return {
       goodsTypeOptions:[],
+      perationOptions:[],
         upload: {
         // 是否显示弹出层（用户导入）
         open: false,
@@ -210,6 +218,11 @@ export default {
   },
   created() {
     this.getList();
+      this.getDicts("sys_dw").then((response) => {
+       console.log(response)
+      this.perationOptions = response.data;
+
+    });
   },
   methods: {
      handleImageSuccess(res, file, fileList) {

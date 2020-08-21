@@ -74,7 +74,7 @@
             <el-table-column label="供应商编号" align="center" prop="personCode" />
             <el-table-column label="供应商名称" align="center" prop="personName" />
              <el-table-column label="产地" align="center" prop="goodsAddress" />
-            <el-table-column label="数量" align="center" prop="goodsNum" />
+            <el-table-column label="数量(公斤)" align="center" prop="goodsNum" />
             <el-table-column label="备注" align="center" prop="remark" />
           </el-table>
         </template>
@@ -116,7 +116,7 @@
     />
 
     <!-- 添加或修改二级市场信息对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="900px">
+    <el-dialog :title="title" :visible.sync="open" width="1000px">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="基础信息" name="first">
           <el-form ref="form" :model="form" :rules="rules" label-width="120px">
@@ -140,9 +140,9 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="产地" prop="roomAddress">
+            <!-- <el-form-item label="产地" prop="roomAddress">
               <el-input v-model="form.roomAddress" placeholder="请输入产地"></el-input>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="数量(公斤)" prop="roomNum">
               <el-input size="small" v-model="form.roomNum" placeholder="请输入数量" type="number"></el-input>
             </el-form-item>
@@ -254,10 +254,11 @@
               </template>
             </el-table-column>
 
-            <el-table-column label="数量" width="120">
+            <el-table-column label="数量(公斤)" width="120">
               <template scope="scope">
                 <el-input
                   size="small"
+                  @change="getSum()"
                   v-model="scope.row.goodsNum"
                   placeholder="请输入数量"
                   :onkeyup="scope.row.goodsNum=scope.row.goodsNum.replace(/[^\d.]/g,'')"
@@ -538,6 +539,7 @@ export default {
       }
       for (let i = 0; i < this.goodsList.length; i++) {
         if (this.goodsList[i].goodsCode == data) {
+          row.goodsAddress = this.goodsList[i].goodsAddress;
           row.goodsName = this.goodsList[i].goodsName;
         }
       }
@@ -546,7 +548,9 @@ export default {
       //根据编码找产地
       for (let i = 0; i < this.personList.length; i++) {
         if (this.personList[i].personCode == data) {
-          row.goodsAddress = this.personList[i].personGoodsAddress;
+          if(row.goodsAddress==""||row.goodsAddress==null||row.goodsAddress==undefined){
+            row.goodsAddress = this.personList[i].personGoodsAddress;
+          }
           row.personName = this.personList[i].personName;
           break;
         }
@@ -559,6 +563,7 @@ export default {
       } else {
         this.tableData.splice(index, 1);
       }
+      this.getSum();
       console.log(index, row);
     },
     /** 新增明细操作 */
@@ -577,7 +582,18 @@ export default {
         goodsInfo.remark = "";
         this.tableData.push(goodsInfo);
     },
- 
+    getSum() {
+      //计算总金额
+      let sum = 0;
+      for (let i = 0; i < this.tableData.length; i++) {
+        if (this.tableData[i].goodsNum != "") {
+          sum += parseFloat(this.tableData[i].goodsNum);
+        }
+      }
+      this.form.roomNum = sum.toString();
+      console.log(this.form);
+      // console.log(row.goodsNum);
+    },
     /** 查询信息列表 */
     getList() {
       this.loading = true;

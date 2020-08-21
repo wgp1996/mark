@@ -73,7 +73,7 @@
             <el-table-column label="供应商编号" align="center" prop="personCode" />
             <el-table-column label="供应商名称" align="center" prop="personName" />
              <el-table-column label="产地" align="center" prop="goodsAddress" />
-            <el-table-column label="数量" align="center" prop="goodsNum" />
+            <el-table-column label="数量(公斤)" align="center" prop="goodsNum" />
             <el-table-column label="备注" align="center" prop="remark" />
           </el-table>
         </template>
@@ -117,7 +117,7 @@
     />
 
     <!-- 添加或修改二级市场信息对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="900px">
+    <el-dialog :title="title" :visible.sync="open" width="1000px">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="基础信息" name="first">
           <el-form ref="form" :model="form" :rules="rules" label-width="120px">
@@ -257,9 +257,9 @@
               </template>
             </el-table-column>
 
-            <el-table-column label="数量" width="120">
+            <el-table-column label="数量(公斤)" width="120">
               <template scope="scope">
-                <el-input
+                <el-input @change="getSum()"
                   size="small"
                   v-model="scope.row.goodsNum"
                   placeholder="请输入数量"
@@ -518,13 +518,15 @@ export default {
       //根据编码找产地
       for (let i = 0; i < this.personList.length; i++) {
         if (this.personList[i].personCode == data) {
-          row.goodsAddress = this.personList[i].personGoodsAddress;
+          if(row.goodsAddress==""||row.goodsAddress==null||row.goodsAddress==undefined){
+            row.goodsAddress = this.personList[i].personGoodsAddress;
+          }
           row.personName = this.personList[i].personName;
           break;
         }
       }
     },
-    getSum(index, row) {
+    getSum() {
       //计算总金额
       let sum = 0;
       for (let i = 0; i < this.tableData.length; i++) {
@@ -543,6 +545,7 @@ export default {
       } else {
         this.tableData.splice(index, 1);
       }
+      this.getSum();
       console.log(index, row);
     },
     /** 操作 */
@@ -575,6 +578,7 @@ export default {
         goodsInfo.goodsCode = row.goodsCode;
         goodsInfo.goodsName = row.goodsName;
         goodsInfo.goodsDw = row.goodsDw;
+        goodsInfo.goodsAddress = row.goodsAddress;
         goodsInfo.personCode = "";
         goodsInfo.personName = "";
         goodsInfo.goodsNum = "";
