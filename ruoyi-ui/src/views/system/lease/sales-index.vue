@@ -479,7 +479,14 @@ export default {
       this.form.fileName = "";
     },
     //选择客户
-    selectOwner(data) {},
+     selectOwner(data) {
+      for(let i=0;i<this.ownerList.length;i++){
+        if(data==this.ownerList[i].ownerCode){
+          this.form.ownerName=this.ownerList[i].ownerName;
+          break;
+        }
+      }
+    },
     handleClick(tab, event) {
       // console.log(tab, event);
     },

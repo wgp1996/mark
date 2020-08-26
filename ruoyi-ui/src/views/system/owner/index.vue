@@ -69,14 +69,15 @@
     <el-table v-loading="loading" :data="ownerList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="业主编号" align="center" prop="ownerCode" />
-      <el-table-column label="业主名称" align="center" prop="ownerName" />
-      <el-table-column label="关联账号" align="center" prop="userName" />
-      <el-table-column label="组织类型" align="center" prop="ownerOrg" />
-      <el-table-column label="机构性质" align="center" prop="ownerOrgNature" />
+      <el-table-column label="业主名称" align="center" prop="ownerName" width="300"/>
       <el-table-column label="信用代码/身份证号" align="center" prop="ownerPersonId" />
-      <el-table-column label="经营方式" align="center" prop="ownerMangerType" />
       <el-table-column label="联系人" align="center" prop="ownerLxr" />
       <el-table-column label="电话" align="center" prop="ownerLxrPhone" />
+      <el-table-column label="创建日期" align="center" prop="createTime" />
+      <!-- <el-table-column label="关联账号" align="center" prop="userName" />
+      <el-table-column label="组织类型" align="center" prop="ownerOrg" />
+      <el-table-column label="机构性质" align="center" prop="ownerOrgNature" />
+      <el-table-column label="经营方式" align="center" prop="ownerMangerType" /> -->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button

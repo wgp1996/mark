@@ -75,8 +75,8 @@
       <!-- <el-table-column label="是否推送磅房" align="center" prop="id" /> -->
       <el-table-column label="商品编码" align="center" prop="goodsCode" />
       <el-table-column label="商品名称" align="center" prop="goodsName" />
-      <el-table-column label="副单位" align="center" prop="goodsViceDw" />
-      <el-table-column label="主单位" align="center" prop="goodsDw" />
+      <el-table-column label="销售重量单位" align="center" prop="goodsViceDw" />
+      <el-table-column label="采购重量单位" align="center" prop="goodsDw" />
       <!-- <el-table-column label="图片地址" align="center" prop="goodsImg" /> -->
      <!-- <el-table-column label="商品分类" align="center" prop="goodsType" /> -->
       <el-table-column label="主进货地" align="center" prop="goodsAddress" />
@@ -112,15 +112,15 @@
     />
 
     <!-- 添加或修改业户商品建档对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px">
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+    <el-dialog :title="title" :visible.sync="open" width="600px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="110px">
        
         <el-form-item label="商品名称" prop="goodsName">
           <el-input v-model="form.goodsName" placeholder="请输入商品名称" />
         </el-form-item>
-          <el-form-item label="主单位" prop="goodsDw">
+          <el-form-item label="采购重量单位" prop="goodsDw">
           <!-- <el-input v-model="form.goodsDw" placeholder="请输入主单位" /> -->
-          <el-select v-model="form.goodsDw" placeholder="请输入主单位" style="width:100%">
+          <el-select v-model="form.goodsDw" placeholder="请输入采购重量单位" style="width:100%">
                 <el-option
                   v-for="dict in perationOptions"
                   :key="dict.dictValue"
@@ -135,9 +135,9 @@
         <el-form-item label="规格" prop="goodsGg">
           <el-input v-model="form.goodsGg" placeholder="请输入规格" />
         </el-form-item>
-        <el-form-item label="辅助单位" prop="goodsViceDw">
+        <el-form-item label="销售重量单位" prop="goodsViceDw">
           <!-- <el-input v-model="form.goodsViceDw" placeholder="请输入辅助单位" /> -->
-          <el-select v-model="form.goodsViceDw" placeholder="请输入辅助单位" style="width:100%">
+          <el-select v-model="form.goodsViceDw" placeholder="请输入销售重量单位" style="width:100%">
                 <el-option
                   v-for="dict in perationOptions"
                   :key="dict.dictValue"

@@ -790,7 +790,7 @@ export default {
   margin: 0 !important;
 }
 .tb-edit .el-input {
-  display: block;
+  display: block !important;
 }
 .tb-edit .current-row .el-input {
   display: block;
