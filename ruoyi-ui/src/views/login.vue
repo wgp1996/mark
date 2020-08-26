@@ -87,7 +87,11 @@ export default {
   watch: {
     $route: {
       handler: function(route) {
-        this.redirect = route.query && route.query.redirect;
+        console.log(route);
+        //默认跳首页
+        this.redirect="/index"
+        //跳转上次打开的界面
+        //this.redirect = route.query && route.query.redirect;
       },
       immediate: true
     }
