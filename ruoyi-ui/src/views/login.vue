@@ -29,7 +29,7 @@
                 </el-input>
               </el-form-item>
                 <el-form-item prop="code">
-                  <span>验证码</span>
+                  <span style="left:35px">验证码</span>
                 <el-input
                   v-model="loginForm.code"
                   auto-complete="off"
@@ -541,7 +541,7 @@ form{
      font-weight: bold;
      position: absolute;
      top: -55px;left:100px;
-     width: 500px
+     width: 520px
 }
 .yes_login{
     position: absolute !important;
