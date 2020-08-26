@@ -68,7 +68,6 @@
 
     <el-table v-loading="loading" :data="khList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="地址" align="center" prop="id" />
       <el-table-column label="客户编码" align="center" prop="khCode" />
       <el-table-column label="客户名称" align="center" prop="khName" />
       <el-table-column label="电话" align="center" prop="khPhone" />
