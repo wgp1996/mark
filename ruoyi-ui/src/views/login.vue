@@ -1,4 +1,5 @@
 <template>
+<div class="father">
  <div class="shadow">
   <div class="login">
        <div class="login_main">
@@ -7,7 +8,7 @@
         </div>
         <div class="main_right">
             <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form username">
-                <el-form-item prop="username">
+                <el-form-item prop="username" class="spp">
                   <span>用户</span>
                  <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号">
                   <!-- <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" /> -->
@@ -16,7 +17,7 @@
                     <p class="p1">周公河农贸城食安追溯平台</p>
                     <p class="p2">ZhouGongHe Farmer's Wholesale Marke Food safety platform</p>
               </el-form-item>
-              <el-form-item prop="password">
+              <el-form-item prop="password" class="spp">
                       <span>口令</span>
                 <el-input
                   v-model="loginForm.password"
@@ -28,7 +29,7 @@
                   <!-- <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" /> -->
                 </el-input>
               </el-form-item>
-                <el-form-item prop="code">
+                <el-form-item prop="code" class="spp">
                   <span style="left:35px">验证码</span>
                 <el-input
                   v-model="loginForm.code"
@@ -45,7 +46,7 @@
                 </div> 
               </el-form-item>
               <!-- <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox> -->
-              <el-form-item style="" class="yes_login">
+              <el-form-item style="" class="yes_login spp">
                 <el-button
                   :loading="loading"
                   size="medium"
@@ -75,6 +76,7 @@
     </div>
   </div>
   </div>
+   </div>
 </template>
 
 <script>
@@ -171,6 +173,13 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
+.father{
+  width:100%;
+  height:100%;
+  background: url("../assets/image/bg5.jpg");
+  // background-size: cover;
+  // background-repeat:repeat;
+}
 .login {
   display: flex;
   justify-content: center;
@@ -184,11 +193,11 @@ export default {
   text-align: center;
   color: #707070;
 }
-.el-form-item{
+.spp{
   margin-bottom:0px
 }
 button{
-  height:35px
+  height:auto
 }
 .el-button--medium {
     padding:0;
@@ -256,12 +265,12 @@ html,body{
 
 }
 
-body{
-        background: url("../assets/image/bg5.jpg");
-      /*background-size: cover;*/
-        background-repeat:repeat;
-       background-color: transparent !important
-}
+// #app{
+//         background: url("../assets/image/bg5.jpg");
+//       // /*background-size: cover;*/
+//         background-repeat:repeat;
+//       //  background-color: #fff !important
+// }
 /*将标签原有的默认内外边距去掉*/
 
 fieldset, img, input, button {
@@ -305,10 +314,7 @@ select, input, textarea {
     margin: 0;
 }
 
-/**/
-textarea {
-    resize: none; /*防止拖动*/
-}
+
 
 img {
     border: 0;
@@ -414,7 +420,7 @@ h1, h2, h3, h4, h5, h6 {
     -webkit-border-bottom-right-radius: 10px;
     border-bottom-right-radius: 10px;
 }
-form{
+.username{
     display: table-cell;
     vertical-align: middle;
     position: relative;
@@ -429,17 +435,17 @@ form{
     margin-bottom: 5px;
     letter-spacing: 2px
 }
-.login>.login_main>.main_right>form>div{
+.login>.login_main>.main_right>.username>div{
     position: relative;
 }
-.login>.login_main>.main_right>form>div>img{
+.login>.login_main>.main_right>.username>div>img{
     position: absolute;
     left: 62px;
     top:7px;
     width: 20px;height: 20px;
     z-index: 999
 }
-.login>.login_main>.main_right>form>div>div>span{
+.login>.login_main>.main_right>.username>div>div>span{
     position: absolute;
     left: 50px;
     top:10px;
@@ -448,7 +454,7 @@ form{
      display: inline-block;
      font-size: 16px
 }
-.login>.login_main>.main_right>form input{
+.login>.login_main>.main_right>.username input{
     background-color: #fff;
     height: 35px;
     width: 250px;
@@ -464,20 +470,20 @@ form{
     padding-left: 15px;
 }
 
-.login>.login_main>.main_right>form>.code>input{
+.login>.login_main>.main_right>.username>.code>input{
     width: 150px;
 }
-.login>.login_main>.main_right>form>.code>.code_img{
+.login>.login_main>.main_right>.username>.code>.code_img{
     width: 90px;
     height: 35px;
     float: right;
     margin-right: 50px;
     cursor: pointer;
 }
-.login>.login_main>.main_right>form input:focus{
+.login>.login_main>.main_right>.username input:focus{
     border: 1px solid #999;
 }
-.login>.login_main>.main_right>form>.yes_login>a{
+.login>.login_main>.main_right>.username>.yes_login>a{
     display: block;
     width: 90px;
     height: 35px;
@@ -491,7 +497,7 @@ form{
     text-decoration: none;
     margin-left: 50px;
 }
-.login>.login_main>.main_right>form>.yes_login>a:hover{
+.login>.login_main>.main_right>.username>.yes_login>a:hover{
     /*background-color: #0058af;*/
     cursor: pointer;
 }
