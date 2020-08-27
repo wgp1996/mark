@@ -320,7 +320,7 @@
             <el-col :span="1.5">
               <el-upload
                 class="upload-demo"
-                :limit="1"
+                :limit="15"
                 drag
                 :file-list="fileList"
                 :action="upload.url"
@@ -363,6 +363,7 @@ import {
 } from "@/api/system/pool";
 import poolStall from "./poolStall";
 import { getToken } from "@/utils/auth";
+import { listFile, delFile } from "@/api/system/file";
 export default {
   name: "Lease",
   components: {
@@ -458,17 +459,25 @@ export default {
   },
   methods: {
     clickFile(file) {
-      if (file.url != "") {
-        window.location.href = file.url;
+     if (file.response != ""&&file.response != undefined&&file.response != null) {
+          window.open(file.response.url);
+      }
+      if (file.url != ""&&file.url != undefined&&file.url != null) {
+          window.open (file.url);
       }
     },
     handleFileSuccess(res, file, fileList) {
+       this.fileList=fileList;
       // 上传成功
       console.log(res.url);
-      this.form.fileName = res.url;
+     // this.form.fileName = res.url;
     },
     handleRemove(file, fileList) {
-      this.form.fileName = "";
+     // this.form.fileName = "";
+     this.fileList=fileList;
+      if(file.id!=undefined&&file.id!=""&&file.id!=null){
+        delFile(file.id);
+      }
     },
     //选择客户
     selectOwner(data) {
@@ -565,6 +574,7 @@ export default {
       this.resetForm("form");
       this.tableData = [];
        this.checkStatus=true;
+       this.fileList=[];
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -597,13 +607,25 @@ export default {
         if(response.data.contractStatus=="已生效"){
           this.checkStatus=false;
         }
-        if (response.data.fileName != "") {
-          this.fileList = [];
-          let info = new Object();
-          info.name = response.data.fileName;
-          info.url = response.data.fileName;
-          this.fileList.push(info);
-        }
+        // if (response.data.fileName != "") {
+        //   this.fileList = [];
+        //   let info = new Object();
+        //   info.name = response.data.fileName;
+        //   info.url = response.data.fileName;
+        //   this.fileList.push(info);
+        // }
+         let queryParams={djNumber:response.data.contractCode}
+        listFile(queryParams).then((response) => {
+          this.fileList=[];
+          for(let i=0;i<response.rows.length;i++){
+                let file=response.rows[i];
+                let item= new Object();
+                item.id=file.id;
+                item.name=file.fileName;
+                item.url=file.fileUrl;
+                this.fileList.push(item);
+          }
+        });
         getContractChild(this.form.contractCode).then((response) => {
           //this.form.rows = response.data;
           this.tableData = response.data;
@@ -627,6 +649,29 @@ export default {
           }
         }
         this.form.rows = JSON.stringify(this.tableData);
+          //附件转换
+        if(this.fileList.length>0){
+          let files=[];
+          for(let i=0;i<this.fileList.length;i++){
+              let file=this.fileList[i];
+              console.log(file.response)
+              if (file.response != undefined&&file.response != ""&&file.response != null) {
+                 let item= new Object();
+                 item.id="";
+                 item.fileName=file.name;
+                 item.fileUrl=file.response.url;
+                 files.push(item);
+              }
+              if (file.url != undefined&&file.url != ""&&file.url != null) {
+                 let item= new Object();
+                 item.id=file.id;
+                 item.fileName=file.name;
+                 item.fileUrl=file.url;
+                 files.push(item);
+              }
+          }
+          this.form.fileRows = JSON.stringify(files);
+        }
         this.$refs["form"].validate((valid) => {
           if (valid) {
             if (this.form.id != undefined) {

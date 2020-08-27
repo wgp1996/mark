@@ -338,7 +338,7 @@
             <el-col :span="1.5">
               <el-upload
                 class="upload-demo"
-                :limit="1"
+                :limit="15"
                 drag
                 :file-list="fileList"
                 :action="upload.url"
@@ -381,6 +381,7 @@ import {
 } from "@/api/system/contract";
 import selectStall from "./selectStall";
 import { getToken } from "@/utils/auth";
+import { listFile, delFile } from "@/api/system/file";
 export default {
   name: "Lease",
   components: {
@@ -466,32 +467,31 @@ export default {
       this.ownerList = response.data;
       console.log(this.markDatas);
     });
-    //
-    // getMark().then((response) => {
-    //   this.markDatas = response.data;
-    //   console.log( this.markDatas)
-    // });
-    // this.getDicts("sys_peration_type").then((response) => {
-    //   this.perationOptions = response.data;
-    // });
-    // this.getDicts("sys_operate_type").then((response) => {
-    //   this.operateOptions = response.data;
-    // });
   },
   methods: {
     clickFile(file) {
-      if (file.url != "") {
-        window.location.href = file.url;
+      console.log(file)
+      if (file.response != ""&&file.response != undefined&&file.response != null) {
+          window.open(file.response.url);
+      }
+      if (file.url != ""&&file.url != undefined&&file.url != null) {
+          window.open (file.url);
       }
     },
     handleFileSuccess(res, file, fileList) {
-      fileList = [];
+      this.fileList=fileList;
+      //fileList = [];
       // 上传成功
       console.log(res.url);
-      this.form.fileName = res.url;
+     // this.form.fileName = res.url;
     },
     handleRemove(file, fileList) {
-      this.form.fileName = "";
+      //alert(file.name)
+      this.fileList=fileList;
+      if(file.id!=undefined&&file.id!=""&&file.id!=null){
+        delFile(file.id);
+      }
+      //this.form.fileName = "";
     },
     //选择客户
     selectOwner(data) {
@@ -571,6 +571,7 @@ export default {
         this.total = response.total;
         this.loading = false;
       });
+    
     },
     // 取消按钮
     cancel() {
@@ -599,6 +600,7 @@ export default {
       this.resetForm("form");
       this.tableData = [];
        this.checkStatus=true;
+       this.fileList=[];
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -631,13 +633,26 @@ export default {
         if(response.data.contractStatus=="已生效"){
           this.checkStatus=false;
         }
-        if (response.data.fileName != "") {
-          this.fileList = [];
-          let info = new Object();
-          info.name = response.data.fileName;
-          info.url = response.data.fileName;
-          this.fileList.push(info);
-        }
+        //  if (response.data.fileName != "") {
+        //    this.fileList = [];
+        //    let info = new Object();
+        //    info.id=1;
+        //    info.name = response.data.fileName;
+        //    info.url = response.data.fileName;
+        //    this.fileList.push(info);
+        //  }
+        let queryParams={djNumber:response.data.contractCode}
+        listFile(queryParams).then((response) => {
+          this.fileList=[];
+          for(let i=0;i<response.rows.length;i++){
+                let file=response.rows[i];
+                let item= new Object();
+                item.id=file.id;
+                item.name=file.fileName;
+                item.url=file.fileUrl;
+                this.fileList.push(item);
+          }
+        });
         getContractChild(this.form.contractCode).then((response) => {
           //this.form.rows = response.data;
           this.tableData = response.data;
@@ -660,6 +675,30 @@ export default {
             return;
           }
         }
+        //附件转换
+        if(this.fileList.length>0){
+          let files=[];
+          for(let i=0;i<this.fileList.length;i++){
+              let file=this.fileList[i];
+              console.log(file.response)
+              if (file.response != undefined&&file.response != ""&&file.response != null) {
+                 let item= new Object();
+                 item.id="";
+                 item.fileName=file.name;
+                 item.fileUrl=file.response.url;
+                 files.push(item);
+              }
+              if (file.url != undefined&&file.url != ""&&file.url != null) {
+                 let item= new Object();
+                 item.id=file.id;
+                 item.fileName=file.name;
+                 item.fileUrl=file.url;
+                 files.push(item);
+              }
+          }
+          this.form.fileRows = JSON.stringify(files);
+        }
+        
         this.form.rows = JSON.stringify(this.tableData);
         this.$refs["form"].validate((valid) => {
           if (valid) {
