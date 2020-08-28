@@ -147,6 +147,29 @@
                 </el-option>
               </el-select>
             </el-form-item>
+            <el-form-item label="编码搜索业主">
+              <el-select
+                v-model="form.ownerCode"
+                placeholder="请选择业主"
+                filterable
+                @change="selectOwnerByName"
+                style="width:100%"
+              >
+                <el-option
+                  v-for="item in ownerList"
+                  :key="item.ownerCode"
+                  :label="item.ownerCode"
+                  :value="item.ownerCode"
+                >
+                  <span
+                    style="float: left; color: #8492a6; font-size: 13px;width:33%"
+                  >{{ item.ownerName }}</span>
+                  <span style="float: left;width:33%">{{ item.ownerCode }}</span>
+
+                  <span style="float: left;width:33%">{{ item.ownerLxrPhone }}</span>
+                </el-option>
+              </el-select>
+            </el-form-item>
             <el-form-item label="选择车辆" prop="carNumber">
               <el-select v-model="form.carNumber" placeholder="请选择车辆" filterable style="width:100%">
                 <el-option
@@ -417,9 +440,9 @@ export default {
         ownerCode: [
           { required: true, message: "业主不能为空", trigger: "blur" },
         ],
-        carNumber: [
-          { required: true, message: "车辆不能为空", trigger: "blur" },
-        ],
+        // carNumber: [
+        //   { required: true, message: "车辆不能为空", trigger: "blur" },
+        // ],
         roomAddress: [
           { required: true, message: "产地不能为空", trigger: "blur" },
         ],
@@ -483,6 +506,23 @@ export default {
       for (let i = 0; i < this.ownerList.length; i++) {
         if (this.ownerList[i].ownerCode == data) {
           this.form.ownerName = this.ownerList[i].ownerName;
+          let userName = this.ownerList[i].userName;
+          if (userName != "" && userName != null && userName != undefined) {
+            this.userName = userName;
+            this.getCarList(userName);
+          }
+        }
+      }
+      //带出该业主下推送磅房等商品信息
+      this.addGoodsData();
+    },
+     //选择客户
+    selectOwnerByName(data) {
+      //根据ownerCode查找关联业户账号
+      for (let i = 0; i < this.ownerList.length; i++) {
+        if (this.ownerList[i].ownerCode == data) {
+          this.form.ownerName = this.ownerList[i].ownerName;
+          this.form.data =data;
           let userName = this.ownerList[i].userName;
           if (userName != "" && userName != null && userName != undefined) {
             this.userName = userName;

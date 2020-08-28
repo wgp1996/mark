@@ -68,6 +68,7 @@
 
     <el-table v-loading="loading" :data="ownerList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
+      <el-table-column label="所属市场" align="center" prop="markTypeName" />
       <el-table-column label="业主编号" align="center" prop="ownerCode" />
       <el-table-column label="业主名称" align="center" prop="ownerName" width="300"/>
       <el-table-column label="信用代码/身份证号" align="center" prop="ownerPersonId" />
@@ -119,6 +120,9 @@
         </el-form-item>
          <el-form-item label="关联账号" prop="userName">
           <el-input v-model="form.userName" placeholder="请输入关联账号" />
+        </el-form-item>
+        <el-form-item label="市场分类" prop="markType">
+          <treeselect v-model="form.markType" :options="markTypeOptions" :normalizer="normalizer" placeholder="请选择市场分类" />
         </el-form-item>
         <el-form-item label="组织类型" prop="ownerOrg">
           <el-select v-model="form.ownerOrg" placeholder="请选择组织类型" style="width:100%">
@@ -205,11 +209,17 @@
 
 <script>
 import { listOwner, getOwner, delOwner, addOwner, updateOwner, exportOwner } from "@/api/system/owner";
+import { listMarkType } from "@/api/system/markType";
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import { getToken } from "@/utils/auth";
 export default {
   name: "Owner",
+  components: { Treeselect },
   data() {
     return {
+       // 市场分类树选项
+      markTypeOptions: [],
         upload: {
         // 是否显示弹出层（用户导入）
         open: false,
@@ -291,6 +301,8 @@ export default {
     this.getDicts("sys_peration_type").then((response) => {
       this.perationOptions = response.data;
     });
+    //市场分类
+    this.getTreeselect();
     //组织类型
     this.getDicts("sys_org_type").then((response) => {
       this.orgOptions = response.data;
@@ -301,6 +313,26 @@ export default {
     });
   },
   methods: {
+     /** 转换市场分类数据结构 */
+    normalizer(node) {
+      if (node.children && !node.children.length) {
+        delete node.children;
+      }
+      return {
+        id: node.markId,
+        label: node.markTypeName,
+        children: node.children
+      };
+    },
+	/** 查询部门下拉树结构 */
+    getTreeselect() {
+      listMarkType().then(response => {
+        this.markTypeOptions = [];
+        const data = { markId: 0, markTypeName: '批发市场', children: [] };
+        data.children = this.handleTree(response.data, "markId", "parentId");
+        this.markTypeOptions.push(data);
+      });
+    },
      handleImageSuccess(res, file, fileList) {
       this.form.fileName1 = res.url;
       // 上传成功

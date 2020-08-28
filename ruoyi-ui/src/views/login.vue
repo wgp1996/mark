@@ -567,7 +567,7 @@ h1, h2, h3, h4, h5, h6 {
      font-size: 14px;
      margin: 5px 0px
 }
-.el-form-item__error {
+.spp .el-form-item__error {
     color: #ff4949;
     font-size: 12px;
     line-height: 1;

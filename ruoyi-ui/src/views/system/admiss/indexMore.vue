@@ -409,9 +409,9 @@ export default {
       activeName: "first",
       // 表单校验
       rules: {
-        carNumber: [
-          { required: true, message: "车辆不能为空", trigger: "blur" },
-        ],
+        // carNumber: [
+        //   { required: true, message: "车辆不能为空", trigger: "blur" },
+        // ],
         roomAddress: [
           { required: true, message: "产地不能为空", trigger: "blur" },
         ],
