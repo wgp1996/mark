@@ -26,8 +26,8 @@ export default {
   },
   data() {
     return {
-      title: '批发市场管理系统',
-      logo: logoImg
+      title: '周公河食安追溯平台',
+      logo: ''
     }
   }
 }
