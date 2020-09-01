@@ -297,7 +297,7 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
-    <goods-select v-if="selectGoodsDialog" ref="selectGoods" @selectData="selectData"></goods-select>
+    <goods-select v-if="selectGoodsDialog" ref="selectGoods" @selectData="selectData" @selectDataMore="selectDataMore"></goods-select>
     <kh-select v-if="selectKhDialog" ref="selectKh" @selectData="selectKhData"></kh-select>
   </div>
 </template>
@@ -454,9 +454,27 @@ export default {
         this.$refs.selectKh.visible = true;
       });
     },
+        //批量选择数据
+    selectDataMore(rows) {
+      //  this.selectGoodsDialog=false;
+      this.$nextTick(() => {
+       for(let i=0;i<rows.length;i++){
+            let row=rows[i];
+            let goodsInfo = new Object();
+            goodsInfo.goodsCode = row.goodsCode;
+            goodsInfo.goodsName = row.goodsName;
+            goodsInfo.wholeDw = row.goodsViceDw;
+            goodsInfo.wholeNum = "";
+            goodsInfo.wholePrice = "";
+            this.tableData.push(goodsInfo);
+       }
+        this.$refs.selectGoods.visible = false;
+      });
+    },
     //选择数据
     selectData(row) {
       //  this.selectGoodsDialog=false;
+
       this.$nextTick(() => {
          let goodsInfo = new Object();
         goodsInfo.goodsCode = row.goodsCode;
@@ -661,12 +679,18 @@ export default {
 };
 </script>
 <style>
+.cell .el-select+span{
+  display: none;
+}
+.cell .el-input+span{
+  display: none;
+}
 .el-table__expanded-cell {
   padding: 0 !important;
   margin: 0 !important;
 }
 .tb-edit .el-input {
-  display: none;
+  display: block !important;
 }
 .tb-edit .current-row .el-input {
   display: block;
@@ -681,7 +705,23 @@ export default {
   display: none;
 }
 table th.star div::after {
-    content: '*';
-    color: red;
+  content: "*";
+  color: red;
 }
+.el-input.is-disabled .el-input__inner {
+    
+    color: #000;
+    
+}
+
+/* .cell .el-select+span{
+  display: none;
+}
+.cell .el-input+span{
+  display: none;
+}
+.el-table__expanded-cell {
+  padding: 0 !important;
+  margin: 0 !important;
+} */
 </style>

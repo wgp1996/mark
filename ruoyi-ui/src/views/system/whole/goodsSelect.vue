@@ -52,6 +52,7 @@
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button icon="el-icon-check" type="warning"  size="mini" @click="selectDataMore">批量选择</el-button>
       </el-form-item>
     </el-form>
   
@@ -120,6 +121,8 @@ export default {
       markDatas:[],
       //摊位状态
       perationOptions:[],
+      // 数据
+       dataer:[],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -169,6 +172,7 @@ export default {
       this.getList();
     },
     selectGoodsData(row){
+      console.log(row)
           this.$emit('selectData',row)
     },
     /** 查询市场摊位信息列表 */
@@ -243,9 +247,17 @@ export default {
       this.resetForm("queryForm");
       this.handleQuery();
     },
+    // 批量选入
+    selectDataMore(){
+      // console.log(this.dataer)
+     this.$emit('selectDataMore',this.dataer)
+    },
     // 多选框选中数据
     handleSelectionChange(selection) {
+      
+      this.dataer=selection
       this.ids = selection.map(item => item.id)
+     
       this.single = selection.length!=1
       this.multiple = !selection.length
     }
