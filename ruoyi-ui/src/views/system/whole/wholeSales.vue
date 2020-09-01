@@ -297,8 +297,8 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
-    <goods-select v-if="selectGoodsDialog" ref="selectGoods" @selectData="selectData"></goods-select>
-    <kh-select v-if="selectKhDialog" ref="selectKh" @selectData="selectKhData"></kh-select>
+    <goods-selects v-if="selectGoodsDialog" ref="selectGoods" @selectData="selectData" ></goods-selects>
+    <kh-selects v-if="selectKhDialog" ref="selectKh" @selectData="selectKhData" @selectDataMore="selectDataMore"></kh-selects>
   </div>
 </template>
 
@@ -315,14 +315,14 @@ import {
   exportWholeSales
 } from "@/api/system/wholeSales";
 
-import goodsSelect from "./goodsSelect";
-import khSelect from "./khSelect";
+import goodsSelects from "./goodsSelects";
+import khSelects from "./khSelects";
 import { getToken } from "@/utils/auth";
 export default {
   name: "Lease",
   components: {
-    goodsSelect,
-    khSelect
+    goodsSelects,
+    khSelects
   },
   data() {
     return {
@@ -451,6 +451,29 @@ export default {
       this.selectKhDialog = true;
       this.$nextTick(() => {
         this.$refs.selectKh.visible = true;
+      });
+    },
+            //批量选择数据
+    selectDataMore(rows) {
+      //  this.selectGoodsDialog=false;
+      if(this.form.goodsCode==undefined){
+        this.msgError("请先选择商品信息!");
+        return;
+      }
+      this.$nextTick(() => {
+       for(let i=0;i<rows.length;i++){
+            let row=rows[i];
+          
+         let khInfo = new Object();
+        khInfo.khCode = row.khCode;
+        khInfo.khName = row.khName;
+        khInfo.wholeDw = this.form.goodsDw;
+        khInfo.wholeNum = "";
+        khInfo.wholePrice = "";
+            this.tableData.push(khInfo);
+             this.$refs.selectKh.visible = false;
+       }
+       
       });
     },
     //选择数据
@@ -669,12 +692,18 @@ export default {
 };
 </script>
 <style>
+.cell .el-select+span{
+  display: none;
+}
+.cell .el-input+span{
+  display: none;
+}
 .el-table__expanded-cell {
   padding: 0 !important;
   margin: 0 !important;
 }
 .tb-edit .el-input {
-  display: none;
+  display: block !important;
 }
 .tb-edit .current-row .el-input {
   display: block;
@@ -689,7 +718,12 @@ export default {
   display: none;
 }
 table th.star div::after {
-    content: '*';
-    color: red;
+  content: "*";
+  color: red;
+}
+.el-input.is-disabled .el-input__inner {
+    
+    color: #606266;
+    
 }
 </style>
