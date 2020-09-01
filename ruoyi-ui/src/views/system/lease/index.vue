@@ -794,12 +794,18 @@ export default {
 };
 </script>
 <style>
+.cell .el-select+span{
+  display: none;
+}
+.cell .el-input+span{
+  display: none;
+}
 .el-table__expanded-cell {
   padding: 0 !important;
   margin: 0 !important;
 }
 .tb-edit .el-input {
-  display: none;
+  display: block !important;
 }
 .tb-edit .current-row .el-input {
   display: block;
@@ -812,5 +818,14 @@ export default {
 }
 .tb-edit .current-row .el-select + span {
   display: none;
+}
+table th.star div::after {
+  content: "*";
+  color: red;
+}
+.el-input.is-disabled .el-input__inner {
+    
+    color: #606266;
+    
 }
 </style>

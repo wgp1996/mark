@@ -710,7 +710,7 @@ table th.star div::after {
 }
 .el-input.is-disabled .el-input__inner {
     
-    color: #000;
+    color: #606266;
     
 }
 

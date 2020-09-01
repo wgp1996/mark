@@ -766,12 +766,18 @@ export default {
 };
 </script>
 <style>
+.cell .el-select+span{
+  display: none;
+}
+.cell .el-input+span{
+  display: none;
+}
 .el-table__expanded-cell {
   padding: 0 !important;
   margin: 0 !important;
 }
 .tb-edit .el-input {
-  display: none;
+  display: block !important;
 }
 .tb-edit .current-row .el-input {
   display: block;
@@ -785,14 +791,13 @@ export default {
 .tb-edit .current-row .el-select + span {
   display: none;
 }
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
+table th.star div::after {
+  content: "*";
+  color: red;
 }
-.avatar-uploader .el-upload:hover {
-  border-color: #409eff;
+.el-input.is-disabled .el-input__inner {
+    
+    color: #606266;
+    
 }
 </style>
