@@ -121,36 +121,10 @@
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="基础信息" name="first">
           <el-form ref="form" :model="form" :rules="rules" label-width="120px">
-            <el-form-item label="单据编号" prop="djNumber">
-              <el-input v-model="form.djNumber" :disabled="true" placeholder="后台自动生成" />
-            </el-form-item>
-            <el-form-item label="选择业主" prop="ownerCode">
+            <el-form-item label="业户编号" prop="ownerName">
               <el-select
                 v-model="form.ownerCode"
-                placeholder="请选择业主"
-                filterable
-                @change="selectOwner"
-                style="width:100%"
-              >
-                <el-option
-                  v-for="item in ownerList"
-                  :key="item.ownerCode"
-                  :label="item.ownerName"
-                  :value="item.ownerCode"
-                >
-                  <span
-                    style="float: left; color: #8492a6; font-size: 13px;width:33%"
-                  >{{ item.ownerName }}</span>
-                  <span style="float: left;width:33%">{{ item.ownerCode }}</span>
-
-                  <span style="float: left;width:33%">{{ item.ownerLxrPhone }}</span>
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="编码搜索业主">
-              <el-select
-                v-model="form.ownerCode"
-                placeholder="请选择业主"
+                placeholder="编号搜索业主"
                 filterable
                 @change="selectOwnerByName"
                 style="width:100%"
@@ -170,6 +144,30 @@
                 </el-option>
               </el-select>
             </el-form-item>
+            <el-form-item label="业户名称" prop="ownerCode">
+              <el-select
+                v-model="form.ownerCode"
+                placeholder="名称搜索业主"
+                filterable
+                @change="selectOwner"
+                style="width:100%"
+              >
+                <el-option
+                  v-for="item in ownerList"
+                  :key="item.ownerCode"
+                  :label="item.ownerName"
+                  :value="item.ownerCode"
+                >
+                  <span
+                    style="float: left; color: #8492a6; font-size: 13px;width:33%"
+                  >{{ item.ownerName }}</span>
+                  <span style="float: left;width:33%">{{ item.ownerCode }}</span>
+
+                  <span style="float: left;width:33%">{{ item.ownerLxrPhone }}</span>
+                </el-option>
+              </el-select>
+            </el-form-item>
+          
             <el-form-item label="选择车辆" prop="carNumber">
               <el-select v-model="form.carNumber" placeholder="请选择车辆" filterable style="width:100%">
                 <el-option
@@ -195,6 +193,9 @@
             </el-form-item>
             <el-form-item label="备注信息" prop="createBy">
               <el-input v-model="form.remark" placeholder="请输入备注信息" />
+            </el-form-item>
+                      <el-form-item label="单据编号" prop="djNumber">
+              <el-input v-model="form.djNumber" :disabled="true" placeholder="后台自动生成" />
             </el-form-item>
           </el-form>
         </el-tab-pane>
@@ -437,7 +438,7 @@ export default {
       activeName: "first",
       // 表单校验
       rules: {
-        ownerCode: [
+        ownerName: [
           { required: true, message: "业主不能为空", trigger: "blur" },
         ],
         // carNumber: [
