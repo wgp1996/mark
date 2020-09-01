@@ -52,6 +52,7 @@
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button icon="el-icon-check" type="warning" size="mini" @click="selectDataMore">批量选择</el-button>
       </el-form-item>
     </el-form>
   
@@ -97,8 +98,9 @@ export default {
   components: { Treeselect },
   data() {
     return {
+      goodsSelectList:[],
       goodsList:[],
-       goodsTypeOptions:[],
+      goodsTypeOptions:[],
        visible: false,
       // 遮罩层
       loading: true,
@@ -170,6 +172,9 @@ export default {
     },
     selectGoodsData(row){
           this.$emit('selectData',row)
+    },
+    selectDataMore(){
+          this.$emit('selectDataMore',this.goodsSelectList);
     },
     /** 查询市场摊位信息列表 */
     getList() {
@@ -245,6 +250,8 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
+      this.goodsSelectList=selection;
+      console.log(this.goodsSelectList);
       this.ids = selection.map(item => item.id)
       this.single = selection.length!=1
       this.multiple = !selection.length

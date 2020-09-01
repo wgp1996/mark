@@ -120,9 +120,7 @@
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="基础信息" name="first">
           <el-form ref="form" :model="form" :rules="rules" label-width="120px">
-            <el-form-item label="单据编号" prop="djNumber">
-              <el-input v-model="form.djNumber" :disabled="true" placeholder="后台自动生成" />
-            </el-form-item>
+            
             <el-form-item label="选择车辆" prop="carNumber">
               <el-select v-model="form.carNumber" placeholder="请选择车辆" filterable style="width:100%">
                 <el-option
@@ -148,6 +146,9 @@
             </el-form-item>
             <el-form-item label="备注信息" prop="createBy">
               <el-input v-model="form.remark" placeholder="请输入备注信息" />
+            </el-form-item>
+            <el-form-item label="单据编号" prop="djNumber">
+              <el-input v-model="form.djNumber" :disabled="true" placeholder="后台自动生成" />
             </el-form-item>
           </el-form>
         </el-tab-pane>

@@ -336,7 +336,7 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
-    <goods-select v-if="selectGoodsDialog" ref="selectGoods" @selectData="selectData"></goods-select>
+    <goods-select v-if="selectGoodsDialog" ref="selectGoods" @selectData="selectData"  @selectDataMore="selectDataMore"></goods-select>
   </div>
 </template>
 
@@ -545,6 +545,57 @@ export default {
         goodsInfo.goodsWeight = "";
         goodsInfo.remark = "";
         this.tableData.push(goodsInfo);
+        this.$refs.selectGoods.visible = false;
+      });
+    },
+    //批量选择数据
+    selectData(row) {
+      //  this.selectGoodsDialog=false;
+      this.$nextTick(() => {
+        //检查是否存在重复数据
+        // for (let i = 0; i < this.tableData.length; i++) {
+        //   if (row.goodsCode == this.tableData[i].goodsCode) {
+        //     this.msgError("信息重复!");
+        //     return;
+        //   }
+        // }
+        let goodsInfo = new Object();
+        goodsInfo.goodsCode = row.goodsCode;
+        goodsInfo.goodsName = row.goodsName;
+        goodsInfo.goodsDw = row.goodsDw;
+        goodsInfo.personCode = "";
+        goodsInfo.personName = "";
+        goodsInfo.goodsNum = "";
+        goodsInfo.goodsWeight = "";
+        goodsInfo.remark = "";
+        this.tableData.push(goodsInfo);
+        this.$refs.selectGoods.visible = false;
+      });
+    },
+     //批量选择数据
+    selectDataMore(rows) {
+      //  this.selectGoodsDialog=false;
+      this.$nextTick(() => {
+        //检查是否存在重复数据
+        // for (let i = 0; i < this.tableData.length; i++) {
+        //   if (row.goodsCode == this.tableData[i].goodsCode) {
+        //     this.msgError("信息重复!");
+        //     return;
+        //   }
+        // }
+        for(let i=0;i<rows.length;i++){
+            let row=rows[i];
+             let goodsInfo = new Object();
+              goodsInfo.goodsCode = row.goodsCode;
+              goodsInfo.goodsName = row.goodsName;
+              goodsInfo.goodsDw = row.goodsDw;
+              goodsInfo.personCode = "";
+              goodsInfo.personName = "";
+              goodsInfo.goodsNum = "";
+              goodsInfo.goodsWeight = "";
+              goodsInfo.remark = "";
+              this.tableData.push(goodsInfo);
+        }
         this.$refs.selectGoods.visible = false;
       });
     },
