@@ -129,18 +129,18 @@
                 v-model="form.storeCode"
                 placeholder="请选择仓库"
                 filterable
-                @change="selectStall"
+                @change="selectStore"
                 style="width:100%"
               >
                 <el-option
                   v-for="item in storeList"
-                  :key="item.storeCode"
-                  :label="item.storeName"
-                  :value="item.storeCode"
+                  :key="item.ckCode"
+                  :label="item.ckName"
+                  :value="item.ckCode"
                 >
-                  <span style="float: left;width:50%">{{ item.storeCode }}</span>
+                  <span style="float: left;width:50%">{{ item.ckCode }}</span>
 
-                  <span style="float: left;width:50%">{{ item.storeName }}</span>
+                  <span style="float: left;width:50%">{{ item.ckName }}</span>
                 </el-option>
               </el-select>
             </el-form-item>
@@ -413,7 +413,7 @@ import {
 
 
 import goodsSelect from "./goodsSelect";
-import { getStoreAll } from "@/api/system/store";
+import { getCkAll } from "@/api/system/ck";
 import { getInfo } from "@/api/login";
 import { getPersonAll } from "@/api/system/person";
 import { getToken } from "@/utils/auth";
@@ -498,7 +498,7 @@ export default {
   },
   created() {
     this.getList();
-    getStoreAll(this.queryParams).then(response => {
+    getCkAll(this.queryParams).then(response => {
         this.storeList = response.rows;
     });
     getPersonAll(this.queryParams).then(response => {
@@ -558,7 +558,7 @@ export default {
       //不含税时置空税率跟恢复含税金额
       if(data==0){
           for(let i=0;i<this.tableData.length;i++){
-            this.tableData[i].goodsRate="";
+            this.tableData[i].goodsRate="0";
             this.tableData[i].goodsPriceRate= this.tableData[i].goodsPrice;
             this.tableData[i].goodsMoneyRate= this.tableData[i].goodsMoney;
           }
@@ -566,7 +566,7 @@ export default {
     },
     //追加子表必填样式
     starAdd(obj) {
-      if(obj.columnIndex === 0 || obj.columnIndex === 1 || obj.columnIndex === 4 || obj.columnIndex === 5 || obj.columnIndex === 6) {
+      if(obj.columnIndex === 0 || obj.columnIndex === 1 || obj.columnIndex === 4 || obj.columnIndex === 5 || obj.columnIndex === 6|| obj.columnIndex === 7) {
           return 'star';
       }
     },
@@ -589,12 +589,12 @@ export default {
     selectPerson(data){
 
     },
-    //选择摊位
-    selectStall(data){
-      //根据摊位编码查找摊位名称
+    //选择仓库
+    selectStore(data){
+      //根据仓库编码查找仓库名称
       for(let i=0;i<this.storeList.length;i++){
-        if(this.storeList[i].storeCode==data){
-          this.form.storeName=this.storeList[i].storeName;
+        if(this.storeList[i].ckCode==data){
+          this.form.storeName=this.storeList[i].ckName;
           break;
         }
       }
@@ -685,7 +685,7 @@ export default {
         goodsInfo.goodsMoney = "";
         goodsInfo.goodsPriceRate = "";
         goodsInfo.goodsMoneyRate = "";
-        goodsInfo.goodsRate = "";
+        goodsInfo.goodsRate = "0";
        // goodsInfo.goodsWeight = "";
         goodsInfo.remark = "";
         this.tableData.push(goodsInfo);
@@ -714,7 +714,7 @@ export default {
         goodsInfo.goodsMoney = "";
         goodsInfo.goodsPriceRate = "";
         goodsInfo.goodsMoneyRate = "";
-        goodsInfo.goodsRate = "";
+        goodsInfo.goodsRate = "0";
         //goodsInfo.goodsWeight = "";
         goodsInfo.remark = "";
         this.tableData.push(goodsInfo);
@@ -835,6 +835,7 @@ export default {
             this.tableData[i].personCode == "" ||
             this.tableData[i].goodsPrice == "" ||
             this.tableData[i].goodsMoney == "" ||
+            this.tableData[i].goodsRate == "" ||
             this.tableData[i].goodsNum == ""
           ) {
             this.msgError("检查明细信息必填项!");

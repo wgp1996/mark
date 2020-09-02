@@ -78,14 +78,14 @@
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-table style="padding:0;margin:0" :data="props.row.childrenList" id="special">
-            <!-- <el-table-column label="商品编号" align="center" prop="goodsCode" /> -->
             <el-table-column label="商品名称" align="center" prop="goodsName" />
-            <el-table-column label="产地" align="center" prop="goodsAddress" />
-            <!-- <el-table-column label="供应商编号" align="center" prop="personCode" /> -->
-            <!-- <el-table-column label="供应商名称" align="center" prop="personName" /> -->
             <el-table-column label="商品单位" align="center" prop="goodsDw" />
             <el-table-column label="数量" align="center" prop="goodsNum" />
-            <!-- <el-table-column label="总重量" align="center" prop="goodsWeight" /> -->
+            <el-table-column label="单价" align="center" prop="goodsPrice" /> 
+            <el-table-column label="金额" align="center" prop="goodsMoney" /> 
+            <el-table-column label="税率(%)" align="center" prop="goodsRate" /> 
+            <el-table-column label="单价(含税)" align="center" prop="goodsPriceRate" /> 
+            <el-table-column label="金额(含税)" align="center" prop="goodsMoneyRate" /> 
             <el-table-column label="备注" align="center" prop="remark" />
           </el-table>
         </template>
@@ -93,14 +93,11 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="单据状态" align="center" prop="djStatusName" />
       <el-table-column label="入库单号" align="center" prop="djNumber" />
-      <!-- <el-table-column label="单据日期" align="center" prop="djTime" /> -->
-      <!-- <el-table-column label="摊位编码" align="center" prop="stallCode" /> -->
-      <!-- <el-table-column label="摊位名称" align="center" prop="stallName" /> -->
-       <el-table-column label="供应商" align="center" prop="personName" />
-        <el-table-column label="仓库" align="center" prop="storeCode" />
+       <el-table-column label="单据日期" align="center" prop="djTime" /> 
+      <el-table-column label="供应商" align="center" prop="personName" />
+      <el-table-column label="仓库" align="center" prop="storeName" />
       <el-table-column label="制单人" align="center" prop="createBy" />
       <el-table-column label="制单日期" align="center" prop="createTime" />
-
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -140,7 +137,7 @@
                 placeholder="请选择供应商"
                 filterable
                  style="width:100%"
-                @change="handleEditPerson($event,scope.$index, scope.row)"
+                @change="selectPerson"
               >
                 <el-option
                   v-for="item in personList"
@@ -149,49 +146,27 @@
                   :value="item.personCode"
                 >
                   <span style="float: left;width:50%">{{ item.personName }}</span>
-
-                  
+                   <span style="float: left;width:50%">{{ item.personCode }}</span>
                 </el-option>
               </el-select>
             </el-form-item> 
-                  <!-- <el-table-column prop="personCode" label="选择供应商" width="200">
-               <template scope="scope">
-                 <el-select
-                v-model="scope.row.personCode"
-                placeholder="选择供应商"
-                filterable
-                @change="handleEditPerson($event,scope.$index, scope.row)"
-                style="width:100%"
-                >
-                <el-option
-                  v-for="item in personList"
-                  :key="item.personCode"
-                  :label="item.personName"
-                  :value="item.personCode"
-                >
-                  <span style="float: left;width:100%">{{ item.personName }}</span>
-                </el-option>
-              </el-select>
-              <span  style="position: relative;top:-13px;">{{scope.row.personName}}</span>
-              </template>
-            </el-table-column> -->
             <el-form-item label="仓库信息" prop="storeCode">
               <el-select
                 v-model="form.storeCode"
                 placeholder="请选择仓库"
                 filterable
-                @change="selectStall"
+                @change="selectStore"
                 style="width:100%"
               >
                 <el-option
-                  v-for="item in leaseList"
-                  :key="item.storeCode"
-                  :label="item.storeName"
-                  :value="item.storeCode"
+                  v-for="item in storeList"
+                  :key="item.ckCode"
+                  :label="item.ckName"
+                  :value="item.ckCode"
                 >
-                  <span style="float: left;width:50%">{{ item.storeCode }}</span>
+                  <span style="float: left;width:50%">{{ item.ckCode }}</span>
 
-                  <span style="float: left;width:50%">{{ item.storeName }}</span>
+                  <span style="float: left;width:50%">{{ item.ckName }}</span>
                 </el-option>
               </el-select>
             </el-form-item>
@@ -207,34 +182,23 @@
             <el-form-item label="备注信息" prop="createBy">
               <el-input v-model="form.remark" placeholder="请输入备注信息" />
             </el-form-item>
-            <!-- <el-form-item label="单据编号" prop="djNumber">
-              <el-input v-model="form.djNumber" :disabled="true" placeholder="后台自动生成" />
-            </el-form-item> -->
-             <el-form-item label="业户代码" prop="djNumber" style="color:#1890ff !important">
+   
+           <el-form-item label="业户代码" prop="djNumber">
+              <el-input v-model="user.ownerCode" :disabled="true" placeholder="业户代码" />
+            </el-form-item>
+              <el-form-item label="业户名称" prop="djNumber">
+              <el-input v-model="user.ownerName" :disabled="true" placeholder="业户名称" />
+            </el-form-item>
+            <el-form-item label="单据编号" prop="djNumber">
               <el-input v-model="form.djNumber" :disabled="true" placeholder="后台自动生成" />
             </el-form-item>
-             <el-form-item label="业户名称" prop="djNumber" style="color:#1890ff !important">
-              <el-input v-model="form.djNumber" :disabled="true" placeholder="后台自动生成" />
+            <el-form-item label="制单人" prop="djNumber">
+              <el-input v-model="user.ownerNameJc" :disabled="true" placeholder="制单人" />
             </el-form-item>
-             <el-form-item label="单据编号" prop="djNumber" style="color:#1890ff !important">
-              <el-input v-model="form.djNumber" :disabled="true" placeholder="后台自动生成" />
+             <el-form-item label="制单日期" prop="djTime">
+              <el-input v-model="form.djTime" :disabled="true" placeholder="制单日期" />
             </el-form-item>
-             <el-form-item label="制单人" prop="djNumber" style="color:#1890ff !important">
-              <el-input v-model="form.djNumber" :disabled="true" placeholder="后台自动生成" />
-            </el-form-item>
-             <el-form-item label="制单日期" prop="djNumber" style="color:#1890ff !important">
-              <el-input v-model="form.djNumber" :disabled="true" placeholder="后台自动生成" />
-            </el-form-item>
-            <!-- <el-form-item label="单据时间" prop="djTime">
-              <el-date-picker
-                clearable
-                style="width:100%"
-                v-model="form.djTime"
-                type="date"
-                value-format="yyyy-MM-dd"
-                placeholder="请选择单据时间"
-              ></el-date-picker>
-            </el-form-item> -->
+    
           </el-form>
         </el-tab-pane>
         <el-tab-pane label="明细信息" name="second">
@@ -242,15 +206,6 @@
             <el-col :span="1.5">
               <el-button type="primary" icon="el-icon-plus" size="mini" @click="goodsSelect">新增商品</el-button>
             </el-col>
-            <!-- <el-col :span="1.5">
-        <el-button
-          type="danger"
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-        >删除</el-button>
-            </el-col>-->
           </el-row>
 
           <el-table
@@ -261,18 +216,7 @@
             @row-click="handleCurrentChange"
             :header-cell-class-name="starAdd"
           >
-            <!-- <el-table-column prop="goodsCode" label="商品编码" width="150">
-              <template scope="scope">
-                <el-input
-                  :disabled="true"
-                  size="small"
-                  v-model="scope.row.goodsCode"
-                  placeholder="请输入内容"
-                  @change="handleEdit(scope.$index, scope.row)"
-                ></el-input>
-                <span>{{scope.row.goodsCode}}</span>
-              </template>
-            </el-table-column> -->
+           
             <el-table-column prop="goodsName" label="商品名称" width="150">
               <template scope="scope">
                 <el-input
@@ -280,7 +224,6 @@
                   size="small"
                   v-model="scope.row.goodsName"
                   placeholder="请输入内容"
-                  @change="handleEdit(scope.$index, scope.row)"
                 ></el-input>
                 <span>{{scope.row.goodsName}}</span>
               </template>
@@ -292,7 +235,7 @@
                   size="small"
                   v-model="scope.row.goodsAddress"
                   placeholder="请输入产地"
-                  @change="handleEdit(scope.$index, scope.row)"
+                  @change="(scope.$index, scope.row)"
                 ></el-input>
                 <span>{{scope.row.goodsAddress}}</span>
               </template>
@@ -304,32 +247,11 @@
                   size="small"
                   v-model="scope.row.goodsDw"
                   placeholder=""
-                  @change="handleEdit(scope.$index, scope.row)"
                 ></el-input>
                 <span>{{scope.row.goodsDw}}</span>
               </template>
             </el-table-column>
-            <!-- <el-table-column prop="personCode" label="选择供应商" width="200">
-               <template scope="scope">
-                 <el-select
-                v-model="scope.row.personCode"
-                placeholder="选择供应商"
-                filterable
-                @change="handleEditPerson($event,scope.$index, scope.row)"
-                style="width:100%"
-                >
-                <el-option
-                  v-for="item in personList"
-                  :key="item.personCode"
-                  :label="item.personName"
-                  :value="item.personCode"
-                >
-                  <span style="float: left;width:100%">{{ item.personName }}</span>
-                </el-option>
-              </el-select>
-              <span  style="position: relative;top:-13px;">{{scope.row.personName}}</span>
-              </template>
-            </el-table-column> -->
+      
          
             <el-table-column label="数量" width="120">
               <template scope="scope">
@@ -401,31 +323,18 @@
                 <span>{{scope.row.goodsMoneyRate}}</span>
               </template>
             </el-table-column>
-            <!-- <el-table-column label="总重量" width="120">
-              <template scope="scope">
-                <el-input
-                  size="small"
-                  v-model="scope.row.goodsWeight"
-                  placeholder="请输入总重量"
-                  :onkeyup="scope.row.goodsWeight=scope.row.goodsWeight.replace(/[^\d.]/g,'')"
-                ></el-input>
-                <span>{{scope.row.goodsWeight}}</span>
-              </template>
-            </el-table-column> -->
             <el-table-column label="备注" width="150">
               <template scope="scope">
                 <el-input
                   size="small"
                   v-model="scope.row.remark"
                   placeholder="请输入备注"
-                  @change="handleEdit(scope.$index, scope.row)"
                 ></el-input>
                 <span>{{scope.row.remark}}</span>
               </template>
             </el-table-column>
             <el-table-column label="操作">
               <template scope="scope">
-                <!--<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
                 <el-button
                   size="small"
                   type="danger"
@@ -470,23 +379,24 @@
 
 <script>
 import {
-  listCgrkd,
-  getCgrkd,
-  getCgrkdChild,
-  delCgrkd,
-  delCgrkdChild,
-  addCgrkd,
-  updateCgrkd,
-  updateCgrkdStatus,
-  exportCgrkd,
+  listCgrkdSingle,
+  getCgrkdSingle,
+  getCgrkdSingleChild,
+  delCgrkdSingle,
+  delCgrkdSingleChild,
+  addCgrkdSingle,
+  updateCgrkdSingle,
+  updateCgrkdSingleStatus,
+  exportCgrkdSingle,
   getOwnerList,
-} from "@/api/system/cgrkd";
+} from "@/api/system/cgrkdSingle";
 
 
 import goodsSelect from "./goodsSelect";
-import { getStallAll } from "@/api/system/stall";
+import { getCkAll } from "@/api/system/ck";
 import { getPersonAll } from "@/api/system/person";
 import { getToken } from "@/utils/auth";
+import { getInfo } from "@/api/login";
 export default {
   name: "Lease",
   components: {
@@ -494,6 +404,14 @@ export default {
   },
   data() {
     return {
+      //用户信息
+      user:{
+        ownerCode:"",
+        ownerName:"",
+        ownerNameJc:"",
+      },
+       //仓库列表
+      storeList: [],
       fileList: [],
       upload: {
         // 是否显示弹出层（用户导入）
@@ -512,7 +430,7 @@ export default {
       
     
       //业主列表
-      stallList: [],
+      storeList: [],
       //供应商
       personList: [],
       // 遮罩层
@@ -566,22 +484,68 @@ export default {
   },
   created() {
     this.getList();
-    getStallAll(this.queryParams).then(response => {
-      console.log(this.stallList)
-        this.stallList = response.rows;
+     getCkAll(this.queryParams).then(response => {
+        this.storeList = response.rows;
     });
     getPersonAll(this.queryParams).then(response => {
         this.personList = response.rows;
         console.log(this.personList)
     });
+     getInfo().then(response => {
+        this.user.ownerCode=response.user.userName;
+        this.user.ownerName=response.user.nickName;
+        this.user.ownerNameJc=response.user.nickName;
+        this.form.djTime=this.getTime();
+    });
   },
   methods: {
+    editTime(i){
+      if(i<10){
+      i="0"+i;
+      }
+      return i;
+      },
+     getTime(){
+        var date=new Date();
+        var year=date.getFullYear();//得到当前年份
+        var month=this.editTime(date.getMonth()+1);//得到当前月份
+        var day=this.editTime(date.getDate());//得到当前几号
+        var hour=this.editTime(date.getHours());//得到当前小时
+        var min=this.editTime(date.getMinutes());//得到当前分钟
+        var seconds=this.editTime(date.getSeconds());//得到当前秒
+        var weeks=date.getDay();
+        var week;
+        switch(weeks){
+        case 0:
+        week="星期日";
+        break;
+        case 1:
+        week="星期一";
+        break;
+        case 2:
+        week="星期二";
+        break;
+        case 3:
+        week="星期三";
+        break;
+        case 4:
+        week="星期四";
+        break;
+        case 5:
+        week="星期五";
+        break;
+        case 6:
+        week="星期六";
+        break;
+        }
+          return year+"-"+month+"-"+day;
+        },
        //是否含税
     changeRate(data){
       //不含税时置空税率跟恢复含税金额
       if(data==0){
           for(let i=0;i<this.tableData.length;i++){
-            this.tableData[i].goodsRate="";
+            this.tableData[i].goodsRate="0";
             this.tableData[i].goodsPriceRate= this.tableData[i].goodsPrice;
             this.tableData[i].goodsMoneyRate= this.tableData[i].goodsMoney;
           }
@@ -589,7 +553,7 @@ export default {
     },
     //追加子表必填样式
     starAdd(obj) {
-      if(obj.columnIndex === 0 || obj.columnIndex === 1 || obj.columnIndex === 3 || obj.columnIndex === 5) {
+      if(obj.columnIndex === 0 || obj.columnIndex === 4 || obj.columnIndex === 3 || obj.columnIndex === 5|| obj.columnIndex === 6) {
           return 'star';
       }
     },
@@ -610,14 +574,20 @@ export default {
     selectOwner(data) {},
     //选择供应商
     selectPerson(data){
-
+         //根据编码找产地
+        for(let i=0;i<this.personList.length;i++){
+          if(this.personList[i].personCode==data){
+            this.form.personName=this.personList[i].personName;
+            break;
+          }
+        }
     },
-    //选择摊位
-    selectStall(data){
+    //选择仓库
+    selectStore(data){
       //根据摊位编码查找摊位名称
-      for(let i=0;i<this.stallList.length;i++){
-        if(this.stallList[i].stallCode==data){
-          this.form.stallName=this.stallList[i].stallName;
+      for(let i=0;i<this.storeList.length;i++){
+        if(this.storeList[i].ckCode==data){
+          this.form.storeName=this.storeList[i].ckName;
           break;
         }
       }
@@ -675,13 +645,13 @@ export default {
           sumMoney += parseFloat(this.tableData[i].goodsNum);
         }
       }
-      this.form.stallName = sumMoney.toString();
+      this.form.storeName = sumMoney.toString();
       console.log(this.form);
     
     },
     handleChildDelete(index, row) {
       if (row.id != "" && row.id != undefined && row.id != null) {
-        delCgrkdChild(row.id);
+        delCgrkdSingleChild(row.id);
         this.tableData.splice(index, 1);
       } else {
         this.tableData.splice(index, 1);
@@ -744,7 +714,7 @@ export default {
         goodsInfo.goodsMoney = "";
         goodsInfo.goodsPriceRate = "";
         goodsInfo.goodsMoneyRate = "";
-        goodsInfo.goodsRate = "";
+        goodsInfo.goodsRate = "0";
  
        // goodsInfo.goodsWeight = "";
         goodsInfo.remark = "";
@@ -777,7 +747,7 @@ export default {
                   goodsInfo.goodsMoney = "";
                   goodsInfo.goodsPriceRate = "";
                   goodsInfo.goodsMoneyRate = "";
-                  goodsInfo.goodsRate = "";
+                  goodsInfo.goodsRate = "0";
                   //goodsInfo.goodsWeight = "";
                   goodsInfo.remark = "";
               this.tableData.push(goodsInfo);
@@ -788,7 +758,7 @@ export default {
     /** 查询二级市场信息列表 */
     getList() {
       this.loading = true;
-      listCgrkd(this.queryParams).then((response) => {
+      listCgrkdSingle(this.queryParams).then((response) => {
         this.leaseList = response.rows;
          console.log(this.leaseList)
         this.total = response.total;
@@ -805,9 +775,10 @@ export default {
       this.form = {
         id: undefined,
         djNumber: undefined,
-        djTime: undefined,
-        stallCode: undefined,
-        stallName: undefined,
+        djTime: this.getTime(),
+        storeCode: undefined,
+        storeName: undefined,
+        personName:undefined,
         createBy: undefined,
         createTime: undefined,
         updateBy: undefined,
@@ -816,8 +787,7 @@ export default {
         fileName: undefined,
         personCode:undefined,
         rows: "",
-        storeCode:undefined,
-          isRate:0,
+        isRate:0,
       };
       this.resetForm("form");
       this.tableData = [];
@@ -842,13 +812,13 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加进货单";
+      this.title = "添加采购单";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids;
-      getCgrkd(id).then((response) => {
+      getCgrkdSingle(id).then((response) => {
         this.form = response.data;
         if (response.data.fileName != "") {
           this.fileList = [];
@@ -857,12 +827,12 @@ export default {
           info.url = response.data.fileName;
           this.fileList.push(info);
         }
-        getCgrkdChild(this.form.djNumber).then((response) => {
+        getCgrkdSingleChild(this.form.djNumber).then((response) => {
           //this.form.rows = response.data;
           this.tableData = response.rows;
         });
         this.open = true;
-        this.title = "修改进货单";
+        this.title = "修改采购单";
       });
     },
     /** 提交按钮 */
@@ -871,9 +841,10 @@ export default {
         //检查子表信息
         for (let i = 0; i < this.tableData.length; i++) {
           if (
-            // this.tableData[i].goodsCode == "" ||
-            // this.tableData[i].personCode == "" ||
-           // this.tableData[i].goodsWeight == "" ||
+             this.tableData[i].goodsCode == "" ||
+             this.tableData[i].goodsPrice == "" ||
+            this.tableData[i].goodsMoney == "" ||
+            this.tableData[i].goodsRate == "" ||
             this.tableData[i].goodsNum == ""
           ) {
             this.msgError("检查明细信息必填项!");
@@ -884,7 +855,7 @@ export default {
         this.$refs["form"].validate((valid) => {
           if (valid) {
             if (this.form.id != undefined) {
-              updateCgrkd(this.form).then((response) => {
+              updateCgrkdSingle(this.form).then((response) => {
                 if (response.code === 200) {
                   this.msgSuccess("修改成功");
                   this.open = false;
@@ -895,7 +866,7 @@ export default {
                 }
               });
             } else {
-              addCgrkd(this.form).then((response) => {
+              addCgrkdSingle(this.form).then((response) => {
                 if (response.code === 200) {
                   this.msgSuccess("新增成功");
                   this.open = false;
@@ -925,7 +896,7 @@ export default {
         }
       )
         .then(function () {
-          return delCgrkd(ids);
+          return delCgrkdSingle(ids);
         })
         .then(() => {
           this.getList();
@@ -946,7 +917,7 @@ export default {
         }
       )
         .then(function () {
-          return updateCgrkdStatus(ids);
+          return updateCgrkdSingleStatus(ids);
         })
         .then(() => {
           this.getList();
@@ -963,7 +934,7 @@ export default {
         type: "warning",
       })
         .then(function () {
-          return exportCgrkd(queryParams);
+          return exportCgrkdSingle(queryParams);
         })
         .then((response) => {
           this.download(response.msg);
