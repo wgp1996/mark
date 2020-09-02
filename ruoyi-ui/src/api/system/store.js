@@ -8,7 +8,14 @@ export function listStore(query) {
     params: query
   })
 }
-
+// 查询仓库下拉信息列表
+export function getStoreAll(query) {
+  return request({
+    url: '/system/store/getStoreAll',
+    method: 'get',
+    params: query
+  })
+}
 // 查询冷库建档详细
 export function getStore(id) {
   return request({

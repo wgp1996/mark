@@ -78,13 +78,15 @@
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-table style="padding:0;margin:0" :data="props.row.childrenList" id="special">
-            <el-table-column label="商品编号" align="center" prop="goodsCode" />
             <el-table-column label="商品名称" align="center" prop="goodsName" />
-            <el-table-column label="供应商编号" align="center" prop="personCode" />
             <el-table-column label="供应商名称" align="center" prop="personName" />
             <el-table-column label="商品单位" align="center" prop="goodsDw" />
             <el-table-column label="数量" align="center" prop="goodsNum" />
-            <!-- <el-table-column label="总重量" align="center" prop="goodsWeight" /> -->
+            <el-table-column label="单价" align="center" prop="goodsPrice" /> 
+            <el-table-column label="金额" align="center" prop="goodsMoney" /> 
+            <el-table-column label="税率(%)" align="center" prop="goodsRate" /> 
+            <el-table-column label="单价(含税)" align="center" prop="goodsPriceRate" /> 
+            <el-table-column label="金额(含税)" align="center" prop="goodsMoneyRate" /> 
             <el-table-column label="备注" align="center" prop="remark" />
           </el-table>
         </template>
@@ -93,11 +95,10 @@
       <el-table-column label="单据状态" align="center" prop="djStatusName" />
       <el-table-column label="入库单号" align="center" prop="djNumber" />
       <el-table-column label="单据日期" align="center" prop="djTime" />
-      <el-table-column label="摊位编码" align="center" prop="stallCode" />
-      <el-table-column label="摊位名称" align="center" prop="stallName" />
+      <el-table-column label="仓库编码" align="center" prop="storeCode" />
+      <el-table-column label="仓库名称" align="center" prop="storeName" />
       <el-table-column label="制单人" align="center" prop="createBy" />
       <el-table-column label="制单日期" align="center" prop="createTime" />
-
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -144,25 +145,31 @@
                 placeholder="请选择单据时间"
               ></el-date-picker>
             </el-form-item>
-            <el-form-item label="摊位信息" prop="stallCode">
+            <el-form-item label="仓库信息" prop="storeCode">
               <el-select
-                v-model="form.stallCode"
-                placeholder="请选择摊位"
+                v-model="form.storeCode"
+                placeholder="请选择仓库"
                 filterable
                 @change="selectStall"
                 style="width:100%"
               >
                 <el-option
-                  v-for="item in stallList"
-                  :key="item.stallCode"
-                  :label="item.stallName"
-                  :value="item.stallCode"
+                  v-for="item in storeList"
+                  :key="item.storeCode"
+                  :label="item.storeName"
+                  :value="item.storeCode"
                 >
-                  <span style="float: left;width:50%">{{ item.stallCode }}</span>
+                  <span style="float: left;width:50%">{{ item.storeCode }}</span>
 
-                  <span style="float: left;width:50%">{{ item.stallName }}</span>
+                  <span style="float: left;width:50%">{{ item.storeName }}</span>
                 </el-option>
               </el-select>
+            </el-form-item>
+             <el-form-item label="是否含税" prop="isRate" >
+              <el-radio-group v-model="form.isRate" @change="changeRate">
+                  <el-radio :label="0" >否</el-radio>
+                  <el-radio :label="1">是</el-radio>
+              </el-radio-group>
             </el-form-item>
             <el-form-item label="备注信息" prop="createBy">
               <el-input v-model="form.remark" placeholder="请输入备注信息" />
@@ -193,43 +200,7 @@
             @row-click="handleCurrentChange"
             :header-cell-class-name="starAdd"
           >
-            <el-table-column prop="goodsCode" label="商品编码" width="150">
-              <template scope="scope">
-                <el-input
-                  :disabled="true"
-                  size="small"
-                  v-model="scope.row.goodsCode"
-                  placeholder="请输入内容"
-                  @change="handleEdit(scope.$index, scope.row)"
-                ></el-input>
-                <span>{{scope.row.goodsCode}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="goodsName" label="商品名称" width="150">
-              <template scope="scope">
-                <el-input
-                  :disabled="true"
-                  size="small"
-                  v-model="scope.row.goodsName"
-                  placeholder="请输入内容"
-                  @change="handleEdit(scope.$index, scope.row)"
-                ></el-input>
-                <span>{{scope.row.goodsName}}</span>
-              </template>
-            </el-table-column>
-             <el-table-column prop="goodsDw" label="单位" width="120">
-              <template scope="scope">
-                <el-input
-                  :disabled="true"
-                  size="small"
-                  v-model="scope.row.goodsDw"
-                  placeholder="请输入产地信息"
-                  @change="handleEdit(scope.$index, scope.row)"
-                ></el-input>
-                <span>{{scope.row.goodsDw}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="personCode" label="选择供应商" width="200">
+              <el-table-column prop="personCode" label="选择供应商" width="200">
                <template scope="scope">
                  <el-select
                 v-model="scope.row.personCode"
@@ -250,6 +221,41 @@
               <span  style="position: relative;top:-13px;">{{scope.row.personName}}</span>
               </template>
             </el-table-column>
+            <!-- <el-table-column prop="goodsCode" label="商品编码" width="150" :v-show="false">
+              <template scope="scope">
+                <el-input
+                  :disabled="true"
+                  size="small"
+                  v-model="scope.row.goodsCode"
+                  placeholder="请输入内容"
+                  @change="handleEdit(scope.$index, scope.row)"
+                ></el-input>
+                <span>{{scope.row.goodsCode}}</span>
+              </template>
+            </el-table-column> -->
+            <el-table-column prop="goodsName" label="商品名称" width="150">
+              <template scope="scope">
+                <el-input
+                  :disabled="true"
+                  size="small"
+                  v-model="scope.row.goodsName"
+                  placeholder="请输入内容"
+                ></el-input>
+                <span>{{scope.row.goodsName}}</span>
+              </template>
+            </el-table-column>
+             <el-table-column prop="goodsDw" label="单位" width="120">
+              <template scope="scope">
+                <el-input
+                  :disabled="true"
+                  size="small"
+                  v-model="scope.row.goodsDw"
+                  placeholder="请输入单位信息"
+                ></el-input>
+                <span>{{scope.row.goodsDw}}</span>
+              </template>
+            </el-table-column>
+  
              <el-table-column label="产地信息" width="200">
               <template scope="scope">
                 <el-input
@@ -257,7 +263,6 @@
                   size="small"
                   v-model="scope.row.goodsAddress"
                   placeholder="请输入产地信息"
-                  @change="handleEdit(scope.$index, scope.row)"
                 ></el-input>
                 <span>{{scope.row.goodsAddress}}</span>
               </template>
@@ -269,8 +274,67 @@
                   v-model="scope.row.goodsNum"
                   placeholder="请输入数量"
                   :onkeyup="scope.row.goodsNum=scope.row.goodsNum.replace(/[^\d.]/g,'')"
+                  @change="handleEdit(scope.$index, scope.row)"
                 ></el-input>
                 <span>{{scope.row.goodsNum}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="单价" width="120">
+              <template scope="scope">
+                <el-input
+                  size="small"
+                  v-model="scope.row.goodsPrice"
+                  placeholder="请输入单价"
+                  :onkeyup="scope.row.goodsPrice=scope.row.goodsPrice.replace(/[^\d.]/g,'')"
+                  @change="handleEdit(scope.$index, scope.row)"
+                ></el-input>
+                <span>{{scope.row.goodsPrice}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="金额" width="120">
+              <template scope="scope">
+                <el-input
+                  :disabled="true"
+                  size="small"
+                  v-model="scope.row.goodsMoney"
+                  placeholder="请输入金额"
+                ></el-input>
+                <span>{{scope.row.goodsMoney}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="税率(%)" width="120">
+              <template scope="scope">
+                <el-input
+                  :disabled="form.isRate==0"
+                  size="small"
+                  v-model="scope.row.goodsRate"
+                  placeholder="请输入税率"
+                  :onkeyup="scope.row.goodsRate=scope.row.goodsRate.replace(/[^\d.]/g,'')"
+                  @change="handleEdit(scope.$index, scope.row)"
+                ></el-input>
+                <span>{{scope.row.goodsRate}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="单价(含税)" width="120">
+              <template scope="scope">
+                <el-input
+                 :disabled="true"
+                  size="small"
+                  v-model="scope.row.goodsPriceRate"
+                  placeholder="请输入单价"
+                ></el-input>
+                <span>{{scope.row.goodsPriceRate}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="金额(含税)" width="120">
+              <template scope="scope">
+                <el-input
+                  size="small"
+                  :disabled="true"
+                  v-model="scope.row.goodsMoneyRate"
+                  placeholder="请输入金额"
+                ></el-input>
+                <span>{{scope.row.goodsMoneyRate}}</span>
               </template>
             </el-table-column>
             <!-- <el-table-column label="总重量" width="120">
@@ -290,7 +354,6 @@
                   size="small"
                   v-model="scope.row.remark"
                   placeholder="请输入备注"
-                  @change="handleEdit(scope.$index, scope.row)"
                 ></el-input>
                 <span>{{scope.row.remark}}</span>
               </template>
@@ -356,7 +419,7 @@ import {
 
 
 import goodsSelect from "./goodsSelect";
-import { getStallAll } from "@/api/system/stall";
+import { getStoreAll } from "@/api/system/store";
 import { getPersonAll } from "@/api/system/person";
 import { getToken } from "@/utils/auth";
 export default {
@@ -381,8 +444,8 @@ export default {
         // 上传的地址
         url: process.env.VUE_APP_BASE_API + "/common/upload",
       },
-      //业主列表
-      stallList: [],
+      //仓库列表
+      storeList: [],
       //供应商
       personList: [],
       // 遮罩层
@@ -426,22 +489,33 @@ export default {
         djTime: [
           { required: true, message: "单据日期不能为空", trigger: "blur" },
         ],
-        stallCode: [
-          { required: true, message: "摊位不能为空", trigger: "blur" },
+        storeCode: [
+          { required: true, message: "仓库不能为空", trigger: "blur" },
         ],
       },
     };
   },
   created() {
     this.getList();
-    getStallAll(this.queryParams).then(response => {
-        this.stallList = response.rows;
+    getStoreAll(this.queryParams).then(response => {
+        this.storeList = response.rows;
     });
     getPersonAll(this.queryParams).then(response => {
         this.personList = response.rows;
     });
   },
   methods: {
+    //是否含税
+    changeRate(data){
+      //不含税时置空税率跟恢复含税金额
+      if(data==0){
+          for(let i=0;i<this.tableData.length;i++){
+            this.tableData[i].goodsRate="";
+            this.tableData[i].goodsPriceRate= this.tableData[i].goodsPrice;
+            this.tableData[i].goodsMoneyRate= this.tableData[i].goodsMoney;
+          }
+      }
+    },
     //追加子表必填样式
     starAdd(obj) {
       if(obj.columnIndex === 0 || obj.columnIndex === 1 || obj.columnIndex === 3 || obj.columnIndex === 5) {
@@ -470,9 +544,9 @@ export default {
     //选择摊位
     selectStall(data){
       //根据摊位编码查找摊位名称
-      for(let i=0;i<this.stallList.length;i++){
-        if(this.stallList[i].stallCode==data){
-          this.form.stallName=this.stallList[i].stallName;
+      for(let i=0;i<this.storeList.length;i++){
+        if(this.storeList[i].storeCode==data){
+          this.form.storeName=this.storeList[i].storeName;
           break;
         }
       }
@@ -484,7 +558,24 @@ export default {
       console.log(row, event, column, event.currentTarget);
     },
     handleEdit(index, row) {
-      console.log(index, row);
+      //不含税
+      if(this.form.isRate==0){
+          if(row.goodsPrice!=""&&row.goodsPrice!=null&&row.goodsPrice!=undefined){
+             row.goodsPriceRate=row.goodsPrice;
+          }
+          if(row.goodsNum!=""&&row.goodsNum!=null&&row.goodsNum!=undefined&&row.goodsPrice!=""&&row.goodsPrice!=null&&row.goodsPrice!=undefined){
+            row.goodsMoney=(parseFloat(row.goodsNum)*parseFloat(row.goodsPrice)).toFixed(2);
+            row.goodsMoneyRate=row.goodsMoney;
+          }
+      }
+      //含税
+      if(this.form.isRate==1){
+          if(row.goodsNum!=""&&row.goodsNum!=null&&row.goodsNum!=undefined&&row.goodsPrice!=""&&row.goodsPrice!=null&&row.goodsPrice!=undefined&&row.goodsRate!=""&&row.goodsRate!=null&&row.goodsRate!=undefined){
+            row.goodsMoney=(parseFloat(row.goodsNum)*parseFloat(row.goodsPrice)).toFixed(2);
+            row.goodsMoneyRate=(((1+parseFloat(row.goodsRate)/100))*row.goodsMoney).toFixed(2);
+            row.goodsPriceRate=(parseFloat(row.goodsMoneyRate)/parseFloat(row.goodsNum)).toFixed(2);
+          }
+      }
     },
     handleEditPerson(data,index, row){
         //根据编码找产地
@@ -504,7 +595,7 @@ export default {
           sumMoney += parseFloat(this.tableData[i].goodsNum);
         }
       }
-      this.form.stallName = sumMoney.toString();
+      this.form.storeName = sumMoney.toString();
       console.log(this.form);
       // console.log(row.goodsNum);
     },
@@ -542,6 +633,11 @@ export default {
         goodsInfo.personCode = "";
         goodsInfo.personName = "";
         goodsInfo.goodsNum = "";
+        goodsInfo.goodsPrice = "";
+        goodsInfo.goodsMoney = "";
+        goodsInfo.goodsPriceRate = "";
+        goodsInfo.goodsMoneyRate = "";
+        goodsInfo.goodsRate = "";
        // goodsInfo.goodsWeight = "";
         goodsInfo.remark = "";
         this.tableData.push(goodsInfo);
@@ -566,6 +662,11 @@ export default {
         goodsInfo.personCode = "";
         goodsInfo.personName = "";
         goodsInfo.goodsNum = "";
+              goodsInfo.goodsPrice = "";
+        goodsInfo.goodsMoney = "";
+        goodsInfo.goodsPriceRate = "";
+        goodsInfo.goodsMoneyRate = "";
+        goodsInfo.goodsRate = "";
         //goodsInfo.goodsWeight = "";
         goodsInfo.remark = "";
         this.tableData.push(goodsInfo);
@@ -619,14 +720,15 @@ export default {
         id: undefined,
         djNumber: undefined,
         djTime: undefined,
-        stallCode: undefined,
-        stallName: undefined,
+        storeCode: undefined,
+        storeName: undefined,
         createBy: undefined,
         createTime: undefined,
         updateBy: undefined,
         updateTime: undefined,
         remark: undefined,
         fileName: undefined,
+        isRate:0,
         rows: "",
       };
       this.resetForm("form");
