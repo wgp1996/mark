@@ -1,5 +1,5 @@
 <template>
-  <el-row :gutter="40" class="panel-group">
+  <el-row :gutter="10" class="panel-group">
     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:20% !important">
       <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
         <div class="card-panel-icon-wrapper icon-people">
@@ -197,5 +197,13 @@ export default {
       float: none !important;
     }
   }
+}
+@media (max-width:1400px) {
+  .panel-group .card-panel .card-panel-icon-wrapper[data-v-0333a520] {
+    margin: 14px 0 0 0px;
+    padding:16px 5px
+  }
+
+
 }
 </style>
