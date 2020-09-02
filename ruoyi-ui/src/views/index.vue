@@ -3,8 +3,11 @@
 
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
 
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart :chart-data="lineChartData" />
+    <el-row style="background:#fff;padding:0px;margin-bottom:32px;">
+      <!-- <line-chart :chart-data="lineChartData" /> -->
+      <div style="text-align:center;background-color:#eee">
+        <img src="../assets/12345.jpg">
+      </div>
     </el-row>
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;height:340px">
       <line-img  />

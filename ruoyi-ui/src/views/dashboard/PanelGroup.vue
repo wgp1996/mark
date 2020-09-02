@@ -1,54 +1,73 @@
 <template>
   <el-row :gutter="40" class="panel-group">
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+    <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:20% !important">
       <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
         <div class="card-panel-icon-wrapper icon-people">
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            用户数量
+            上有农户数量
           </div>
-          <count-to :start-val="0" :end-val="325" :duration="2600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="1762" :duration="2600" class="card-panel-num" />
         </div>
       </div>
     </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+    <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:20% !important">
       <div class="card-panel" @click="handleSetLineChartData('messages')">
         <div class="card-panel-icon-wrapper icon-message">
-          <svg-icon icon-class="message" class-name="card-panel-icon" />
+          <!-- <svg-icon icon-class="message" class-name="card-panel-icon" /> -->
+          <img src="../../assets/count.png" style="width:50px;height:50px">
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            公告数量
+            农批商户数量
           </div>
-          <count-to :start-val="0" :end-val="58" :duration="3000" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="376" :duration="3000" class="card-panel-num" />
         </div>
       </div>
     </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+    <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:20% !important">
       <div class="card-panel" @click="handleSetLineChartData('purchases')">
         <div class="card-panel-icon-wrapper icon-money">
           <svg-icon icon-class="money" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            合同总额
+            农产品采购额
           </div>
-          <count-to :start-val="0" :end-val="12500" :duration="3200" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="376542.76" :duration="3200" class="card-panel-num" />
         </div>
       </div>
     </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+    <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:20% !important">
       <div class="card-panel" @click="handleSetLineChartData('shoppings')">
         <div class="card-panel-icon-wrapper icon-shopping">
-          <svg-icon icon-class="shopping" class-name="card-panel-icon" />
+          <!-- <svg-icon icon-class="shopping" class-name="card-panel-icon" /> -->
+          <img src="../../assets/dan.png" style="width:50px;height:50px">
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            合同数量
+            入场抽检单
           </div>
-          <count-to :start-val="0" :end-val="1" :duration="3600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="1732" :duration="3600" class="card-panel-num" />
+        </div>
+      </div>
+    </el-col>
+      <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:20% !important"> 
+      <div class="card-panel" @click="handleSetLineChartData('shoppings')">
+        <div class="card-panel-icon-wrapper icon-shopping">
+          <!-- <svg-icon icon-class="shopping" class-name="card-panel-icon" /> -->
+          <img src="../../assets/he.png" style="width:50px;height:50px">
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text">
+            农残合格率(%)
+            <br>
+           
+            <span style="display:inline-block;color:#666;font-size:20px;margin-top:15px">89.7%</span>
+          </div>
+          <!-- <count-to :start-val="0" :duration="3600" class="card-panel-num" />  -->
         </div>
       </div>
     </el-col>
