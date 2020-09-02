@@ -10,6 +10,15 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="单据名称" prop="djTime">
+        <el-input
+          v-model="queryParams.djTime"
+          placeholder="请输入单据名称"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
 
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -414,7 +423,6 @@ import {
 
 import goodsSelect from "./goodsSelect";
 import { getStoreAll } from "@/api/system/store";
-import { getInfo } from "@/api/login";
 import { getPersonAll } from "@/api/system/person";
 import { getToken } from "@/utils/auth";
 export default {
@@ -425,11 +433,7 @@ export default {
   data() {
     return {
       //用户信息
-      user:{
-        ownerCode:"",
-        ownerName:"",
-        ownerNameJc:"",
-      },
+      user:{},
       fileList: [],
       upload: {
         // 是否显示弹出层（用户导入）
@@ -504,55 +508,8 @@ export default {
     getPersonAll(this.queryParams).then(response => {
         this.personList = response.rows;
     });
-    getInfo().then(response => {
-        this.user.ownerCode=response.user.userName;
-        this.user.ownerName=response.user.nickName;
-        this.user.ownerNameJc=response.user.nickName;
-        this.form.djTime=this.getTime();
-    });
   },
   methods: {
-     editTime(i){
-      if(i<10){
-      i="0"+i;
-      }
-      return i;
-      },
-     getTime(){
-        var date=new Date();
-        var year=date.getFullYear();//得到当前年份
-        var month=this.editTime(date.getMonth()+1);//得到当前月份
-        var day=this.editTime(date.getDate());//得到当前几号
-        var hour=this.editTime(date.getHours());//得到当前小时
-        var min=this.editTime(date.getMinutes());//得到当前分钟
-        var seconds=this.editTime(date.getSeconds());//得到当前秒
-        var weeks=date.getDay();
-        var week;
-        switch(weeks){
-        case 0:
-        week="星期日";
-        break;
-        case 1:
-        week="星期一";
-        break;
-        case 2:
-        week="星期二";
-        break;
-        case 3:
-        week="星期三";
-        break;
-        case 4:
-        week="星期四";
-        break;
-        case 5:
-        week="星期五";
-        break;
-        case 6:
-        week="星期六";
-        break;
-        }
-          return year+"-"+month+"-"+day;
-        },
     //是否含税
     changeRate(data){
       //不含税时置空税率跟恢复含税金额
@@ -767,7 +724,7 @@ export default {
       this.form = {
         id: undefined,
         djNumber: undefined,
-        djTime: this.getTime(),
+        djTime: undefined,
         storeCode: undefined,
         storeName: undefined,
         createBy: undefined,
