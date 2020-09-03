@@ -9,7 +9,7 @@
         <img src="../assets/12345.jpg">
       </div>
     </el-row>
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;height:340px">
+    <el-row style="background:#fff;padding:16px 16px 16px;margin-bottom:32px;height:auto">
       <line-img  />
     </el-row>
     <el-row :gutter="32">
@@ -95,6 +95,9 @@ export default {
     padding: 16px 16px 0;
     margin-bottom: 32px;
   }
+}
+.el-carousel__container{
+  height:400px
 }
 
 @media (max-width:1024px) {
