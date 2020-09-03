@@ -179,23 +179,23 @@
             
           
           
-            <el-form-item label="备注信息" prop="createBy">
+            <el-form-item label="备注信息" prop="remark">
               <el-input v-model="form.remark" placeholder="请输入备注信息" />
             </el-form-item>
    
-           <el-form-item label="业户代码" prop="djNumber">
+           <el-form-item label="业户代码" class="changeBlue">
               <el-input v-model="user.ownerCode" :disabled="true" placeholder="业户代码" />
             </el-form-item>
-              <el-form-item label="业户名称" prop="djNumber">
+              <el-form-item label="业户名称" class="changeBlue">
               <el-input v-model="user.ownerName" :disabled="true" placeholder="业户名称" />
             </el-form-item>
-            <el-form-item label="单据编号" prop="djNumber">
+            <el-form-item label="单据编号" prop="djNumber" class="changeBlue">
               <el-input v-model="form.djNumber" :disabled="true" placeholder="后台自动生成" />
             </el-form-item>
-            <el-form-item label="制单人" prop="djNumber">
+            <el-form-item label="制单人" class="changeBlue">
               <el-input v-model="user.ownerNameJc" :disabled="true" placeholder="制单人" />
             </el-form-item>
-             <el-form-item label="制单日期" prop="djTime">
+             <el-form-item label="制单日期" prop="djTime" class="changeBlue">
               <el-input v-model="form.djTime" :disabled="true" placeholder="制单日期" />
             </el-form-item>
     
@@ -979,4 +979,8 @@ table th.star div::after {
     color: #606266;
     
 }
+.changeBlue .el-form-item__label{
+  color: #1890ff;
+}
+
 </style>
