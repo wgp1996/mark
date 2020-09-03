@@ -7,56 +7,64 @@
 				<div class="c-child" style=";height: 90%;">
 			
 					<img src="https://www.lczhuisu.cn:443/qdzq/images/a1.jpg" style="width: 100%;height: 100%"/>
-					<p style="font-size: 17px;height: 30px;line-height: 30px;color: white;margin-top:0px;text-align: center;background:#666">5%&nbsp;&nbsp;<span style="font-size: 15px;position:relative;bottom:2px">↓</span></p>
+          	<p style="font-size: 16px;;color:#fff;margin:0;height:20px;line-height:20px;text-align:center">3.25元/斤</p>
+					<p style="font-size: 15px;height: 30px;line-height: 30px;color: white;margin-top:0px;text-align: center;background:#666">5%&nbsp;&nbsp;<span style="font-size: 15px;position:relative;bottom:2px">↓</span></p>
 				</div>
 			</div>
 			<div class="common">
 				<div class="c-child" style="height: 90%;">
 				
 					<img src="https://www.lczhuisu.cn:443/qdzq/images/a2.jpg" style="width:100%;height: 100%"/>
-					<p style="font-size: 17px;height: 30px;line-height: 30px;color: white;margin-top:0px;text-align: center;background:#666">5%&nbsp;&nbsp;<span style="font-size: 15px;position:relative;bottom:2px">↓</span></p>
+          	<p style="font-size: 16px;;color:#fff;margin:0;height:20px;line-height:20px;text-align:center">3.25元/斤</p>
+					<p style="font-size: 15px;height: 30px;line-height: 30px;color: white;margin-top:0px;text-align: center;background:#666">5%&nbsp;&nbsp;<span style="font-size: 15px;position:relative;bottom:2px">↓</span></p>
 				</div>
 			</div>
 			<div class="common">
 					<div class="c-child" style="height: 90%;">
 				
 					<img src="https://www.lczhuisu.cn:443/qdzq/images/a3.jpg" style="width: 100%;height: 100%"/>
-					<p style="font-size: 17px;height: 30px;line-height: 30px;color: white;margin-top:0px;text-align: center;background:#666">5%&nbsp;&nbsp;<span style="font-size: 15px;position:relative;bottom:2px">↓</span></p>
+          	<p style="font-size: 16px;;color:#fff;margin:0;height:20px;line-height:20px;text-align:center">3.25元/斤</p>
+					<p style="font-size: 15px;height: 30px;line-height: 30px;color: white;margin-top:0px;text-align: center;background:#666">5%&nbsp;&nbsp;<span style="font-size: 15px;position:relative;bottom:2px">↓</span></p>
 				</div>
 			</div>
 			<div class="common">
 					<div class="c-child" style="height: 90%;">
 			
 				<img src="https://www.lczhuisu.cn:443/qdzq/images/a4.jpg" style="width:100%;height: 100%"/>
-					<p style="font-size: 17px;height: 30px;line-height: 30px;color: white;margin-top:0px;text-align: center;background:#666">5%&nbsp;&nbsp;<span style="font-size: 15px;position:relative;bottom:2px">↓</span></p>
+        	<p style="font-size: 16px;;color:#fff;margin:0;height:20px;line-height:20px;text-align:center">3.25元/斤</p>
+					<p style="font-size: 15px;height: 30px;line-height: 30px;color: white;margin-top:0px;text-align: center;background:#666">5%&nbsp;&nbsp;<span style="font-size: 15px;position:relative;bottom:2px">↓</span></p>
 				</div>
 			</div>
 			<div class="common">
 					<div class="c-child" style="height: 90%;">
 					
 					<img src="https://www.lczhuisu.cn:443/qdzq/images/a5.jpg" style="width: 100%;height: 100%"/>
-					<p style="font-size: 17px;height: 30px;line-height: 30px;color: white;margin-top:0px;text-align: center;background:#666">5%&nbsp;&nbsp;<span style="font-size: 15px;position:relative;bottom:2px">↓</span></p>
+          	<p style="font-size: 16px;;color:#fff;margin:0;height:20px;line-height:20px;text-align:center">3.25元/斤</p>
+					<p style="font-size: 15px;height: 30px;line-height: 30px;color: white;margin-top:0px;text-align: center;background:#666">5%&nbsp;&nbsp;<span style="font-size: 15px;position:relative;bottom:2px">↓</span></p>
 				</div>
 			</div>
 			<div class="common">
 					<div class="c-child" style="height: 90%;">
 				
 					<img src="https://www.lczhuisu.cn:443/qdzq/images/a6.jpg" style="width: 100%;height: 100%"/>
-					<p style="font-size: 17px;height: 30px;line-height: 30px;color: white;margin-top:0px;text-align: center;background:#666">5%&nbsp;&nbsp;<span style="font-size: 15px;position:relative;bottom:2px">↓</span></p>
+          	<p style="font-size: 16px;;color:#fff;margin:0;height:20px;line-height:20px;text-align:center">3.25元/斤</p>
+					<p style="font-size: 15px;height: 30px;line-height: 30px;color: white;margin-top:0px;text-align: center;background:#666">5%&nbsp;&nbsp;<span style="font-size: 15px;position:relative;bottom:2px">↓</span></p>
 				</div>
 			</div>
 				<div class="common">
 					<div class="c-child" style="height: 90%;">
 					
 					<img src="https://www.lczhuisu.cn:443/qdzq/images/a7.jpg" style="width: 100%;height: 100%"/>
-					<p style="font-size: 17px;height: 30px;line-height: 30px;color: white;margin-top:0px;text-align: center;background:#666">5%&nbsp;&nbsp;<span style="font-size: 15px;position:relative;bottom:2px">↓</span></p>
+          	<p style="font-size: 16px;;color:#fff;margin:0;height:20px;line-height:20px;text-align:center">3.25元/斤</p>
+					<p style="font-size: 15px;height: 30px;line-height: 30px;color: white;margin-top:0px;text-align: center;background:#666">5%&nbsp;&nbsp;<span style="font-size: 15px;position:relative;bottom:2px">↓</span></p>
 				</div>
 			</div>
 			<div class="common">
 					<div class="c-child" style="height: 90%;">
 				
 				<img src="https://www.lczhuisu.cn:443/qdzq/images/a8.jpg" style="width: 100%;height: 100%"/>
-					<p style="font-size: 17px;height: 30px;line-height: 30px;color: white;margin-top:0px;text-align: center;background:#666">5%&nbsp;&nbsp;<span style="font-size: 15px;position:relative;bottom:2px">↓</span></p>
+        	<p style="font-size: 16px;;color:#fff;margin:0;height:20px;line-height:20px;text-align:center">3.25元/斤</p>
+					<p style="font-size: 15px;height: 30px;line-height: 30px;color: white;margin-top:0px;text-align: center;background:#666">5%&nbsp;&nbsp;<span style="font-size: 15px;position:relative;bottom:2px">↓</span></p>
 				</div>
                      
 			</div>
