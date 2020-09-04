@@ -155,24 +155,23 @@
                  $(".middle").css("height",(widthing/7+80)+"px")
              this.bannerHeight = 400 ;
           },
-           changeState:function(){
-                 this.scollMove=setInterval(this.changeState,3000);
-                clearInterval(this.scollMove);
-         
+              changeState:function(){
+                     var that=this
+                    clearInterval(that.scollMove);
                    var offset = ($(".common").width())*-1;
                   $(".mobile").stop().animate({left:offset},"3000",function(){
                    var firstItem = $(".mobile .common").first();
                      $(".mobile").append(firstItem);
                       $(this).css("left","0px");
-                      this.scollMove=setInterval(this.changeState,3000); 
+                      that.scollMove=setInterval(that.changeState,3000); 
              });
            } 
         },
         created(){
            
         },
-      mounted() {
-       this.scollMove=setInterval(this.changeState,3000);
+       mounted() {
+          this.scollMove=setInterval(this.changeState,3000);
         
         var widthing=$(".middle").width();
        $(".common").css("width",widthing/7)
@@ -183,25 +182,26 @@
             
            var offset = ($(".common").width())*-1;
             // var scollMove=setInterval(this.changeState,3000);
-              clearInterval(this.scollMove);
+              clearInterval(that.scollMove);
              $(".mobile").stop().animate({left:offset},"3000",function(){
                 var firstItem = $(".mobile .common").first();
                 $(".mobile").append(firstItem);
                       $(this).css("left","0px");
-                       this.scollMove=setInterval(this.changeState,3000); 
+                        that.scollMove=setInterval(that.changeState,3000); 
                    });
           });
     
- 
+      var that=this
      $(" .but_left img").click(function(){
         // var scollMove=setInterval(this.changeState,3000);
       var offset = ($(".common").width())*-1;
-           clearInterval(this.scollMove);
+           clearInterval(that.scollMove);
           var lastItem = $(".mobile .common").last();
+         
         $(".mobile").prepend(lastItem);
           $(".mobile").css("left",offset);
             $(".mobile").animate({left:"0px"},"1000",function(){
-             this.scollMove=setInterval(this.changeState,3000); 
+             that.scollMove=setInterval(that.changeState,3000); 
             })
 
          });
