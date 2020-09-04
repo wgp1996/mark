@@ -16,6 +16,7 @@
                 </el-input>
                     <p class="p1">周公河农贸城食安追溯平台</p>
                     <p class="p2">ZhouGongHe Farmer's Wholesale Marke Food safety platform</p>
+                    <img src="../assets/image/erweima.png" class="erweima">
               </el-form-item>
               <el-form-item prop="password" class="spp">
                       <span>口令</span>
@@ -537,7 +538,7 @@ h1, h2, h3, h4, h5, h6 {
      font-size: 23px;
      font-weight: bold;
      position: absolute;
-     top: -80px;left:100px;
+     top: -93px;left:100px;
      width: 300px
 }
 .username .p2{
@@ -546,8 +547,18 @@ h1, h2, h3, h4, h5, h6 {
      font-size: 16px;
      font-weight: bold;
      position: absolute;
-     top: -55px;left:100px;
+     top: -63px;left:100px;
      width: 520px
+}
+.username .erweima{
+    margin: 1px;
+     color:#000;
+     font-size: 16px;
+     font-weight: bold;
+     position: absolute;
+     top: -95px;left:18px;
+     width: 70px;
+     height:70px
 }
 .yes_login{
     position: absolute !important;
