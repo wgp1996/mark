@@ -7,9 +7,9 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            上有农户数量
+            蔬菜农户数量
           </div>
-          <count-to :start-val="0" :end-val="1762" :duration="2600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="227" :duration="3000" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -21,9 +21,9 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            农批商户数量
+            蔬菜商户数量
           </div>
-          <count-to :start-val="0" :end-val="376" :duration="3000" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="272" :duration="3000" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -62,7 +62,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            农残合格率(%)
+            农残合格率
             <br>
            
             <span style="display:inline-block;color:#666;font-size:20px;margin-top:15px">89.7%</span>

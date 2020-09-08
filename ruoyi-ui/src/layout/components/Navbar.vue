@@ -3,10 +3,13 @@
     <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
-
+    
     <div class="right-menu">
+      
       <template v-if="device!=='mobile'">
+       <span style="display:inline-block;height:100%;position:relative;top:-15px;color:#5a5e66">用户名称:{{userName}}</span>
         <search id="header-search" class="right-menu-item" />
+         
 <!--         
         <el-tooltip content="源码地址" effect="dark" placement="bottom">
           <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />
@@ -17,11 +20,11 @@
         </el-tooltip> -->
 
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
-
+        
         <el-tooltip content="布局大小" effect="dark" placement="bottom">
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
-
+        
       </template>
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
@@ -54,7 +57,8 @@ import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
 import RuoYiGit from '@/components/RuoYi/Git'
 import RuoYiDoc from '@/components/RuoYi/Doc'
-
+// 后加的获取用户名
+import {getUserProfile} from "@/api/system/user";
 export default {
   components: {
     Breadcrumb,
@@ -65,6 +69,11 @@ export default {
     RuoYiGit,
     RuoYiDoc
   },
+  data() {
+    return {
+      userName:''
+    }
+  },
   computed: {
     ...mapGetters([
       'sidebar',
@@ -73,6 +82,7 @@ export default {
     ]),
     setting: {
       get() {
+      
         return this.$store.state.settings.showSettings
       },
       set(val) {
@@ -83,7 +93,20 @@ export default {
       }
     }
   },
+  created() {
+    this.getUser();
+  },
   methods: {
+    // 获取用户名
+    getUser() {
+      getUserProfile().then(response => {
+        console.log(response)
+        this.user = response.data;
+        this.userName = response.data.userName;
+        this.roleGroup = response.roleGroup;
+        this.postGroup = response.postGroup;
+      });
+    },
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
@@ -94,7 +117,10 @@ export default {
         type: 'warning'
       }).then(() => {
         this.$store.dispatch('LogOut').then(() => {
+          //  console.log( location)
+          //  return
           location.reload()
+          
         })
       })
     }
