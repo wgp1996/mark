@@ -6,6 +6,7 @@
 
     <div class="right-menu">
       <template v-if="device!=='mobile'">
+        <span style="color:#5a5e66;position:relative;top:-15px">用户名称:{{userName}}</span>
         <search id="header-search" class="right-menu-item" />
 <!--         
         <el-tooltip content="源码地址" effect="dark" placement="bottom">
@@ -15,7 +16,7 @@
         <el-tooltip content="文档地址" effect="dark" placement="bottom">
           <ruo-yi-doc id="ruoyi-doc" class="right-menu-item hover-effect" />
         </el-tooltip> -->
-
+        
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
 
         <el-tooltip content="布局大小" effect="dark" placement="bottom">
@@ -54,7 +55,7 @@ import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
 import RuoYiGit from '@/components/RuoYi/Git'
 import RuoYiDoc from '@/components/RuoYi/Doc'
-
+import { getUserProfile } from "@/api/system/user";
 export default {
   components: {
     Breadcrumb,
@@ -64,6 +65,12 @@ export default {
     Search,
     RuoYiGit,
     RuoYiDoc
+  },
+    data() {
+    return {
+      userName: '',
+    
+    };
   },
   computed: {
     ...mapGetters([
@@ -83,7 +90,17 @@ export default {
       }
     }
   },
+  created() {
+    this.getUser();
+  },
   methods: {
+   getUser() {
+      getUserProfile().then(response => {
+        console.log(response)
+        this.userName = response.data.userName;
+     
+      });
+    },
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
@@ -97,7 +114,8 @@ export default {
           location.reload()
         })
       })
-    }
+    },
+    
   }
 }
 </script>
