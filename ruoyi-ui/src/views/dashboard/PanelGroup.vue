@@ -7,7 +7,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            蔬菜农户数量
+            蔬菜商户数量
           </div>
           <count-to :start-val="0" :end-val="227" :duration="3000" class="card-panel-num" />
         </div>
@@ -21,7 +21,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            蔬菜商户数量
+            水果商户数量
           </div>
           <count-to :start-val="0" :end-val="272" :duration="3000" class="card-panel-num" />
         </div>

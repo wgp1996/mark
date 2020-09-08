@@ -119,8 +119,10 @@ export default {
         this.$store.dispatch('LogOut').then(() => {
           //  console.log( location)
           //  return
-          location.reload()
-          
+          //location.reload()
+          //alert("s")
+         // return
+          location.href="http://keboo.cn"
         })
       })
     }

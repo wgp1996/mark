@@ -1,19 +1,19 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="100px">
-      <el-form-item label="业主编号" prop="ownerCode">
+      <el-form-item label="业户编号" prop="ownerCode">
         <el-input
           v-model="queryParams.ownerCode"
-          placeholder="请输入业主编号"
+          placeholder="请输入业户编号"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="业主名称" prop="ownerName">
+      <el-form-item label="业户名称" prop="ownerName">
         <el-input
           v-model="queryParams.ownerName"
-          placeholder="请输入业主名称"
+          placeholder="请输入业户名称"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -69,8 +69,8 @@
     <el-table v-loading="loading" :data="ownerList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="所属市场" align="center" prop="markTypeName" />
-      <el-table-column label="业主编号" align="center" prop="ownerCode" />
-      <el-table-column label="业主名称" align="center" prop="ownerName" width="300"/>
+      <el-table-column label="业户编号" align="center" prop="ownerCode" />
+      <el-table-column label="业户名称" align="center" prop="ownerName" width="300"/>
       <el-table-column label="信用代码/身份证号" align="center" prop="ownerPersonId" />
       <el-table-column label="联系人" align="center" prop="ownerLxr" />
       <el-table-column label="电话" align="center" prop="ownerLxrPhone" />
@@ -112,11 +112,11 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="140px">
            <el-tabs v-model="activeName" >
           <el-tab-pane label="基础信息" name="first">
-        <el-form-item label="业主编号" prop="ownerCode">
-          <el-input v-model="form.ownerCode" placeholder="请输入业主编号" />
+        <el-form-item label="业户编号" prop="ownerCode">
+          <el-input v-model="form.ownerCode" placeholder="请输入业户编号" />
         </el-form-item>
-        <el-form-item label="业主名称" prop="ownerName">
-          <el-input v-model="form.ownerName" placeholder="请输入业主名称" />
+        <el-form-item label="业户名称" prop="ownerName">
+          <el-input v-model="form.ownerName" placeholder="请输入业户名称" />
         </el-form-item>
          <el-form-item label="关联账号" prop="userName">
           <el-input v-model="form.userName" placeholder="请输入关联账号" />
