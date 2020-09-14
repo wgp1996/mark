@@ -97,8 +97,8 @@
       <el-table-column label="进货商品" align="center" prop="goodsName" />
       <el-table-column label="单位" align="center" prop="goodsDw" />
       <el-table-column label="产地" align="center" prop="goodsAddress" />
-      <el-table-column label="制单人" align="center" prop="createBy" />
-      <el-table-column label="制单日期" align="center" prop="createTime" />
+      <!-- <el-table-column label="制单人" align="center" prop="createBy" />
+      <el-table-column label="制单日期" align="center" prop="createTime" /> -->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -266,13 +266,14 @@
                 <span>{{scope.row.goodsNum}}</span>
               </template>
             </el-table-column>
+            <!-- :onkeyup="scope.row.goodsPrice=scope.row.goodsPrice.replace(/[^\d.]/g,'')" -->
             <el-table-column label="单价" width="120">
               <template scope="scope">
                 <el-input
                   size="small"
                   v-model="scope.row.goodsPrice"
                   placeholder="请输入单价"
-                  :onkeyup="scope.row.goodsPrice=scope.row.goodsPrice.replace(/[^\d.]/g,'')"
+                  
                   @change="handleEdit(scope.$index, scope.row)"
                 ></el-input>
                 <span>{{scope.row.goodsPrice}}</span>
@@ -296,7 +297,6 @@
                   size="small"
                   v-model="scope.row.goodsRate"
                   placeholder="请输入税率"
-                  :onkeyup="scope.row.goodsRate=scope.row.goodsRate.replace(/[^\d.]/g,'')"
                   @change="handleEdit(scope.$index, scope.row)"
                 ></el-input>
                 <span>{{scope.row.goodsRate}}</span>
@@ -477,9 +477,9 @@ export default {
         personCode: [
           { required: true, message: "供应商不能为空", trigger: "blur" },
         ],
-        storeCode: [
-          { required: true, message: "仓库信息不能为空", trigger: "blur" },
-        ],
+        // storeCode: [
+        //   { required: true, message: "仓库信息不能为空", trigger: "blur" },
+        // ],
       },
     };
   },
@@ -554,7 +554,7 @@ export default {
     },
     //追加子表必填样式
     starAdd(obj) {
-      if(obj.columnIndex === 0 || obj.columnIndex === 4 || obj.columnIndex === 3 || obj.columnIndex === 5|| obj.columnIndex === 6) {
+      if(obj.columnIndex === 0 || obj.columnIndex === 3) {
           return 'star';
       }
     },
@@ -843,9 +843,9 @@ export default {
         for (let i = 0; i < this.tableData.length; i++) {
           if (
              this.tableData[i].goodsCode == "" ||
-             this.tableData[i].goodsPrice == "" ||
-            this.tableData[i].goodsMoney == "" ||
-            this.tableData[i].goodsRate == "" ||
+             //this.tableData[i].goodsPrice == "" ||
+             //this.tableData[i].goodsMoney == "" ||
+            //this.tableData[i].goodsRate == "" ||
             this.tableData[i].goodsNum == ""
           ) {
             this.msgError("检查明细信息必填项!");
