@@ -146,15 +146,15 @@
                   :label="item.personName"
                   :value="item.personCode"
                 >
+                  <span style="float: left;width:50%">{{ item.personCode }}</span>
                   <span style="float: left;width:50%">{{ item.personName }}</span>
-                   <span style="float: left;width:50%">{{ item.personCode }}</span>
                 </el-option>
               </el-select>
             </el-form-item> 
             <el-form-item label="仓库信息" prop="storeCode">
               <el-select
                 v-model="form.storeCode"
-                placeholder="请选择仓库"
+                :placeholder="placeholderone"
                 filterable
                 @change="selectStore"
                 style="width:100%"
@@ -428,8 +428,8 @@ export default {
         // 上传的地址
         url: process.env.VUE_APP_BASE_API + "/common/upload",
       },
-      
-    
+      // 仓库信息默认
+      placeholderone:'',
       //业主列表
       storeList: [],
       //供应商
@@ -487,10 +487,16 @@ export default {
     this.getList();
      getCkAll(this.queryParams).then(response => {
         this.storeList = response.rows;
+        // console.log(this.storeList)
+           for(let i=0;i<this.storeList.length;i++){
+            this.placeholderone=this.storeList[0].ckName;
+              //  console.log(this.placeholderone)
+            
+          }
     });
     getPersonAll(this.queryParams).then(response => {
         this.personList = response.rows;
-        console.log(this.personList)
+        // console.log(this.personList)
     });
      getInfo().then(response => {
         this.user.ownerCode=response.user.userName;

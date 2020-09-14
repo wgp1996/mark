@@ -128,7 +128,7 @@
             <el-form-item label="仓库信息" prop="storeCode">
               <el-select
                 v-model="form.storeCode"
-                placeholder="请选择仓库"
+                :placeholder="placeholderone"
                 filterable
                 @change="selectStore"
                 style="width:100%"
@@ -174,7 +174,7 @@
         <el-tab-pane label="明细信息" name="second">
           <el-row :gutter="10" class="mb8">
             <el-col :span="1.5">
-              <el-button type="primary" icon="el-icon-plus" size="mini" @click="goodsSelect">新增商品</el-button>
+              <el-button type="primary" icon="el-icon-plus" size="mini" @click="goodsSelect">新增供应商</el-button>
             </el-col>
             <!-- <el-col :span="1.5">
         <el-button
@@ -195,7 +195,7 @@
             @row-click="handleCurrentChange"
             :header-cell-class-name="starAdd"
           >
-              <el-table-column prop="personCode" label="选择供应商" width="200">
+              <!-- <el-table-column prop="personCode" label="选择供应商" width="200">
                <template scope="scope">
                  <el-select
                 v-model="scope.row.personCode"
@@ -215,6 +215,17 @@
               </el-select>
               <span  style="position: relative;top:-13px;">{{scope.row.personName}}</span>
               </template>
+            </el-table-column> -->
+            <el-table-column prop="personCode" label="供应商名称" width="200">
+              <template scope="scope">
+                <el-input
+                  :disabled="true"
+                  size="small"
+                  v-model="scope.row.personCode"
+                  placeholder="请输入内容"
+                ></el-input>
+                <span>{{scope.row.personCode}}</span>
+              </template>
             </el-table-column>
             <!-- <el-table-column prop="goodsCode" label="商品编码" width="150" :v-show="false">
               <template scope="scope">
@@ -230,14 +241,49 @@
             </el-table-column> -->
             <el-table-column prop="goodsName" label="商品名称" width="150">
               <template scope="scope">
-                <el-input
+                <!-- <el-input
                   :disabled="true"
                   size="small"
                   v-model="scope.row.goodsName"
                   placeholder="请输入内容"
                 ></el-input>
-                <span>{{scope.row.goodsName}}</span>
+                <span>{{scope.row.goodsName}}</span> -->
+                <el-select
+                v-model="scope.row.goodsName"
+                placeholder="选择商品"
+                filterable
+                @change="handleEditPerson($event,scope.$index, scope.row)"
+                style="width:100%"
+                >
+                <el-option
+                  v-for="item in goodsList"
+                  :key="item.goodsCode"
+                  :label="item.goodsName"
+                  :value="item.goodsCode"
+                >
+                  <span style="float: left;width:100%">{{ item.goodsName }}</span>
+                </el-option>
+              </el-select>
               </template>
+                   <!-- <template scope="scope">
+                 <el-select
+                v-model="scope.row.personCode"
+                placeholder="选择供应商"
+                filterable
+                @change="handleEditPerson($event,scope.$index, scope.row)"
+                style="width:100%"
+                >
+                <el-option
+                  v-for="item in personList"
+                  :key="item.personCode"
+                  :label="item.personName"
+                  :value="item.personCode"
+                >
+                  <span style="float: left;width:100%">{{ item.personName }}</span>
+                </el-option>
+              </el-select>
+              <span  style="position: relative;top:-13px;">{{scope.row.personName}}</span>
+              </template> -->
             </el-table-column>
              <el-table-column prop="goodsDw" label="单位" width="120">
               <template scope="scope">
@@ -394,7 +440,7 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
-    <goods-select v-if="selectGoodsDialog" ref="selectGoods" @selectData="selectData"  @selectDataMore="selectDataMore"></goods-select>
+    <goods-selects v-if="selectGoodsDialog" ref="selectGoods" @selectData="selectData"  @selectDataMore="selectDataMore"></goods-selects>
   </div>
 </template>
 
@@ -413,15 +459,16 @@ import {
 } from "@/api/system/cgrkd";
 
 
-import goodsSelect from "./goodsSelect";
+import goodsSelects from "./goodsSelects";
 import { getCkAll } from "@/api/system/ck";
 import { getInfo } from "@/api/login";
 import { getPersonAll } from "@/api/system/person";
 import { getToken } from "@/utils/auth";
+import { listOwnerGoods } from "@/api/system/ownerGoods";
 export default {
   name: "Lease",
   components: {
-    goodsSelect,
+    goodsSelects,
   },
   data() {
     return {
@@ -465,7 +512,8 @@ export default {
       total: 0,
       //子表数据
       tableData: [],
-
+        // 仓库信息默认
+      placeholderone:'',
       // 主表信息表格数据
       leaseList: [],
       // 弹出层标题
@@ -501,9 +549,15 @@ export default {
     this.getList();
     getCkAll(this.queryParams).then(response => {
         this.storeList = response.rows;
+          for(let i=0;i<this.storeList.length;i++){
+            this.placeholderone=this.storeList[0].ckName;
+              //  console.log(this.placeholderone)
+            
+          }
     });
     getPersonAll(this.queryParams).then(response => {
         this.personList = response.rows;
+        console.log(this.personList)
     });
     getInfo().then(response => {
         this.user.ownerCode=response.user.userName;
@@ -511,6 +565,13 @@ export default {
         this.user.ownerNameJc=response.user.nickName;
         this.form.djTime=this.getTime();
     });
+       listOwnerGoods(this.queryParams).then(response => {
+        console.log(response)
+         this.goodsList = response.rows;
+        // console.log( this.goodsList )
+        // this.total = response.total;
+        // this.loading = false;
+      });
   },
   methods: {
      editTime(i){
@@ -629,10 +690,11 @@ export default {
     },
     handleEditPerson(data,index, row){
         //根据编码找产地
-        for(let i=0;i<this.personList.length;i++){
-          if(this.personList[i].personCode==data){
-            row.goodsAddress=this.personList[i].personGoodsAddress;
-            row.personName=this.personList[i].personName;
+        for(let i=0;i<this.goodsList.length;i++){
+          console.log(this.goodsList[i].goodsCode==data)
+          if(this.goodsList[i].goodsCode==data){
+           row.goodsAddress=this.goodsList[i].goodsAddress;
+            row.goodsDw=this.goodsList[i].goodsDw;
             break;
           }
         }
@@ -676,11 +738,12 @@ export default {
         //     return;
         //   }
         // }
+       
         let goodsInfo = new Object();
         goodsInfo.goodsCode = row.goodsCode;
         goodsInfo.goodsName = row.goodsName;
         goodsInfo.goodsDw = row.goodsDw;
-        goodsInfo.personCode = "";
+        goodsInfo.personCode = row.personName;
         goodsInfo.personName = "";
         goodsInfo.goodsNum = "";
         goodsInfo.goodsPrice = "";
@@ -705,11 +768,12 @@ export default {
         //     return;
         //   }
         // }
+         console.log(row)
         let goodsInfo = new Object();
         goodsInfo.goodsCode = row.goodsCode;
         goodsInfo.goodsName = row.goodsName;
         goodsInfo.goodsDw = row.goodsDw;
-        goodsInfo.personCode = "";
+        goodsInfo.personCode =row.personName ;
         goodsInfo.personName = "";
         goodsInfo.goodsNum = "";
               goodsInfo.goodsPrice = "";
@@ -740,11 +804,15 @@ export default {
               goodsInfo.goodsCode = row.goodsCode;
               goodsInfo.goodsName = row.goodsName;
               goodsInfo.goodsDw = row.goodsDw;
-              goodsInfo.personCode = "";
+              goodsInfo.personCode = row.personName;
               goodsInfo.personName = "";
               goodsInfo.goodsNum = "";
-             // goodsInfo.goodsWeight = "";
+                 goodsInfo.goodsPrice = "";
+                  goodsInfo.goodsMoney = "";
+                  goodsInfo.goodsPriceRate = "";
+                  goodsInfo.goodsMoneyRate = "";
               goodsInfo.remark = "";
+               goodsInfo.goodsRate = "0";
               this.tableData.push(goodsInfo);
         }
         this.$refs.selectGoods.visible = false;

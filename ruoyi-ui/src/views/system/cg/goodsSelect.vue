@@ -183,6 +183,7 @@ export default {
      //  this.getTreeselect();
       listOwnerGoods(this.queryParams).then(response => {
         this.goodsList = response.rows;
+        console.log( this.goodsList )
         this.total = response.total;
         this.loading = false;
       });
