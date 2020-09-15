@@ -62,7 +62,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleBind"
-          v-hasPermi="['system:shopLabel:remove']"
+          v-hasPermi="['system:shopLabel:bind']"
         >绑定网关</el-button>
       </el-col>
       <el-col :span="1.5">
