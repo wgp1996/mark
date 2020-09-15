@@ -125,7 +125,7 @@
         <el-tab-pane label="基础信息" name="first">
           <el-form ref="form" :model="form" :rules="rules" label-width="120px">
           
-            <el-form-item label="仓库信息" prop="storeCode">
+            <!-- <el-form-item label="仓库信息" prop="storeCode">
               <el-select
                 v-model="form.storeCode"
                 :placeholder="placeholderone"
@@ -144,7 +144,7 @@
                   <span style="float: left;width:50%">{{ item.ckName }}</span>
                 </el-option>
               </el-select>
-            </el-form-item>
+            </el-form-item> -->
              <el-form-item label="是否含税" prop="isRate" >
               <el-radio-group v-model="form.isRate" @change="changeRate">
                   <el-radio :label="0" >否</el-radio>
@@ -174,7 +174,7 @@
         <el-tab-pane label="明细信息" name="second">
           <el-row :gutter="10" class="mb8">
             <el-col :span="1.5">
-              <el-button type="primary" icon="el-icon-plus" size="mini" @click="goodsSelect">新增供应商</el-button>
+              <el-button type="primary" icon="el-icon-plus" size="mini" @click="goodsSelect">新增业户</el-button>
             </el-col>
             <!-- <el-col :span="1.5">
         <el-button
@@ -216,7 +216,27 @@
               <span  style="position: relative;top:-13px;">{{scope.row.personName}}</span>
               </template>
             </el-table-column> -->
-            <el-table-column prop="personCode" label="供应商名称" width="200">
+            <el-table-column prop="storeid" label="门店信息" width="200">
+              <template scope="scope">
+             <el-select
+                v-model="scope.row.storeid"
+                placeholder="选择门店"
+                filterable
+                @change="handleEditShop($event,scope.$index, scope.row)"
+                style="width:100%"
+                >
+                <el-option
+                  v-for="item in shopList"
+                  :key="item.storeid"
+                  :label="item.shopName"
+                  :value="item.storeid"
+                >
+                  <span style="float: left;width:100%">{{ item.shopName }}</span>
+                </el-option>
+              </el-select>
+                 </template>
+            </el-table-column>
+            <el-table-column prop="personCode" label="业户名称" width="200">
               <template scope="scope">
                 <el-input
                   :disabled="true"
@@ -465,6 +485,7 @@ import { getInfo } from "@/api/login";
 import { getPersonAll } from "@/api/system/person";
 import { getToken } from "@/utils/auth";
 import { goodsList } from "@/api/system/ownerGoods";
+import { getShopList } from "@/api/system/shopInfo";
 export default {
   name: "Lease",
   components: {
@@ -495,6 +516,8 @@ export default {
       },
       //仓库列表
       storeList: [],
+      // 门店信息
+      shopList:[],
       //供应商
       personList: [],
       // 遮罩层
@@ -557,7 +580,7 @@ export default {
     });
     getPersonAll(this.queryParams).then(response => {
         this.personList = response.rows;
-        console.log(this.personList)
+        // console.log(this.personList)
     });
     getInfo().then(response => {
         this.user.ownerCode=response.user.userName;
@@ -565,8 +588,11 @@ export default {
         this.user.ownerNameJc=response.user.nickName;
         this.form.djTime=this.getTime();
     });
+      getShopList(this.queryParams).then(response => {
+        this.shopList = response.rows;
+    });
        goodsList(this.queryParams).then(response => {
-        console.log(response)
+        // console.log(response)
          this.goodsList = response.rows;
         // console.log( this.goodsList )
         // this.total = response.total;
@@ -632,6 +658,15 @@ export default {
       if(obj.columnIndex === 0 || obj.columnIndex === 1 || obj.columnIndex === 4 ) {
           return 'star';
       }
+    },
+    handleEditShop(data,index, row){
+        //根据编码名称
+        for(let i=0;i<this.shopList.length;i++){
+          if(this.shopList[i].storeid==data){
+            row.shopName=this.shopList[i].shopName;
+            break;
+          }
+        }
     },
     clickFile(file) {
       if (file.url != "") {
@@ -743,7 +778,7 @@ export default {
         goodsInfo.goodsCode = row.goodsCode;
         goodsInfo.goodsName = row.goodsName;
         goodsInfo.goodsDw = row.goodsDw;
-        goodsInfo.personCode = row.personName;
+        goodsInfo.personCode = row.ownerName;
         goodsInfo.personName = "";
         goodsInfo.goodsNum = "";
         goodsInfo.goodsPrice = "";
@@ -759,6 +794,7 @@ export default {
     },
     //批量选择数据
     selectData(row) {
+
       //  this.selectGoodsDialog=false;
       this.$nextTick(() => {
         //检查是否存在重复数据
@@ -768,12 +804,12 @@ export default {
         //     return;
         //   }
         // }
-         console.log(row)
+        
         let goodsInfo = new Object();
         goodsInfo.goodsCode = row.goodsCode;
         goodsInfo.goodsName = row.goodsName;
         goodsInfo.goodsDw = row.goodsDw;
-        goodsInfo.personCode =row.personName ;
+        goodsInfo.personCode =row.ownerName ;
         goodsInfo.personName = "";
         goodsInfo.goodsNum = "";
               goodsInfo.goodsPrice = "";
@@ -804,7 +840,7 @@ export default {
               goodsInfo.goodsCode = row.goodsCode;
               goodsInfo.goodsName = row.goodsName;
               goodsInfo.goodsDw = row.goodsDw;
-              goodsInfo.personCode = row.personName;
+              goodsInfo.personCode = row.ownerName;
               goodsInfo.personName = "";
               goodsInfo.goodsNum = "";
                  goodsInfo.goodsPrice = "";

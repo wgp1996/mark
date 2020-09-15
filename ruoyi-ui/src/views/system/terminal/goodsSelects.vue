@@ -28,7 +28,7 @@
       </el-col> -->
      <el-col :span="24" :xs="24">
     <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
-      <el-form-item label="商品名称" prop="goodsName">
+      <el-form-item label="业户名称" prop="goodsName">
         <el-input style="width:200px"
           v-model="queryParams.goodsName"
           placeholder="请输入商品名称"
@@ -37,7 +37,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="商品编码" prop="goodsCode">
+      <el-form-item label="业户编码" prop="goodsCode">
         <el-input style="width:200px"
           v-model="queryParams.goodsCode"
           placeholder="请输入摊位编码"
@@ -59,11 +59,11 @@
     
     <el-table v-loading="loading" :data="goodsList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="供应商编码" align="center" prop="personCode" />
-      <el-table-column label="供应商名称" align="center" prop="personName" />
+      <el-table-column label="业户编码" align="center" prop="ownerCode" />
+      <el-table-column label="业户名称" align="center" prop="ownerName" />
       <!-- <el-table-column label="商品规格" align="center" prop="goodsGg" /> -->
-      <el-table-column label="供应商地址" align="center" prop="personGoodsAddress" />
-      <el-table-column label="产地" align="center" prop="personAddress" />
+      <el-table-column label="信用代码/身份证号" align="center" prop="ownerPersonId" />
+      <!-- <el-table-column label="产地" align="center" prop="personAddress" /> -->
       <!-- <el-table-column prop="personName" label="选择供应商" width="200">
                <template scope="scope">
                  <el-select
@@ -116,6 +116,8 @@ import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import { getPersonAll } from "@/api/system/person";
 import { listPerson  } from "@/api/system/person";
+import { ownerList } from "@/api/system/owner";
+import { listOwner} from "@/api/system/owner";
 export default {
   name: "Stall",
   components: { Treeselect },
@@ -162,6 +164,8 @@ export default {
         stallLeaseholder: undefined,
         stallNote: undefined,
         createUser: undefined,
+        goodsName:undefined,
+       goodsCode:undefined,
       },
       // 表单参数
       form: {},
@@ -211,13 +215,20 @@ export default {
       // });
      //  this.getTreeselect();
       listOwnerGoods(this.queryParams).then(response => {
-        console.log(response)
+        // console.log(response)
         // this.goodsList = response.rows;
         // console.log( this.goodsList )
         // this.total = response.total;
         // this.loading = false;
       });
-        listPerson(this.queryParams).then(response => {
+      //   listPerson(this.queryParams).then(response => {
+      //   this.goodsList = response.rows;
+      //   console.log( this.goodsList )
+      //   this.total = response.total;
+      //   this.loading = false;
+      // });
+        listOwner(this.queryParams).then(response => {
+          console.log(response)
         this.goodsList = response.rows;
         console.log( this.goodsList )
         this.total = response.total;
