@@ -91,10 +91,10 @@
         </template>
       </el-table-column> -->
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="业户代码" align="center" prop="createBy" />
-      <el-table-column label="业户名称" align="center" prop="createName" />
-      <el-table-column label="进货日期" align="center" prop="djTime" />
-      <el-table-column label="进货商品" align="center" prop="goodsName" />
+      <el-table-column label="业户代码" align="center" prop="personCode" />
+      <el-table-column label="业户名称" align="center" prop="personName" />
+      <el-table-column label="采购日期" align="center" prop="djTime" />
+      <el-table-column label="采购商品" align="center" prop="goodsName" />
       <el-table-column label="单位" align="center" prop="goodsDw" />
       <el-table-column label="产地" align="center" prop="goodsAddress" />
       <!-- <el-table-column label="制单人" align="center" prop="createBy" />
@@ -132,26 +132,26 @@
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="基础信息" name="first">
           <el-form ref="form" :model="form" :rules="rules" label-width="120px">
-             <el-form-item label="供应商" prop="personCode">
+             <el-form-item label="业户信息" prop="personCode">
               <el-select
                 v-model="form.personCode"
-                placeholder="请选择供应商"
+                placeholder="请选择业户"
                 filterable
                  style="width:100%"
                 @change="selectPerson"
               >
                 <el-option
                   v-for="item in personList"
-                  :key="item.personCode"
-                  :label="item.personName"
-                  :value="item.personCode"
+                  :key="item.ownerCode"
+                  :label="item.ownerName"
+                  :value="item.ownerCode"
                 >
-                  <span style="float: left;width:50%">{{ item.personName }}</span>
-                   <span style="float: left;width:50%">{{ item.personCode }}</span>
+                  <span style="float: left;width:50%">{{ item.ownerName }}</span>
+                   <span style="float: left;width:50%">{{ item.ownerCode }}</span>
                 </el-option>
               </el-select>
             </el-form-item> 
-            <el-form-item label="仓库信息" prop="storeCode">
+            <!-- <el-form-item label="仓库信息" prop="storeCode">
               <el-select
                 v-model="form.storeCode"
                 placeholder="请选择仓库"
@@ -170,7 +170,7 @@
                   <span style="float: left;width:50%">{{ item.ckName }}</span>
                 </el-option>
               </el-select>
-            </el-form-item>
+            </el-form-item> -->
               <el-form-item label="是否含税" prop="isRate">
                  <el-radio-group v-model="form.isRate" @change="changeRate">
                   <el-radio :label="0" >否</el-radio>
@@ -217,7 +217,26 @@
             @row-click="handleCurrentChange"
             :header-cell-class-name="starAdd"
           >
-           
+            <el-table-column prop="storeid" label="门店信息" width="200">
+              <template scope="scope">
+             <el-select
+                v-model="scope.row.storeid"
+                placeholder="选择门店"
+                filterable
+                @change="handleEditShop($event,scope.$index, scope.row)"
+                style="width:100%"
+                >
+                <el-option
+                  v-for="item in shopList"
+                  :key="item.storeid"
+                  :label="item.shopName"
+                  :value="item.storeid"
+                >
+                  <span style="float: left;width:100%">{{ item.shopName }}</span>
+                </el-option>
+              </el-select>
+                 </template>
+            </el-table-column>
             <el-table-column prop="goodsName" label="商品名称" width="150">
               <template scope="scope">
                 <el-input
@@ -229,7 +248,7 @@
                 <span>{{scope.row.goodsName}}</span>
               </template>
             </el-table-column>
-              <el-table-column label="产地" width="200">
+              <!-- <el-table-column label="产地" width="200">
               <template scope="scope">
                 <el-input
                   :disabled="true"
@@ -240,7 +259,7 @@
                 ></el-input>
                 <span>{{scope.row.goodsAddress}}</span>
               </template>
-            </el-table-column>
+            </el-table-column> -->
              <el-table-column prop="goodsDw" label="单位" width="120">
               <template scope="scope">
                 <el-input
@@ -391,11 +410,11 @@ import {
   exportCgrkdSingle,
   getOwnerList,
 } from "@/api/system/cgrkdSingle";
-
-
+import { getShopList } from "@/api/system/shopInfo";
 import goodsSelect from "./goodsSelect";
 import { getCkAll } from "@/api/system/ck";
 import { getPersonAll } from "@/api/system/person";
+import { ownerList } from "@/api/system/owner";
 import { getToken } from "@/utils/auth";
 import { getInfo } from "@/api/login";
 export default {
@@ -413,6 +432,7 @@ export default {
       },
        //仓库列表
       storeList: [],
+      shopList:[],
       fileList: [],
       upload: {
         // 是否显示弹出层（用户导入）
@@ -475,7 +495,7 @@ export default {
       //     { required: true, message: "单据日期不能为空", trigger: "blur" },
       //   ],
         personCode: [
-          { required: true, message: "供应商不能为空", trigger: "blur" },
+          { required: true, message: "业户不能为空", trigger: "blur" },
         ],
         // storeCode: [
         //   { required: true, message: "仓库信息不能为空", trigger: "blur" },
@@ -488,8 +508,11 @@ export default {
      getCkAll(this.queryParams).then(response => {
         this.storeList = response.rows;
     });
-    getPersonAll(this.queryParams).then(response => {
-        this.personList = response.rows;
+    getShopList(this.queryParams).then(response => {
+        this.shopList = response.rows;
+    });
+    ownerList(this.queryParams).then(response => {
+        this.personList = response.data;
         console.log(this.personList)
     });
      getInfo().then(response => {
@@ -554,7 +577,7 @@ export default {
     },
     //追加子表必填样式
     starAdd(obj) {
-      if(obj.columnIndex === 0 || obj.columnIndex === 3) {
+      if(obj.columnIndex === 0 ||obj.columnIndex === 1 || obj.columnIndex === 3) {
           return 'star';
       }
     },
@@ -577,8 +600,8 @@ export default {
     selectPerson(data){
          //根据编码找产地
         for(let i=0;i<this.personList.length;i++){
-          if(this.personList[i].personCode==data){
-            this.form.personName=this.personList[i].personName;
+          if(this.personList[i].ownerCode==data){
+            this.form.personName=this.personList[i].ownerName;
             break;
           }
         }
@@ -628,12 +651,18 @@ export default {
     },
     handleEditPerson(data,index, row){
         //根据编码找产地
-      
         for(let i=0;i<this.personList.length;i++){
-          
-          if(this.personList[i].personCode==data){
-           row.goodsAddress=this.personList[i].personGoodsAddress;
-            row.personName=this.personList[i].personName;
+          if(this.personList[i].ownerCode==data){
+            row.personName=this.personList[i].ownerName;
+            break;
+          }
+        }
+    },
+   handleEditShop(data,index, row){
+        //根据编码名称
+        for(let i=0;i<this.shopList.length;i++){
+          if(this.shopList[i].storeid==data){
+            row.shopName=this.shopList[i].shopName;
             break;
           }
         }
@@ -842,6 +871,7 @@ export default {
         //检查子表信息
         for (let i = 0; i < this.tableData.length; i++) {
           if (
+             this.tableData[i].storeid == "" ||
              this.tableData[i].goodsCode == "" ||
              //this.tableData[i].goodsPrice == "" ||
              //this.tableData[i].goodsMoney == "" ||

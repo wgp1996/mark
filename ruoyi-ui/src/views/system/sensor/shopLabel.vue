@@ -43,7 +43,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['system:shopLabel:add']"
-        >新增&绑定</el-button>
+        >新增价签</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -94,8 +94,9 @@
       <el-table-column label="模板信息" align="center" prop="demoName" />
       <el-table-column label="尺寸" align="center" prop="inch" />
       <el-table-column label="电量" align="center" prop="battery" />
-      <el-table-column label="是否在线" align="center" prop="status" />
       <el-table-column label="温度信息" align="center" prop="temperature" />
+      <el-table-column label="是否在线" align="center" prop="status" />
+      <el-table-column label="是否绑定网关" align="center" prop="labelStatus" />
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">

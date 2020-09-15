@@ -57,6 +57,16 @@
       </el-col>
       <el-col :span="1.5">
         <el-button
+          type="info"
+          icon="el-icon-edit"
+          size="mini"
+          :disabled="single"
+          @click="handleRefresh"
+          v-hasPermi="['system:shopInfo:refresh']"
+        >刷新电子价签</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
           type="warning"
           icon="el-icon-download"
           size="mini"
@@ -137,7 +147,7 @@
 </template>
 
 <script>
-import { listShopInfo, getShopInfo, delShopInfo, addShopInfo, updateShopInfo, exportShopInfo } from "@/api/system/shopInfo";
+import { listShopInfo, getShopInfo, refresh,delShopInfo, addShopInfo, updateShopInfo, exportShopInfo } from "@/api/system/shopInfo";
 
 export default {
   name: "ShopInfo",
@@ -147,6 +157,7 @@ export default {
       loading: true,
       // 选中数组
       ids: [],
+      storeId:[],
       // 非单个禁用
       single: true,
       // 非多个禁用
@@ -237,6 +248,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)
+      this.storeId=selection.map(item => item.storeid)
       this.single = selection.length!=1
       this.multiple = !selection.length
     },
@@ -298,6 +310,21 @@ export default {
           this.msgSuccess("删除成功");
         }).catch(function() {});
     },
+     /** 刷新按钮操作 */
+    handleRefresh(row) {
+      const storeid = this.storeId[0];
+      this.$confirm('是否刷新门店管理编号为"' + storeid + '"的数据项?', "警告", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(function() {
+          return refresh(storeid);
+        }).then(() => {
+          this.getList();
+          this.msgSuccess("刷新成功");
+        }).catch(function() {});
+    },
+    
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;

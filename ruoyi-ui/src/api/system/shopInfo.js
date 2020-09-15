@@ -9,6 +9,15 @@ export function listShopInfo(query) {
   })
 }
 
+// 查询门店下拉管理列表
+export function getShopList(query) {
+  return request({
+    url: '/system/shopInfo/getShopList',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询门店管理详细
 export function getShopInfo(id) {
   return request({
@@ -39,6 +48,14 @@ export function updateShopInfo(data) {
 export function delShopInfo(id) {
   return request({
     url: '/system/shopInfo/' + id,
+    method: 'delete'
+  })
+}
+
+// 刷新门店电子价签
+export function refresh(storeID) {
+  return request({
+    url: '/system/shopInfo/refresh/' + storeID,
     method: 'delete'
   })
 }
