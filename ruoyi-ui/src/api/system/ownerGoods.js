@@ -9,6 +9,15 @@ export function listOwnerGoods(query) {
   })
 }
 
+// 查询业户商品建档下拉列表
+export function goodsList(query) {
+  return request({
+    url: '/system/ownerGoods/goodsList',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询业户商品建档列表
 export function getPageOwnerGoodsList(query) {
   return request({
