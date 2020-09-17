@@ -83,10 +83,10 @@
         </template>
       </el-table-column> -->
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="业户代码" align="center" prop="createBy" />
-      <el-table-column label="业户名称" align="center" prop="createName" />
-      <el-table-column label="进货日期" align="center" prop="djTime" />
-      <el-table-column label="进货商品" align="center" prop="goodsName" />
+      <el-table-column label="业户代码" align="center" prop="personCode" />
+      <el-table-column label="业户名称" align="center" prop="personName" />
+      <el-table-column label="采购日期" align="center" prop="djTime" />
+      <el-table-column label="采购商品" align="center" prop="goodsName" />
       <el-table-column label="单位" align="center" prop="goodsDw" />
       <el-table-column label="产地" align="center" prop="goodsAddress" />
       <!-- <el-table-column label="制单人" align="center" prop="createBy" />
@@ -167,7 +167,12 @@
               <el-input v-model="user.ownerNameJc" :disabled="true" placeholder="制单人" />
             </el-form-item>
              <el-form-item label="制单日期"  prop="djTime" class="changeBlue">
-              <el-input v-model="form.djTime" :disabled="true" placeholder="制单日期" />
+              <!-- <el-input v-model="form.djTime" :disabled="true" placeholder="制单日期" /> -->
+               <el-date-picker style="width:100%"
+                v-model="form.djTime"
+                type="date"
+                placeholder="制单日期">
+              </el-date-picker>
             </el-form-item>
           </el-form>
         </el-tab-pane>
@@ -236,15 +241,15 @@
               </el-select>
                  </template>
             </el-table-column>
-            <el-table-column prop="personCode" label="业户名称" width="200">
+            <el-table-column prop="personName" label="业户名称" width="200">
               <template scope="scope">
                 <el-input
                   :disabled="true"
                   size="small"
-                  v-model="scope.row.personCode"
+                  v-model="scope.row.personName"
                   placeholder="请输入内容"
                 ></el-input>
-                <span>{{scope.row.personCode}}</span>
+                <span>{{scope.row.personName}}</span>
               </template>
             </el-table-column>
             <!-- <el-table-column prop="goodsCode" label="商品编码" width="150" :v-show="false">
@@ -259,7 +264,7 @@
                 <span>{{scope.row.goodsCode}}</span>
               </template>
             </el-table-column> -->
-            <el-table-column prop="goodsName" label="商品名称" width="200">
+            <el-table-column prop="goodsCode" label="商品名称" width="200">
               <template scope="scope">
                 <!-- <el-input
                   :disabled="true"
@@ -269,7 +274,7 @@
                 ></el-input>
                 <span>{{scope.row.goodsName}}</span> -->
                 <el-select
-                v-model="scope.row.goodsName"
+                v-model="scope.row.goodsCode"
                 placeholder="选择商品"
                 filterable
                 @change="handleEditPerson($event,scope.$index, scope.row)"
@@ -317,7 +322,7 @@
               </template>
             </el-table-column>
   
-             <el-table-column label="产地信息" width="200">
+             <!-- <el-table-column label="产地信息" width="200">
               <template scope="scope">
                 <el-input
                   :disabled="true"
@@ -327,7 +332,7 @@
                 ></el-input>
                 <span>{{scope.row.goodsAddress}}</span>
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column label="数量" width="120">
               <template scope="scope">
                 <el-input
@@ -655,7 +660,7 @@ export default {
     //追加子表必填样式
     starAdd(obj) {
       //if(obj.columnIndex === 0 || obj.columnIndex === 1 || obj.columnIndex === 4 || obj.columnIndex === 5 || obj.columnIndex === 6|| obj.columnIndex === 7) {
-      if(obj.columnIndex === 0 || obj.columnIndex === 1 || obj.columnIndex === 4 ) {
+      if(obj.columnIndex === 0 || obj.columnIndex === 1 || obj.columnIndex === 2|| obj.columnIndex === 5 ) {
           return 'star';
       }
     },
@@ -728,8 +733,9 @@ export default {
         for(let i=0;i<this.goodsList.length;i++){
           console.log(this.goodsList[i].goodsCode==data)
           if(this.goodsList[i].goodsCode==data){
-           row.goodsAddress=this.goodsList[i].goodsAddress;
+            row.goodsAddress=this.goodsList[i].goodsAddress;
             row.goodsDw=this.goodsList[i].goodsDw;
+            row.goodsName=this.goodsList[i].goodsName;
             break;
           }
         }
@@ -778,8 +784,8 @@ export default {
         goodsInfo.goodsCode = row.goodsCode;
         goodsInfo.goodsName = row.goodsName;
         goodsInfo.goodsDw = row.goodsDw;
-        goodsInfo.personCode = row.ownerName;
-        goodsInfo.personName = "";
+        goodsInfo.personCode = row.ownerCode;
+        goodsInfo.personName = row.ownerName;
         goodsInfo.goodsNum = "";
         goodsInfo.goodsPrice = "";
         goodsInfo.goodsMoney = "";
@@ -809,8 +815,8 @@ export default {
         goodsInfo.goodsCode = row.goodsCode;
         goodsInfo.goodsName = row.goodsName;
         goodsInfo.goodsDw = row.goodsDw;
-        goodsInfo.personCode =row.ownerName ;
-        goodsInfo.personName = "";
+        goodsInfo.personCode = row.ownerCode;
+        goodsInfo.personName = row.ownerName;
         goodsInfo.goodsNum = "";
               goodsInfo.goodsPrice = "";
         goodsInfo.goodsMoney = "";
@@ -908,7 +914,7 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加进货单";
+      this.title = "添加采购单";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -928,7 +934,7 @@ export default {
           this.tableData = response.rows;
         });
         this.open = true;
-        this.title = "修改进货单";
+        this.title = "修改采购单";
       });
     },
     /** 提交按钮 */
@@ -937,6 +943,7 @@ export default {
         //检查子表信息
         for (let i = 0; i < this.tableData.length; i++) {
           if (
+            this.tableData[i].storeid == "" ||
             this.tableData[i].goodsCode == "" ||
             this.tableData[i].personCode == "" ||
            // this.tableData[i].goodsPrice == "" ||

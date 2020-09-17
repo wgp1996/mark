@@ -9,6 +9,15 @@ export function listOwner(query) {
   })
 }
 
+// 查询所以业户信息列表
+export function ownerAllList(query) {
+  return request({
+    url: '/system/owner/ownerAllList',
+    method: 'get',
+    params: query
+  })
+}
+
 
 // 查询业户下拉信息列表
 export function ownerList(query) {

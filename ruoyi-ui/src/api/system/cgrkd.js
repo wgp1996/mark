@@ -9,6 +9,15 @@ export function listCgrkd(query) {
   })
 }
 
+// 查询进货单汇总列表
+export function rkdSummaryList(query) {
+  return request({
+    url: '/system/cgrkd/rkdSummaryList',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询进货单详细
 export function getCgrkd(id) {
   return request({

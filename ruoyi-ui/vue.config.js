@@ -53,7 +53,7 @@ module.exports = {
       
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       [process.env.VUE_APP_BASE_API]: {
-        target: `http://khn8ve.natappfree.cc/`,
+        target: `http://bgnrn4.natappfree.cc/`,
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''

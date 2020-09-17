@@ -167,7 +167,11 @@
               <el-input v-model="user.ownerNameJc" :disabled="true" placeholder="制单人" />
             </el-form-item>
              <el-form-item label="制单日期"  prop="djTime" class="changeBlue">
-              <el-input v-model="form.djTime" :disabled="true" placeholder="制单日期" />
+              <el-date-picker style="width:100%"
+                v-model="form.djTime"
+                type="date"
+                placeholder="制单日期">
+              </el-date-picker>
             </el-form-item>
           </el-form>
         </el-tab-pane>
@@ -216,15 +220,15 @@
               <span  style="position: relative;top:-13px;">{{scope.row.personName}}</span>
               </template>
             </el-table-column> -->
-            <el-table-column prop="personCode" label="供应商名称" width="200">
+            <el-table-column prop="personName" label="供应商名称" width="200">
               <template scope="scope">
                 <el-input
                   :disabled="true"
                   size="small"
-                  v-model="scope.row.personCode"
+                  v-model="scope.row.personName"
                   placeholder="请输入内容"
                 ></el-input>
-                <span>{{scope.row.personCode}}</span>
+                <span>{{scope.row.personName}}</span>
               </template>
             </el-table-column>
             <!-- <el-table-column prop="goodsCode" label="商品编码" width="150" :v-show="false">
@@ -743,8 +747,8 @@ export default {
         goodsInfo.goodsCode = row.goodsCode;
         goodsInfo.goodsName = row.goodsName;
         goodsInfo.goodsDw = row.goodsDw;
-        goodsInfo.personCode = row.personName;
-        goodsInfo.personName = "";
+        goodsInfo.personCode = row.personCode;
+        goodsInfo.personName = row.personName;
         goodsInfo.goodsNum = "";
         goodsInfo.goodsPrice = "";
         goodsInfo.goodsMoney = "";

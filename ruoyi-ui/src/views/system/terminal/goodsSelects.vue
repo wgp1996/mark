@@ -116,8 +116,7 @@ import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import { getPersonAll } from "@/api/system/person";
 import { listPerson  } from "@/api/system/person";
-import { ownerList } from "@/api/system/owner";
-import { listOwner} from "@/api/system/owner";
+import { ownerAllList } from "@/api/system/owner";
 export default {
   name: "Stall",
   components: { Treeselect },
@@ -214,20 +213,13 @@ export default {
       //   this.goodsTypeList = response.data;
       // });
      //  this.getTreeselect();
-      listOwnerGoods(this.queryParams).then(response => {
-        // console.log(response)
-        // this.goodsList = response.rows;
-        // console.log( this.goodsList )
-        // this.total = response.total;
-        // this.loading = false;
-      });
       //   listPerson(this.queryParams).then(response => {
       //   this.goodsList = response.rows;
       //   console.log( this.goodsList )
       //   this.total = response.total;
       //   this.loading = false;
       // });
-        listOwner(this.queryParams).then(response => {
+        ownerAllList (this.queryParams).then(response => {
           console.log(response)
         this.goodsList = response.rows;
         console.log( this.goodsList )

@@ -197,7 +197,11 @@
               <el-input v-model="user.ownerNameJc" :disabled="true" placeholder="制单人" />
             </el-form-item>
              <el-form-item label="制单日期" prop="djTime" class="changeBlue">
-              <el-input v-model="form.djTime" :disabled="true" placeholder="制单日期" />
+              <el-date-picker style="width:100%"
+                v-model="form.djTime"
+                type="date"
+                placeholder="制单日期">
+              </el-date-picker>
             </el-form-item>
     
           </el-form>
