@@ -124,10 +124,7 @@
     <el-dialog :title="title" :visible.sync="open" width="900px">
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="设备信息" name="first">
-          
-          
-           
+        <el-tab-pane label="检测地点信息" name="first">
            <el-form-item label="检测地点名称" prop="checkAddress">
               <el-input v-model="form.checkAddress" placeholder="请输入检测地点名称" />
             </el-form-item>
@@ -162,33 +159,15 @@
             <el-form-item label="备注" prop="checkBz">
               <el-input v-model="form.checkBz" placeholder="请输入备注信息" />
             </el-form-item>
-            <!-- <el-form-item label="单据编号" prop="djNumber"  class="changeBlue">
-              <el-input v-model="form.djNumber" :disabled="true" placeholder="后台自动生成" />
-            </el-form-item> -->
-            <!-- <el-form-item label="制单人"   class="changeBlue">
-              <el-input v-model="user.ownerNameJc" :disabled="true" placeholder="制单人" />
-            </el-form-item> -->
-             <!-- <el-form-item label="制单日期"  prop="djTime" class="changeBlue">
-              
-               <el-date-picker style="width:100%"
-                v-model="form.djTime"
-                type="date"
-                placeholder="制单日期">
-              </el-date-picker>BaiduMap
-            </el-form-item> -->
-          
         </el-tab-pane>
          <el-tab-pane label="位置信息" name="second">
            
-             <baidu-map class="bm-view" ak="cGklIMXA6RuKkir9UobkakSE0QhwyuoO" :center="center" :zoom="zoom" @ready="handler" 
+             <baidu-map class="bm-view" ak="cGklIMXA6RuKkir9UobkakSE0QhwyuoO" :center="center" :zoom="zoom" @ready="handler"
               :min-zoom="10"
              :max-zoom="17"
              :scroll-wheel-zoom="true"
               @click="getClickInfo"
-              @moving="syncCenterAndZoom"
-              @moveend="syncCenterAndZoom"
-              @zoomend="syncCenterAndZoom"
-              v-if="showMap"
+              v-show="showMap"
              >
              <bm-view style="width: 100%; height:500px;"></bm-view>
                <bm-control :offset="{width: '10px', height: '10px'}" style="display：none">
@@ -207,13 +186,6 @@
                 :dragging="true"
                 animation="BMAP_ANIMATION_BOUNCE"
               ></bm-marker>
-                <!-- <bm-local-search
-                :keyword="form.checkAddressDetail"
-                :auto-viewport="true"
-                style="width:0px;height:0px;overflow: hidden;dispaly:none"
-                @searchcomplete="checking"
-                :selectFirstResult="false"
-              ></bm-local-search> -->
             </baidu-map>
             <el-form-item label="经度" prop="checkAddressLat">
               <el-input v-model="form.checkAddressLat" placeholder="请输入经度" />
@@ -272,7 +244,6 @@ import {
 } from "@/api/system/checkAddress";
 import {BaiduMap, BmMarker,  BmControl,  BmAutoComplete,BmLocalSearch, BmView,} from 'vue-baidu-map'
 
-import goodsSelects from "./goodsSelects";
 import { getCkAll } from "@/api/system/ck";
 import { getInfo } from "@/api/login";
 import { getPersonAll } from "@/api/system/person";
@@ -283,7 +254,6 @@ import { getShopList } from "@/api/system/shopInfo";
 export default {
   name: "Lease",
   components: {
-    goodsSelects,
     BaiduMap,
     BmMarker,
     BmControl,
@@ -369,7 +339,7 @@ export default {
           { required: true, message: "检测地点名称不能为空", trigger: "blur" },
         ],
         // name: [
-        //   { required: true, message: "设备名称不能为空", trigger: "blur" },
+        //   { required: true, message: "检测地点名称不能为空", trigger: "blur" },
         // ],
         // count: [
         //   { required: true, message: "检测通道数量不能为空", trigger: "blur" },
@@ -418,19 +388,16 @@ mounted() {
 },
   methods: {
      handler ({BMap, map}) {
-    
-      console.log(BMap, map)
       map.clearOverlays();
        _that.BMap = BMap;
       _that.map = map;
       map.enableScrollWheelZoom(true);
       if (
-        _that.form.lat != "" &&
-        _that.form.lat != null &&
-        _that.form.lat != undefined
+        _that.form.checkAddressLat != "" &&
+        _that.form.checkAddressLat != null &&
+        _that.form.checkAddressLat != undefined
       ) {
-
-        _that.center = { lng: _that.form.lng, lat: _that.form.lat }; // 设置center属性值
+        _that.center = { lng: _that.form.checkAddressLng, lat: _that.form.checkAddressLat }; // 设置center属性值
       } else {
         let geolocation = new BMap.Geolocation();
         geolocation.getCurrentPosition(
@@ -443,8 +410,8 @@ mounted() {
             });
             _that.center = { lng: r.longitude, lat: r.latitude }; // 设置center属性值
             // _that.autoLocationPoint = { lng: r.longitude, lat: r.latitude }        // 自定义覆盖物
-             _that.form.checkAddressLat=r.point.lng
-            _that.form.checkAddressLng=r.point.lat
+             _that.form.checkAddressLat=r.point.lat
+            _that.form.checkAddressLng=r.point.lng
       
             _that.initLocation = true;
           },
@@ -453,12 +420,11 @@ mounted() {
       }
     },
     getClickInfo(e){
-     
       _that.center.lng = e.point.lng;
       _that.center.lat = e.point.lat;
        _that.map.panTo(e.point)
-       _that.form.checkAddressLat=e.point.lng
-       _that.form.checkAddressLng=e.point.lat
+       _that.form.checkAddressLat=e.point.lat
+       _that.form.checkAddressLng=e.point.lng
       let gc = new _that.BMap.Geocoder();
       gc.getLocation(e.point, function (rs) {
         console.log(rs);
@@ -466,15 +432,7 @@ mounted() {
       });
     },
     checking(res){
-      // alert("1")
-      
-      //  console.log(res)
-      
-      //  _that.form.checkAddressLat=res.Hr[0].point.lng
-      //  _that.form.checkAddressLng=res.Hr[0].point.lat
-      //   _that.form.checkAddressDetail=res.keyword
    
-      // _that.form.keyword=res.keyword
     },
        checke(res){
       var localSearch = new _that.BMap.LocalSearch(_that.map);
@@ -482,22 +440,15 @@ mounted() {
        var keyword=_that.form.checkAddressDetail
 　　localSearch.setSearchCompleteCallback(function (searchResult) {
 　　　　var poi = searchResult.getPoi(0);
-　　　　//document.getElementById("result_").value = poi.point.lng + "," + poi.point.lat; //获取经度和纬度，将结果显示在文本框中
        console.log(poi)
       _that.center.lng = poi.point.lng;
       _that.center.lat = poi.point.lat;
-       _that.form.checkAddressLat=poi.point.lng
-       _that.form.checkAddressLng=poi.point.lat
+       _that.form.checkAddressLat=poi.point.lat
+       _that.form.checkAddressLng=poi.point.lng
 // 　　　　_that.map.centerAndZoom(poi.point, 13);
           _that.map.panTo(poi.point)
 　　});
 　　localSearch.search(keyword);
-    },
-     syncCenterAndZoom(e) {
-      // const { lng, lat } = e.target.getCenter();
-      // _that.center.lng = lng;
-      // _that.center.lat = lat;
-      // _that.zoom = e.target.getZoom();
     },
      editTime(i){
       if(i<10){
@@ -603,9 +554,8 @@ createMap() {
     },
     handleClick(res) {
        if (res.name == "second") {
-        _that.showMap = true;
-        
-      }
+         _that.showMap = true;
+        }
     },
     handleCurrentChange(row, event, column) {
       console.log(row, event, column, event.currentTarget);
@@ -846,6 +796,7 @@ createMap() {
           info.url = response.data.fileName;
           this.fileList.push(info);
         }
+
         // getCgrkdChild(this.form.djNumber).then((response) => {
         //   //this.form.rows = response.data;
         //   this.tableData = response.rows;

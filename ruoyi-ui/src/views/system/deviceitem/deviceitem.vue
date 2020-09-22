@@ -250,7 +250,6 @@ import {
   // getOwnerList,
 } from "@/api/system/deviceItem";
 
-import goodsSelects from "./goodsSelects";
 import { getCkAll } from "@/api/system/ck";
 import { getInfo } from "@/api/login";
 import { getPersonAll } from "@/api/system/person";
@@ -259,9 +258,6 @@ import { goodsList } from "@/api/system/ownerGoods";
 import { getShopList } from "@/api/system/shopInfo";
 export default {
   name: "Lease",
-  components: {
-    goodsSelects,
-  },
   data() {
     return {
       //用户信息

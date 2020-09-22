@@ -122,7 +122,7 @@
     <el-dialog :title="title" :visible.sync="open" width="900px">
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="设备信息" name="first">
+        <el-tab-pane label="人员信息" name="first">
           
           
            
@@ -242,7 +242,6 @@ import {
   // getOwnerList,
 } from "@/api/system/checkPerson";
 
-import goodsSelects from "./goodsSelects";
 import { getCkAll } from "@/api/system/ck";
 import { getInfo } from "@/api/login";
 import { getPersonAll } from "@/api/system/person";
@@ -251,9 +250,7 @@ import { goodsList } from "@/api/system/ownerGoods";
 import { getShopList } from "@/api/system/shopInfo";
 export default {
   name: "Lease",
-  components: {
-    goodsSelects,
-  },
+
   data() {
     return {
       //用户信息

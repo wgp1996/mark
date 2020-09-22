@@ -122,7 +122,7 @@
     <el-dialog :title="title" :visible.sync="open" width="900px">
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="设备信息" name="first">
+        <el-tab-pane label="取样地点信息" name="first">
           
           
            
@@ -249,7 +249,6 @@ import {
 } from "@/api/system/sampAddress";
 import {BaiduMap, BmMarker,  BmControl,  BmAutoComplete,BmLocalSearch, BmView,} from 'vue-baidu-map'
  var _that
-import goodsSelects from "./goodsSelects";
 import { getCkAll } from "@/api/system/ck";
 import { getInfo } from "@/api/login";
 import { getPersonAll } from "@/api/system/person";
@@ -259,7 +258,6 @@ import { getShopList } from "@/api/system/shopInfo";
 export default {
   name: "Lease",
   components: {
-    goodsSelects,
     BaiduMap,
     BmMarker,
     BmControl,
