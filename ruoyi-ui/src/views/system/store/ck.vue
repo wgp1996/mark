@@ -303,6 +303,7 @@ export default {
         let geolocation = new BMap.Geolocation();
         geolocation.getCurrentPosition(
           function (r) {
+            console.log(r)
             let gc = new _that.BMap.Geocoder();
             gc.getLocation(r.point, function (rs) {
               _that.form.ckAddress = rs.address;

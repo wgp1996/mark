@@ -7,7 +7,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            蔬菜商户数量
+            当日下发订单
           </div>
           <count-to :start-val="0" :end-val="227" :duration="3000" class="card-panel-num" />
         </div>
@@ -21,7 +21,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            水果商户数量
+            当日相应订单
           </div>
           <count-to :start-val="0" :end-val="272" :duration="3000" class="card-panel-num" />
         </div>
@@ -34,7 +34,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            农产品采购额
+           当日下发询价单
           </div>
           <count-to :start-val="0" :end-val="376542.76" :duration="3200" class="card-panel-num" />
         </div>
@@ -48,7 +48,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            入场抽检单
+            当日回复询价单
           </div>
           <count-to :start-val="0" :end-val="1732" :duration="3600" class="card-panel-num" />
         </div>
@@ -62,7 +62,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            农残合格率
+            当日药残检测批次
             <br>
            
             <span style="display:inline-block;color:#666;font-size:20px;margin-top:15px">89.7%</span>
@@ -71,7 +71,144 @@
         </div>
       </div>
     </el-col>
+     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:33.3% !important"> 
+     <a href="/shop/sensor/shopInfo">
+      <div class="card-panel" @click="handleSetLineChartData('shoppings')">
+        <div class="card-panel-icon-wrapper icon-message">
+          <svg-icon icon-class="documentation" class-name="card-panel-icon" />
+          <!-- <img src="../../assets/he.png" style="width:50px;height:50px"> -->
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text" style="margin-top:20px;">
+             门店建档
+            <br>
+           
+            <!-- <span style="display:inline-block;color:#666;font-size:20px;margin-top:15px">89.7%</span> -->
+          </div>
+          <!-- <count-to :start-val="0" :duration="3600" class="card-panel-num" />  -->
+        </div>
+      </div>
+      </a>
+    </el-col>
+     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:33.3% !important"> 
+      <a href="/shop/sensor/shopLabel">
+      <div class="card-panel" @click="handleSetLineChartData('shoppings')">
+        <div class="card-panel-icon-wrapper icon-shopping">
+          <svg-icon icon-class="bug" class-name="card-panel-icon" />
+          <!-- <img src="../../assets/he.png" style="width:50px;height:50px"> -->
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text" style="margin-top:20px;">
+             电子价签管理
+            <br>
+           
+            <!-- <span style="display:inline-block;color:#666;font-size:20px;margin-top:15px">89.7%</span> -->
+          </div>
+          <!-- <count-to :start-val="0" :duration="3600" class="card-panel-num" />  -->
+        </div>
+      </div>
+      </a>
+    </el-col>
+     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:33.3% !important"> 
+       <a href="/shop/sensor/shopGoods">
+      <div class="card-panel" @click="handleSetLineChartData('shoppings')">
+        <div class="card-panel-icon-wrapper icon-shopping">
+          <svg-icon icon-class="drag" class-name="card-panel-icon" />
+          <!-- <img src="../../assets/he.png" style="width:50px;height:50px"> -->
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text" style="margin-top:20px;">
+             门店商品管理
+            <br>
+           
+            <!-- <span style="display:inline-block;color:#666;font-size:20px;margin-top:15px">89.7%</span> -->
+          </div>
+          <!-- <count-to :start-val="0" :duration="3600" class="card-panel-num" />  -->
+        </div>
+      </div>
+      </a>
+    </el-col>
+     
+    <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:25% !important"> 
+        <a href="/shop/terminal/inquiry">
+      <div class="card-panel" @click="handleSetLineChartData('shoppings')">
+        <div class="card-panel-icon-wrapper icon-money">
+          <svg-icon icon-class="money" class-name="card-panel-icon" />
+          <!-- <img src="../../assets/he.png" style="width:50px;height:50px"> -->
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text" style="margin-top:20px;">
+            询价
+            <br>
+           
+            <!-- <span style="display:inline-block;color:#666;font-size:20px;margin-top:15px">89.7%</span> -->
+          </div>
+          <!-- <count-to :start-val="0" :duration="3600" class="card-panel-num" />  -->
+        </div>
+      </div>
+      </a>
+    </el-col>
+        <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:25% !important"> 
+         <a href="/shop/terminal/singleBuy">
+      <div class="card-panel" @click="handleSetLineChartData('shoppings')">
+        <div class="card-panel-icon-wrapper icon-people ">
+          <svg-icon icon-class="people" class-name="card-panel-icon" />
+          <!-- <img src="../../assets/he.png" style="width:50px;height:50px"> -->
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text" style="margin-top:20px;">
+            单供应商订单
+            <br>
+           
+            <!-- <span style="display:inline-block;color:#666;font-size:20px;margin-top:15px">89.7%</span> -->
+          </div>
+          <!-- <count-to :start-val="0" :duration="3600" class="card-panel-num" />  -->
+        </div>
+      </div>
+      </a>
+    </el-col>
+      <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:25% !important"> 
+          <a href="/shop/terminal/moreBuy">
+      <div class="card-panel" @click="handleSetLineChartData('shoppings')">
+        <div class="card-panel-icon-wrapper icon-people ">
+          <svg-icon icon-class="peoples" class-name="card-panel-icon" />
+          <!-- <img src="../../assets/he.png" style="width:50px;height:50px"> -->
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text" style="margin-top:20px;">
+             多供应商订单
+            <br>
+           
+            <!-- <span style="display:inline-block;color:#666;font-size:20px;margin-top:15px">89.7%</span> -->
+          </div>
+          <!-- <count-to :start-val="0" :duration="3600" class="card-panel-num" />  -->
+        </div>
+      </div>
+      </a>
+    </el-col>
+     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:25% !important"> 
+        <a href="/shop/terminal/owner">
+      <div class="card-panel" @click="handleSetLineChartData('shoppings')">
+        
+        <div class="card-panel-icon-wrapper icon-shopping">
+          <svg-icon icon-class="user" class-name="card-panel-icon" />
+          <!-- <img src="../../assets/he.png" style="width:50px;height:50px"> -->
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text" style="margin-top:20px;">
+            业户查询
+            <br>
+           
+            <!-- <span style="display:inline-block;color:#666;font-size:20px;margin-top:15px">89.7%</span> -->
+          </div>
+          <!-- <count-to :start-val="0" :duration="3600" class="card-panel-num" />  -->
+        </div>
+      </div>
+      </a>
+    </el-col>
+    
   </el-row>
+  
 </template>
 
 <script>

@@ -185,6 +185,7 @@ export default {
     getList() {
       this.loading = true;
       listPerson(this.queryParams).then(response => {
+        console.log(response.rows)
         this.personList = response.rows;
         this.total = response.total;
         this.loading = false;

@@ -114,7 +114,7 @@ export default {
   watch: {
     $route: {
       handler: function(route) {
-        console.log(route);
+        console.log(location.host);
         //默认跳首页
         this.redirect="/index"
         //跳转上次打开的界面
@@ -160,6 +160,8 @@ export default {
           this.$store
             .dispatch("Login", this.loginForm)
             .then(() => {
+              console.log(this.redirect)
+              // return
               this.$router.push({ path: this.redirect || "/" });
             })
             .catch(() => {

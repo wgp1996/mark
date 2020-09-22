@@ -12,12 +12,16 @@ const whiteList = ['/login', '/auth-redirect', '/bind', '/register']
 router.beforeEach((to, from, next) => {
   NProgress.start()
   if (getToken()) {
+    console.log(to)
     /* has token*/
     if (to.path === '/login') {
+      alert("12")
       next({ path: '/' })
       NProgress.done()
     } else {
+      console.log(store.getters.roles.length)
       if (store.getters.roles.length === 0) {
+         alert("22")
         // 判断当前用户是否已拉取完user_info信息
         store.dispatch('GetInfo').then(res => {
           // 拉取user_info
@@ -26,6 +30,7 @@ router.beforeEach((to, from, next) => {
           // 测试 默认静态页面
           // store.dispatch('permission/generateRoutes', { roles }).then(accessRoutes => {
             // 根据roles权限生成可访问的路由表
+            console.log(accessRoutes)
             router.addRoutes(accessRoutes) // 动态添加可访问路由表
             next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
           })
@@ -53,7 +58,11 @@ router.beforeEach((to, from, next) => {
       // 在免登录白名单，直接进入
       next()
     } else {
-      next(`/login?redirect=${to.path}`) // 否则全部重定向到登录页
+     
+      console.log(to)
+     
+       next(`/login?redirect=${to.path}`) // 否则全部重定向到登录页
+      //  next(`/login`)
       NProgress.done()
     }
   }

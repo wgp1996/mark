@@ -303,8 +303,10 @@ export default {
         let geolocation = new BMap.Geolocation();
         geolocation.getCurrentPosition(
           function (r) {
+            console.log(r)
             let gc = new _that.BMap.Geocoder();
             gc.getLocation(r.point, function (rs) {
+              console.log(rs)
               _that.form.storeAddress = rs.address;
             });
             _that.center = { lng: r.longitude, lat: r.latitude }; // 设置center属性值
