@@ -129,25 +129,33 @@
           
            
            <el-form-item label="检测地点名称" prop="checkAddress">
-              <el-input v-model="form.checkAddress" placeholder="请输入检测人员名称" />
+              <el-input v-model="form.checkAddress" placeholder="请输入检测地点名称" />
             </el-form-item>
          
             <el-form-item label="联系电话" prop="workTel">
               <el-input v-model="form.workTel" placeholder="请输入联系电话" />
             </el-form-item>
              <el-form-item label="上班时间"  prop="workStartTime" >
-               <el-date-picker style="width:100%"
+               <el-time-select style="width:100%"
                 v-model="form.workStartTime"
-                type="date"
+                 :picker-options="{
+                  start: '00:00',
+                  step: '01:00',
+                  end: '24:00'
+                }"
                 placeholder="上班时间">
-              </el-date-picker>
+              </el-time-select>
             </el-form-item>
             <el-form-item label="下班时间"  prop="workEndTime" >
-               <el-date-picker style="width:100%"
+               <el-time-select style="width:100%"
                 v-model="form.workEndTime"
-                type="date"
+                  :picker-options="{
+                   start: '00:00',
+                  step: '01:00',
+                  end: '24:00'
+    }"
                 placeholder="下班时间">
-              </el-date-picker>
+              </el-time-select>
             </el-form-item>
             
              
@@ -406,10 +414,11 @@ export default {
   },
   
 mounted() {
-    this.createMap();
+    // this.handler({BMap, map});
 },
   methods: {
      handler ({BMap, map}) {
+    
       console.log(BMap, map)
       map.clearOverlays();
        _that.BMap = BMap;
@@ -821,6 +830,7 @@ createMap() {
       this.reset();
       this.open = true;
       this.title = "新增检测地点档案";
+ 
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -828,6 +838,7 @@ createMap() {
       const id = row.id || this.ids;
       getCheckAddress(id).then((response) => {
         this.form = response.data;
+        console.log(response)
         if (response.data.fileName != "") {
           this.fileList = [];
           let info = new Object();
@@ -870,6 +881,7 @@ createMap() {
                   this.msgSuccess("修改成功");
                   this.open = false;
                   this.getList();
+                  console.log(this.form)
                   // this.$refs.selectGoods.getList();
                 } else {
                   this.msgError(response.msg);
