@@ -9,6 +9,14 @@ export function listCgrkd(query) {
   })
 }
 
+// 查询进货单列表
+export function listOrder(type) {
+  return request({
+    url: '/system/cgrkd/orderList/'+type,
+    method: 'get'
+  })
+}
+
 // 查询进货单汇总列表
 export function rkdSummaryList(query) {
   return request({
@@ -41,6 +49,13 @@ export function getCgrkdChild(dj_number) {
   })
 }
 
+export function getCgrkdMxChild(id,type) {
+  return request({
+    url: '/system/cgrkdchild/mxList/' + id+'/'+type,
+    method: 'get'
+  })
+}
+
 // 新增进货单
 export function addCgrkd(data) {
   return request({
@@ -49,6 +64,24 @@ export function addCgrkd(data) {
     data: data
   })
 }
+
+// 接收订单
+export function rkdReceive(data) {
+  return request({
+    url: '/system/cgrkd/rkdReceive',
+    method: 'post',
+    data: data
+  })
+}
+// 拒绝接收订单
+export function rkdRefuse(data) {
+  return request({
+    url: '/system/cgrkd/rkdRefuse',
+    method: 'post',
+    data: data
+  })
+}
+
 
 // 修改进货单
 export function updateCgrkd(data) {

@@ -24,7 +24,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['system:cgrkd:add']"
+          v-hasPermi="['system:checkPerson:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -34,7 +34,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['system:cgrkd:edit']"
+          v-hasPermi="['system:checkPerson:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -44,7 +44,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['system:cgrkd:remove']"
+          v-hasPermi="['system:checkPerson:remove']"
         >删除</el-button>
         </el-col>
         <el-col :span="1.5">
@@ -54,7 +54,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleEffect"
-          v-hasPermi="['system:cgrkd:effect']"
+          v-hasPermi="['system:checkPerson:effect']"
         >生效</el-button> -->
       </el-col>
     </el-row>
@@ -97,14 +97,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:cgrkd:edit']"
+            v-hasPermi="['system:checkPerson:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['system:cgrkd:remove']"
+            v-hasPermi="['system:checkPerson:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -228,7 +228,7 @@
 //   updateCgrkdStatus,
 //   exportCgrkd,
 //   getOwnerList,
-// } from "@/api/system/cgrkd";
+// } from "@/api/system/checkPerson";
 import {
   listCheckPerson,
   getCheckPerson,

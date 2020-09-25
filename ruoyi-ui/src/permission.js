@@ -15,13 +15,11 @@ router.beforeEach((to, from, next) => {
     console.log(to)
     /* has token*/
     if (to.path === '/login') {
-      alert("12")
       next({ path: '/' })
       NProgress.done()
     } else {
       console.log(store.getters.roles.length)
       if (store.getters.roles.length === 0) {
-         alert("22")
         // 判断当前用户是否已拉取完user_info信息
         store.dispatch('GetInfo').then(res => {
           // 拉取user_info

@@ -24,7 +24,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['system:cgrkd:add']"
+          v-hasPermi="['system:checkAddress:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -34,7 +34,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['system:cgrkd:edit']"
+          v-hasPermi="['system:checkAddress:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -44,7 +44,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['system:cgrkd:remove']"
+          v-hasPermi="['system:checkAddress:remove']"
         >删除</el-button>
         </el-col>
         <el-col :span="1.5">
@@ -54,7 +54,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleEffect"
-          v-hasPermi="['system:cgrkd:effect']"
+          v-hasPermi="['system:checkAddress:effect']"
         >生效</el-button> -->
       </el-col>
     </el-row>
@@ -83,8 +83,8 @@
         </template>
       </el-table-column> -->
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="检测地点名称" align="center" prop="checkAddress" />
-      <el-table-column label="详细地址" align="center" prop="checkAddressDetail" />
+      <el-table-column label="检测地点名称" align="center" prop="checkAddressDetail" />
+      <!-- <el-table-column label="详细地址" align="center" prop="checkAddressDetail" /> -->
       <el-table-column label="上班时间" align="center" prop="workStartTime" />
         <el-table-column label="下班时间" align="center" prop="workEndTime" />
       <el-table-column label="联系电话" align="center" prop="workTel" />
@@ -99,14 +99,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:cgrkd:edit']"
+            v-hasPermi="['system:checkAddress:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['system:cgrkd:remove']"
+            v-hasPermi="['system:checkAddress:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -123,12 +123,6 @@
     <!-- 添加或修改二级市场信息对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="900px">
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
-      <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="检测地点信息" name="first">
-           <el-form-item label="检测地点名称" prop="checkAddress">
-              <el-input v-model="form.checkAddress" placeholder="请输入检测地点名称" />
-            </el-form-item>
-         
             <el-form-item label="联系电话" prop="workTel">
               <el-input v-model="form.workTel" placeholder="请输入联系电话" />
             </el-form-item>
@@ -159,13 +153,10 @@
             <el-form-item label="备注" prop="checkBz">
               <el-input v-model="form.checkBz" placeholder="请输入备注信息" />
             </el-form-item>
-        </el-tab-pane>
-         <el-tab-pane label="位置信息" name="second">
-           
              <baidu-map class="bm-view" ak="cGklIMXA6RuKkir9UobkakSE0QhwyuoO" :center="center" :zoom="zoom" @ready="handler"
               :min-zoom="10"
-             :max-zoom="17"
-             :scroll-wheel-zoom="true"
+              :max-zoom="17"
+              :scroll-wheel-zoom="true"
               @click="getClickInfo"
               v-show="showMap"
              >
@@ -197,31 +188,6 @@
               <el-input v-model="form.checkAddressDetail" placeholder="" />
                <el-button type="primary"  style="float: right;position: relative;top: -36px;right: -100px;" @click="checke">查询</el-button>
             </el-form-item>
-        </el-tab-pane> 
-        <!-- <el-tab-pane label="附件信息" name="three">
-          <el-row :gutter="15" class="mb8">
-            <el-col :span="1.5">
-              <el-upload
-                class="upload-demo"
-                :limit="1"
-                drag
-                :file-list="fileList"
-                :action="upload.url"
-                :headers="upload.headers"
-                :on-success="handleFileSuccess"
-                :on-remove="handleRemove"
-                :on-preview="clickFile"
-              >
-                <i class="el-icon-upload"></i>
-                <div class="el-upload__text">
-                  将文件拖到此处，或
-                  <em>点击上传</em>
-                </div>
-              </el-upload>
-            </el-col>
-          </el-row>
-        </el-tab-pane> -->
-       </el-tabs>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -251,6 +217,7 @@ import { getToken } from "@/utils/auth";
 import { goodsList } from "@/api/system/ownerGoods";
 import { getShopList } from "@/api/system/shopInfo";
    var _that
+   let index=0;
 export default {
   name: "Lease",
   components: {
@@ -286,7 +253,7 @@ export default {
       },
       center: {lng: '', lat: ''},
       zoom: 15,
-      showMap: false,
+      showMap: true,
       keyword:'',
       BMap: null,
       map: null,
@@ -335,9 +302,9 @@ export default {
       // 表单校验
       rules: {
        
-        checkAddress: [
-          { required: true, message: "检测地点名称不能为空", trigger: "blur" },
-        ],
+        // checkAddress: [
+        //   { required: true, message: "检测地点名称不能为空", trigger: "blur" },
+        // ],
         // name: [
         //   { required: true, message: "检测地点名称不能为空", trigger: "blur" },
         // ],
@@ -389,7 +356,7 @@ mounted() {
   methods: {
      handler ({BMap, map}) {
       map.clearOverlays();
-       _that.BMap = BMap;
+      _that.BMap = BMap;
       _that.map = map;
       map.enableScrollWheelZoom(true);
       if (
@@ -397,7 +364,12 @@ mounted() {
         _that.form.checkAddressLat != null &&
         _that.form.checkAddressLat != undefined
       ) {
+        // var point = new BMap.Point(_that.form.checkAddressLng,_that.form.checkAddressLat )
+        // map.centerAndZoom(point, 13)
+        // var marker = new BMap.Marker(point) // 创建标注
+        // map.addOverlay(marker) // 将标注添加到地图中
         _that.center = { lng: _that.form.checkAddressLng, lat: _that.form.checkAddressLat }; // 设置center属性值
+           _that.center = { lng: _that.form.checkAddressLng, lat: _that.form.checkAddressLat }; // 设置center属性值
       } else {
         let geolocation = new BMap.Geolocation();
         geolocation.getCurrentPosition(
@@ -409,10 +381,8 @@ mounted() {
               _that.form.checkAddressDetail = rs.address;
             });
             _that.center = { lng: r.longitude, lat: r.latitude }; // 设置center属性值
-            // _that.autoLocationPoint = { lng: r.longitude, lat: r.latitude }        // 自定义覆盖物
-             _that.form.checkAddressLat=r.point.lat
+            _that.form.checkAddressLat=r.point.lat
             _that.form.checkAddressLng=r.point.lng
-      
             _that.initLocation = true;
           },
           { enableHighAccuracy: true }
@@ -553,8 +523,14 @@ createMap() {
       }
     },
     handleClick(res) {
+       index++;
        if (res.name == "second") {
          _that.showMap = true;
+         if(index==1){
+            _that.map.panBy(350, 300);
+         }
+        }else{
+          _that.showMap = false;
         }
     },
     handleCurrentChange(row, event, column) {

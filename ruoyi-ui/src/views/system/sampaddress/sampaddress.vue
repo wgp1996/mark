@@ -24,7 +24,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['system:cgrkd:add']"
+          v-hasPermi="['system:sampAddress:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -34,7 +34,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['system:cgrkd:edit']"
+          v-hasPermi="['system:sampAddress:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -44,19 +44,9 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['system:cgrkd:remove']"
+          v-hasPermi="['system:sampAddress:remove']"
         >删除</el-button>
         </el-col>
-        <el-col :span="1.5">
-        <el-button
-          type="warning"
-          icon="el-icon-s-promotion"
-          size="mini"
-          :disabled="multiple"
-          @click="handleEffect"
-          v-hasPermi="['system:cgrkd:effect']"
-        >生效</el-button>
-      </el-col>
     </el-row>
 
     <el-table
@@ -83,7 +73,7 @@
         </template>
       </el-table-column> -->
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="取样地点名称" align="center" prop="sampAddress" />
+      <el-table-column label="标题" align="center" prop="sampAddress" />
       <el-table-column label="取样地点详细地址" align="center" prop="sampAddressDetail" />
       <el-table-column label="取样地业主" align="center" prop="sampAddressPerson" />
       <el-table-column label="联系电话" align="center" prop="sampAddressPersonTel" />
@@ -121,13 +111,8 @@
     <!-- 添加或修改二级市场信息对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="900px">
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
-      <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="取样地点信息" name="first">
-          
-          
-           
-           <el-form-item label="取样地点名称" prop="sampAddress">
-              <el-input v-model="form.sampAddress" placeholder="请输入取样地点名称" />
+           <el-form-item label="标题" prop="sampAddress">
+              <el-input v-model="form.sampAddress" placeholder="请输入标题" />
             </el-form-item>
             <el-form-item label="取样地业主" prop="sampAddressPerson">
               <el-input v-model="form.sampAddressPerson" placeholder="请输入取样地业主" />
@@ -138,31 +123,11 @@
            <el-form-item label="备注" prop="sampBz">
               <el-input v-model="form.sampBz" placeholder="请输入备注信息" />
             </el-form-item>
-            <!-- <el-form-item label="单据编号" prop="djNumber"  class="changeBlue">
-              <el-input v-model="form.djNumber" :disabled="true" placeholder="后台自动生成" />
-            </el-form-item> -->
-            <!-- <el-form-item label="制单人"   class="changeBlue">
-              <el-input v-model="user.ownerNameJc" :disabled="true" placeholder="制单人" />
-            </el-form-item> -->
-             <!-- <el-form-item label="制单日期"  prop="djTime" class="changeBlue">
-              
-               <el-date-picker style="width:100%"
-                v-model="form.djTime"
-                type="date"
-                placeholder="制单日期">
-              </el-date-picker>
-            </el-form-item> -->
-          
-        </el-tab-pane>
-       <el-tab-pane label="位置信息" name="second">
-                 <baidu-map class="bm-view" ak="cGklIMXA6RuKkir9UobkakSE0QhwyuoO" :center="center" :zoom="zoom" @ready="handler" 
+             <baidu-map class="bm-view" ak="cGklIMXA6RuKkir9UobkakSE0QhwyuoO" :center="center" :zoom="zoom" @ready="handler" 
              :min-zoom="10"
              :max-zoom="17"
              :scroll-wheel-zoom="true"
               @click="getClickInfo"
-              @moving="syncCenterAndZoom"
-              @moveend="syncCenterAndZoom"
-              @zoomend="syncCenterAndZoom"
               v-if="showMap"
              >
              <bm-view style="width: 100%; height:500px;"></bm-view>
@@ -200,31 +165,6 @@
               <el-input v-model="form.sampAddressDetail" placeholder="" />
                <el-button type="primary" @click="checke" style="float: right;position: relative;top: -36px;right: -100px;" >查询</el-button>
             </el-form-item>
-        </el-tab-pane> 
-        <!-- <el-tab-pane label="附件信息" name="three">
-          <el-row :gutter="15" class="mb8">
-            <el-col :span="1.5">
-              <el-upload
-                class="upload-demo"
-                :limit="1"
-                drag
-                :file-list="fileList"
-                :action="upload.url"
-                :headers="upload.headers"
-                :on-success="handleFileSuccess"
-                :on-remove="handleRemove"
-                :on-preview="clickFile"
-              >
-                <i class="el-icon-upload"></i>
-                <div class="el-upload__text">
-                  将文件拖到此处，或
-                  <em>点击上传</em>
-                </div>
-              </el-upload>
-            </el-col>
-          </el-row>
-        </el-tab-pane> -->
-       </el-tabs>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -255,6 +195,7 @@ import { getPersonAll } from "@/api/system/person";
 import { getToken } from "@/utils/auth";
 import { goodsList } from "@/api/system/ownerGoods";
 import { getShopList } from "@/api/system/shopInfo";
+let index=0;
 export default {
   name: "Lease",
   components: {
@@ -290,7 +231,7 @@ export default {
       },
         center: {lng: '', lat: ''},
       zoom: 15,
-      showMap: false,
+      showMap: true,
       keyword:'',
       BMap: null,
       map: null,
@@ -338,10 +279,7 @@ export default {
       activeName: "first",
       // 表单校验
       rules: {
-       
-        sampAddress: [
-          { required: true, message: "取样地点名称不能为空", trigger: "blur" },
-        ],
+ 
         sampAddressPerson: [
           { required: true, message: "取样地业主不能为空", trigger: "blur" },
         ],
@@ -394,12 +332,12 @@ export default {
       _that.map = map;
       map.enableScrollWheelZoom(true);
       if (
-        _that.form.lat != "" &&
-        _that.form.lat != null &&
-        _that.form.lat != undefined
+        _that.form.sampAddressLng != "" &&
+        _that.form.sampAddressLng != null &&
+        _that.form.sampAddressLng != undefined
       ) {
 
-        _that.center = { lng: _that.form.lng, lat: _that.form.lat }; // 设置center属性值
+        _that.center = { lng: _that.form.sampAddressLng, lat: _that.form.sampAddressLat }; // 设置center属性值
       } else {
         let geolocation = new BMap.Geolocation();
         geolocation.getCurrentPosition(
@@ -412,8 +350,8 @@ export default {
             });
             _that.center = { lng: r.longitude, lat: r.latitude }; // 设置center属性值
             // _that.autoLocationPoint = { lng: r.longitude, lat: r.latitude }        // 自定义覆盖物
-             _that.form.sampAddressLat=r.point.lng
-            _that.form.sampAddressLng=r.point.lat
+             _that.form.sampAddressLat=r.point.lat
+            _that.form.sampAddressLng=r.point.lng
       
             _that.initLocation = true;
           },
@@ -425,8 +363,8 @@ export default {
      
       _that.center.lng = e.point.lng;
       _that.center.lat = e.point.lat;
-       _that.form.sampAddressLat=e.point.lng
-       _that.form.sampAddressLng=e.point.lat
+       _that.form.sampAddressLat=e.point.lat
+       _that.form.sampAddressLng=e.point.lng
         _that.map.panTo(e.point)
       let gc = new _that.BMap.Geocoder();
       gc.getLocation(e.point, function (rs) {
@@ -454,8 +392,8 @@ export default {
        console.log(poi)
       _that.center.lng = poi.point.lng;
       _that.center.lat = poi.point.lat;
-       _that.form.sampAddressLat=poi.point.lng
-       _that.form.sampAddressLng=poi.point.lat
+       _that.form.sampAddressLat=poi.point.lat
+       _that.form.sampAddressLng=poi.point.lng
 // 　　　　_that.map.centerAndZoom(poi.point, 13);
           _that.map.panTo(poi.point)
 　　});
@@ -565,9 +503,15 @@ export default {
       }
     },
     handleClick(res) {
-        if (res.name == "second") {
-        _that.showMap = true;
-      }
+         index++;
+       if (res.name == "second") {
+         _that.showMap = true;
+         if(index==1){
+            _that.map.panBy(350, 300);
+         }
+        }else{
+          _that.showMap = false;
+        }
     },
     handleCurrentChange(row, event, column) {
       console.log(row, event, column, event.currentTarget);
