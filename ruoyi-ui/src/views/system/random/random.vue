@@ -71,9 +71,9 @@
           <el-table style="padding:0;margin:0" :data="props.row.childrenList" >
             <el-table-column label="商品名称" align="center" prop="goodsName" />
             <el-table-column label="商品编码" align="center" prop="goodsCode" />
-            <el-table-column label="AI值" align="center" prop="ai" />
-            <el-table-column label="AF值" align="center" prop="af" />
-            <el-table-column label="AF_AI值" align="center" prop="afAi" /> 
+            <!-- <el-table-column label="AI值" align="center" prop="ai" /> -->
+            <!-- <el-table-column label="AF值" align="center" prop="af" /> -->
+            <!-- <el-table-column label="AF_AI值" align="center" prop="afAi" />  -->
             <el-table-column label="抑制率" align="center" prop="inhibitionNum" /> 
             <el-table-column label="结论" align="center" prop="checkResultName" /> 
             <el-table-column label="单号" align="center" prop="djNumber" /> 
@@ -180,7 +180,7 @@
             </el-form-item>
           
         </el-tab-pane>
-                <el-tab-pane label="明细信息" name="second">
+        <el-tab-pane label="明细信息" name="second">
           <el-row :gutter="10" class="mb8">
             <el-col :span="1.5">
               <el-button type="primary" icon="el-icon-plus" size="mini" @click="goodsSelect">新增商品</el-button>
@@ -240,7 +240,7 @@
                 <span>{{scope.row.goodsDw}}</span>
               </template>
             </el-table-column> -->
-              <el-table-column label="AI" width="120">
+              <!-- <el-table-column label="AI" width="120">
               <template scope="scope">
                 <el-input
                   size="small"
@@ -251,8 +251,8 @@
                 ></el-input>
                 <span>{{scope.row.goodsNum}}</span>
               </template>
-            </el-table-column>
-            <el-table-column label="AF" width="120">
+            </el-table-column> -->
+            <!-- <el-table-column label="AF" width="120">
               <template scope="scope">
                 <el-input
                   size="small"
@@ -263,8 +263,8 @@
                 ></el-input>
                 <span>{{scope.row.af}}</span>
               </template>
-            </el-table-column>
-            <el-table-column label="AF_AI" width="120">
+            </el-table-column> -->
+            <!-- <el-table-column label="AF_AI" width="120">
               <template scope="scope">
                 <el-input
                   size="small"
@@ -275,7 +275,7 @@
                 ></el-input>
                 <span>{{scope.row.afAi}}</span>
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column label="抑制率" width="120">
               <template scope="scope">
                 <el-input
@@ -658,7 +658,7 @@ export default {
     //追加子表必填样式
     starAdd(obj) {
       //if(obj.columnIndex === 0 || obj.columnIndex === 1 || obj.columnIndex === 4 || obj.columnIndex === 5 || obj.columnIndex === 6|| obj.columnIndex === 7) {
-      if(obj.columnIndex === 2 || obj.columnIndex === 3 || obj.columnIndex === 0 || obj.columnIndex === 5) {
+      if(obj.columnIndex === 0 || obj.columnIndex === 1 || obj.columnIndex === 2 ) {
           return 'star';
       }
     },
@@ -720,10 +720,10 @@ export default {
             if(this.form.inhibitionNum!=""&&this.form.inhibitionNum!=null&&this.form.inhibitionNum!=undefined){
                if(row.inhibitionNum!=""&&row.inhibitionNum!=null&&row.inhibitionNum!=undefined){
                   if(parseFloat(row.inhibitionNum)>parseFloat(this.form.inhibitionNum)){
-                  row.checkResult=0
+                  row.checkResult=1
                   row.checkResultName='合格'
                 }else{
-                   row.checkResult=1
+                   row.checkResult=0
                    row.checkResultName='不合格'
                 }
                }
@@ -947,8 +947,8 @@ export default {
            console.log(this.tableData[i])
           if(
              this.tableData[i].goodsCode == "" ||
-            this.tableData[i].ai == "" ||
-            this.tableData[i].af == "" ||
+            // this.tableData[i].ai == "" ||
+            // this.tableData[i].af == "" ||
             this.tableData[i].inhibitionNum == ""
           ) {
             this.msgError("检查明细信息必填项!");
