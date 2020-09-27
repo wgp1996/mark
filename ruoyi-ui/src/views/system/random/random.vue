@@ -63,6 +63,18 @@
           >删除</el-button
         >
       </el-col>
+
+       <el-col :span="1.5">
+        <el-button
+          type="warning"
+          icon="el-icon-edit"
+          size="mini"
+          :disabled="single"
+          @click="handleImport"
+          v-hasPermi="['system:cgrkd:import']"
+          >导入</el-button
+        >
+      </el-col>
       <!-- <el-col :span="1.5">
         <el-button
           type="warning"
@@ -347,6 +359,24 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+         <el-dialog :title="title" :visible.sync="iopen" width="600px">
+                <el-row :gutter="15" class="mb8">
+            <el-col :span="1.5">
+              <el-upload
+                class="upload-demo"
+                ref="upload"
+                :action="importUrl"
+                :headers="upload.headers"
+                :on-preview="handlePreview"
+                :on-remove="handleRemove"
+                :auto-upload="false">
+                <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+                <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+                <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
+              </el-upload>
+            </el-col>
+          </el-row>
+    </el-dialog>
     <goods-select
       v-if="selectGoodsDialog"
       ref="selectGoods"
@@ -405,6 +435,7 @@ export default {
   },
   data() {
     return {
+      importUrl:"",
       //用户信息
       user: {
         ownerCode: "",
@@ -457,6 +488,7 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      iopen:false,
       perationOptions: [],
       operateOptions: [],
       // 查询参数
@@ -527,6 +559,20 @@ export default {
     });
   },
   methods: {
+     submitUpload() {
+        this.$refs.upload.submit();
+      },
+      /** 导入操作 */
+    handleImport() {
+      //this.reset();
+      this.iopen = true;
+      this.title = "导入检测明细";
+      const id = this.ids;
+      getRandomInsp(id).then((response) => {
+        alert(response.data.djNumber)
+        this.importUrl=process.env.VUE_APP_BASE_API + "/system/randomInsp/import?djNumber="+response.data.djNumber
+      });
+    },
     changer(value) {
       console.log(this.tableData);
       for (let i = 0; i < this.tableData.length; i++) {

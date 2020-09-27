@@ -137,6 +137,7 @@
           <el-table-column label="用户编号" align="center" prop="userId" />
           <el-table-column label="用户名称" align="center" prop="userName" :show-overflow-tooltip="true" />
           <el-table-column label="用户昵称" align="center" prop="nickName" :show-overflow-tooltip="true" />
+          <el-table-column label="单位名称" align="center" prop="unitName" :show-overflow-tooltip="true" />
           <el-table-column label="部门" align="center" prop="dept.deptName" :show-overflow-tooltip="true" />
           <el-table-column label="手机号码" align="center" prop="phonenumber" width="120" />
           <el-table-column label="状态" align="center">
@@ -229,6 +230,11 @@
           <el-col :span="12">
             <el-form-item v-if="form.userId == undefined" label="用户密码" prop="password">
               <el-input v-model="form.password" placeholder="请输入用户密码" type="password" />
+            </el-form-item>
+          </el-col>
+            <el-col :span="12">
+            <el-form-item label="单位名称" prop="unitName">
+              <el-input v-model="form.unitName" placeholder="请输入单位名称" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -409,20 +415,23 @@ export default {
         nickName: [
           { required: true, message: "用户昵称不能为空", trigger: "blur" }
         ],
+        unitName: [
+          { required: true, message: "单位不能为空", trigger: "blur" }
+        ],
         deptId: [
           { required: true, message: "归属部门不能为空", trigger: "blur" }
         ],
         password: [
           { required: true, message: "用户密码不能为空", trigger: "blur" }
         ],
-        email: [
-          { required: true, message: "邮箱地址不能为空", trigger: "blur" },
-          {
-            type: "email",
-            message: "'请输入正确的邮箱地址",
-            trigger: ["blur", "change"]
-          }
-        ],
+        // email: [
+        //   { required: true, message: "邮箱地址不能为空", trigger: "blur" },
+        //   {
+        //     type: "email",
+        //     message: "'请输入正确的邮箱地址",
+        //     trigger: ["blur", "change"]
+        //   }
+        // ],
         phonenumber: [
           { required: true, message: "手机号码不能为空", trigger: "blur" },
           {
