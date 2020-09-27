@@ -63,7 +63,7 @@
                 </el-button>
               </el-form-item>
               <div class="texter">
-                       <p class="p3">山东盛世长城技术咨询有限公司</p>
+                       <p class="p3">山东商业职业技术学院</p>
                        <p class="p3">Copyright @ 聊城追溯 2020</p>
               </div>
             </el-form>
