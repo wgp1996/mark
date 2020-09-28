@@ -848,14 +848,16 @@ export default {
        this.sumNum=0
       this.loading = true;
       listCgrkd(this.queryParams).then((response) => {
+        let sum=0;
          for(let i=0;i<response.rows.length;i++){
            if(response.rows[i].goodsMoney==null){
              response.rows[i].goodsMoney='0';
            }else{
-             this.sumNum+=parseFloat(response.rows[i].goodsMoney);
+             sum+=parseFloat(response.rows[i].goodsMoney);
            }
         
         }
+        this.sumNum=sum.toFixed(2)
         this.leaseList = response.rows;
         this.total = response.total;
         this.loading = false;
