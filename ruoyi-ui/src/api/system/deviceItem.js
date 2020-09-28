@@ -1,6 +1,15 @@
 import request from '@/utils/request'
 
 // 查询设备建档列表
+export function getAllDeviceItem(query) {
+  return request({
+    url: '/system/deviceItem/getAllDeviceItem',
+    method: 'get',
+    params: query
+  })
+}
+
+// 设备检测
 export function listDeviceItem(query) {
   return request({
     url: '/system/deviceItem/list',

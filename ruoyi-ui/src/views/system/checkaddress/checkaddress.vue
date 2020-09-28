@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="100px">
-      <el-form-item label="单据编号" prop="djNumber">
+      <el-form-item label="检测地点" prop="checkAddressDetail">
         <el-input
           v-model="queryParams.djNumber"
-          placeholder="请输入单据编号"
+          placeholder="请输入检测地点"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -85,10 +85,11 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="检测地点名称" align="center" prop="checkAddressDetail" />
       <!-- <el-table-column label="详细地址" align="center" prop="checkAddressDetail" /> -->
-      <el-table-column label="上班时间" align="center" prop="workStartTime" />
-        <el-table-column label="下班时间" align="center" prop="workEndTime" />
+      <el-table-column label="上班时间(上午)" align="center" prop="workStartTime" />
+      <el-table-column label="下班时间(上午)" align="center" prop="workEndTime" />
+       <el-table-column label="上班时间(下午)" align="center" prop="workStartXtime" />
+      <el-table-column label="下班时间(下午)" align="center" prop="workEndXtime" />
       <el-table-column label="联系电话" align="center" prop="workTel" />
-     
       <el-table-column label="企业说明" align="center" prop="checkBz" />
       <el-table-column label="制单日期" align="center" prop="createTime" />
     
@@ -121,46 +122,18 @@
     />
 
     <!-- 添加或修改二级市场信息对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="900px">
-      <el-form ref="form" :model="form" :rules="rules" label-width="120px">
-            <el-form-item label="联系电话" prop="workTel">
-              <el-input v-model="form.workTel" placeholder="请输入联系电话" />
-            </el-form-item>
-             <el-form-item label="上班时间"  prop="workStartTime" >
-               <el-time-select style="width:100%"
-                v-model="form.workStartTime"
-                 :picker-options="{
-                  start: '00:00',
-                  step: '01:00',
-                  end: '24:00'
-                }"
-                placeholder="上班时间">
-              </el-time-select>
-            </el-form-item>
-            <el-form-item label="下班时间"  prop="workEndTime" >
-               <el-time-select style="width:100%"
-                v-model="form.workEndTime"
-                  :picker-options="{
-                   start: '00:00',
-                  step: '01:00',
-                  end: '24:00'
-    }"
-                placeholder="下班时间">
-              </el-time-select>
-            </el-form-item>
-            
-             
-            <el-form-item label="备注" prop="checkBz">
-              <el-input v-model="form.checkBz" placeholder="请输入备注信息" />
-            </el-form-item>
-             <baidu-map class="bm-view" ak="cGklIMXA6RuKkir9UobkakSE0QhwyuoO" :center="center" :zoom="zoom" @ready="handler"
+    <el-dialog :title="title" :visible.sync="open" width="900px" >
+      <!-- 地图 -->
+      <div class="clearfix">
+      <div style="float:left;width:500px">
+               <baidu-map class="bm-view" ak="cGklIMXA6RuKkir9UobkakSE0QhwyuoO" :center="center" :zoom="zoom" @ready="handler"
               :min-zoom="10"
               :max-zoom="17"
               :scroll-wheel-zoom="true"
               @click="getClickInfo"
               v-show="showMap"
              >
-             <bm-view style="width: 100%; height:500px;"></bm-view>
+             <bm-view style="width: 100%; height:400px;"></bm-view>
                <bm-control :offset="{width: '10px', height: '10px'}" style="display：none">
                 <!-- <bm-auto-complete v-model="keyword" :sugStyle="{zIndex: 999999}" style="display：none">
                   <input
@@ -178,17 +151,108 @@
                 animation="BMAP_ANIMATION_BOUNCE"
               ></bm-marker>
             </baidu-map>
-            <el-form-item label="经度" prop="checkAddressLat">
-              <el-input v-model="form.checkAddressLat" placeholder="请输入经度" />
+      </div>
+       <!-- 右侧列表 -->
+      <div style="float:left;width:355px;padding-left:20px">
+        <el-form ref="form" :model="form" :rules="rules" label-width="120px">
+            <!-- <el-form-item label="联系电话" prop="workTel">
+              <el-input v-model="form.workTel" placeholder="请输入联系电话" />
+            </el-form-item> -->
+            <label>检测室名称:</label>
+            <el-form-item  prop="checkHome" style="margin-top:5px" id="special">
+              <el-input v-model="form.checkHome " placeholder="请输入检测室名称" />
             </el-form-item>
-            <el-form-item label="纬度" prop="checkAddressLng">
-              <el-input v-model="form.checkAddressLng" placeholder="请输入纬度" />
+              <label style="display:block;margin-bottom:5px">检测室地址:</label>
+              <el-form-item  prop="checkAddressDetail" style="margin:left:0px;width:74%;height:36px;margin-bottom:0px"  id="special">
+              <el-input v-model="form.checkAddressDetail" placeholder="可输入详细地址查询经纬度" />
+               <el-button type="primary"  style="float: right;position: relative;top: -36px;right: -85px;" @click="checke">查询</el-button>
             </el-form-item>
-            <el-form-item label="可输入位置查询" prop="checkAddressDetail" style="width:80%">
-              <el-input v-model="form.checkAddressDetail" placeholder="" />
-               <el-button type="primary"  style="float: right;position: relative;top: -36px;right: -100px;" @click="checke">查询</el-button>
+            <div class="clearfix" style="width:100%;position:relative;top:-15px;height:40px">
+            <div style="width:50%;float:left;height:100%">
+            <el-form-item label="经度" prop="checkAddressLat"   id="special" class="onders">
+              <el-input v-model="form.checkAddressLat" placeholder="请输入经度"  style="width:127px"/>
             </el-form-item>
+            </div>
+            <div style="width:50%;float:left;height:100%">
+            <el-form-item label="纬度" prop="checkAddressLng"  id="specials" class="onders">
+              <el-input v-model="form.checkAddressLng" placeholder="请输入纬度" style="width:127px"/>
+            </el-form-item>
+            </div>
+            </div>
+            <label>工作日:</label>
+            <el-form-item  prop="workDay" style="margin-top:5px;width:100%" id="special" >
+               <el-select v-model="form.workDay" placeholder="请选择活动区域" style="width:100%">
+                    <el-option label="单休" value="0"></el-option>
+                    <el-option label="双休" value="1"></el-option>
+               </el-select>
+            </el-form-item>
+             <label style="display:block;margin-bottom:5px">工作时间:</label>
+             <div class="clearfix">
+             <el-form-item label="上午"  prop="workStartTime" id="onders" style="float:left;width:60%">
+               <el-time-select style="width:75%"
+                v-model="form.workStartTime"
+                 :picker-options="{
+                  start: '00:00',
+                  step: '00:30',
+                  end: '24:00'
+                }"
+                placeholder="上班时间">
+              </el-time-select>
+               <label style="padding-left:5px">至</label>
+            </el-form-item>
+           
+            <el-form-item label=""  prop="workEndTime" id="special" style="float:left;width:40%">
+               <el-time-select style="width:100%"
+                v-model="form.workEndTime"
+                  :picker-options="{
+                   start: '00:00',
+                  step: '00:30',
+                  end: '24:00'
+    }"
+                placeholder="下班时间">
+              </el-time-select>
+            </el-form-item>
+            </div>
+           <div class="clearfix">
+             <el-form-item label="下午"  prop="workStartXtime" id="onders" style="float:left;width:60%">
+               <el-time-select style="width:75%"
+                v-model="form.workStartXtime"
+                 :picker-options="{
+                  start: '00:00',
+                  step: '00:30',
+                  end: '24:00'
+                }"
+                placeholder="上班时间">
+              </el-time-select>
+               <label style="padding-left:5px">至</label>
+            </el-form-item>
+           
+            <el-form-item label=""  prop="workEndXtime" id="special" style="float:left;width:40%">
+               <el-time-select style="width:100%"
+                v-model="form.workEndXtime"
+                  :picker-options="{
+                   start: '00:00',
+                  step: '00:30',
+                  end: '24:00'
+    }"
+                placeholder="下班时间">
+              </el-time-select>
+            </el-form-item>
+            </div>
+               <label style="display:block;margin-bottom:5px">联系电话:</label>
+            <el-form-item prop="workTel" id="special">
+              <el-input v-model="form.workTel" placeholder="请输入联系电话" />
+            </el-form-item>
+            <label style="display:block;margin-bottom:5px">备注:</label>
+            <el-form-item prop="checkBz" id="special">
+              <el-input v-model="form.checkBz" placeholder="请输入备注信息" />
+            </el-form-item>
+        
+         
+           
       </el-form>
+      </div>
+       </div>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
@@ -730,6 +794,12 @@ createMap() {
         ckAddress: undefined,
         lat: undefined,
         lng: undefined,
+        workDay:undefined,
+        workStartXtime:undefined,
+        workEndXtime:undefined,
+        workStartTime:undefined,
+         workEndTime:undefined,
+         checkHome:undefined,
 
       };
       this.resetForm("form");
@@ -894,6 +964,12 @@ createMap() {
 };
 </script>
 <style>
+.clearfix{
+  content:'';
+  display:block;
+  overflow: hidden;
+  zoom:1;
+}
 .cell .el-select+span{
   display: none;
 }
@@ -931,5 +1007,29 @@ table th.star div::after {
 .changeBlue .el-form-item__label{
   color: #1890ff;
 }
-
+#special label{
+  width: 40px !important;
+}
+#special .el-form-item__content{
+  margin-left:0px !important;
+    height: 36px;
+}
+#specials label{
+  width: 40px !important;
+  padding: 0 9px 0 0;
+}
+#specials .el-form-item__content{
+  margin-left:0px !important;
+  height: 36px;
+}
+#onders label{
+  width: 40px !important;
+  padding: 0 9px 0 0;
+}
+#onders .el-form-item__content{
+    margin-left:30px !important;
+}
+#special{
+  margin-bottom:10px
+}
 </style>

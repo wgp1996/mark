@@ -1,11 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form
-      :model="queryParams"
-      ref="queryForm"
-      :inline="true"
-      label-width="100px"
-    >
+    <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="100px">
       <el-form-item label="单据编号" prop="djNumber">
         <el-input
           v-model="queryParams.djNumber"
@@ -17,16 +12,8 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button
-          type="primary"
-          icon="el-icon-search"
-          size="mini"
-          @click="handleQuery"
-          >搜索</el-button
-        >
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
-          >重置</el-button
-        >
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
 
@@ -37,9 +24,8 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['system:cgrkd:add']"
-          >新增</el-button
-        >
+          v-hasPermi="['system:randomInsp:add']"
+        >新增</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -48,9 +34,8 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['system:cgrkd:edit']"
-          >修改</el-button
-        >
+          v-hasPermi="['system:randomInsp:edit']"
+        >修改</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -59,32 +44,20 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['system:cgrkd:remove']"
-          >删除</el-button
-        >
+          v-hasPermi="['system:randomInsp:remove']"
+        >删除</el-button>
       </el-col>
-
-       <el-col :span="1.5">
+      <el-col :span="1.5">
         <el-button
           type="warning"
           icon="el-icon-edit"
           size="mini"
           :disabled="single"
           @click="handleImport"
-          v-hasPermi="['system:cgrkd:import']"
+          v-hasPermi="['system:randomInsp:import']"
           >导入</el-button
         >
       </el-col>
-      <!-- <el-col :span="1.5">
-        <el-button
-          type="warning"
-          icon="el-icon-s-promotion"
-          size="mini"
-          :disabled="multiple"
-          @click="handleEffect"
-          v-hasPermi="['system:cgrkd:effect']"
-        >生效</el-button>
-      </el-col> -->
     </el-row>
 
     <el-table
@@ -96,26 +69,18 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column type="expand">
         <template slot-scope="props">
-          <el-table
-            style="padding: 0; margin: 0"
-            :data="props.row.childrenList"
-          >
-            <el-table-column label="商品名称" align="center" prop="goodsName" />
-            <el-table-column label="商品编码" align="center" prop="goodsCode" />
+          <el-table style="padding: 0; margin: 0" :data="props.row.childrenList">
+            <el-table-column label="业户名称" align="center" prop="ownerName" />
+            
+            <el-table-column label="检测物名称" align="center" prop="goodsName" />
+            <!-- <el-table-column label="检测物编码" align="center" prop="goodsCode" /> -->
             <!-- <el-table-column label="AI值" align="center" prop="ai" /> -->
             <!-- <el-table-column label="AF值" align="center" prop="af" /> -->
             <!-- <el-table-column label="AF_AI值" align="center" prop="afAi" />  -->
-            <el-table-column
-              label="抑制率"
-              align="center"
-              prop="inhibitionNum"
-            />
-            <el-table-column
-              label="结论"
-              align="center"
-              prop="checkResultName"
-            />
-            <el-table-column label="单号" align="center" prop="djNumber" />
+            <el-table-column label="检测项目" align="center" prop="checkProject" />
+            <el-table-column label="检测结果" align="center" prop="testResult" />
+            <el-table-column label="抑制率" align="center" prop="inhibitionNum" />
+            <el-table-column label="合格状态" align="center" prop="checkResultName" />
           </el-table>
         </template>
       </el-table-column>
@@ -126,36 +91,26 @@
 
       <el-table-column label="采用地点" align="center" prop="checkAddress" />
 
-      <el-table-column
-        label="抑制率标准值"
-        align="center"
-        prop="inhibitionNum"
-      />
+      <el-table-column label="抑制率标准值" align="center" prop="inhibitionNum" />
       <el-table-column label="检测说明" align="center" prop="djTitle" />
       <!-- <el-table-column label="制单日期" align="center" prop="create_Time" /> -->
 
-      <el-table-column
-        label="操作"
-        align="center"
-        class-name="small-padding fixed-width"
-      >
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:cgrkd:edit']"
-            >修改</el-button
-          >
+            v-hasPermi="['system:randomInsp:edit']"
+          >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['system:cgrkd:remove']"
-            >删除</el-button
-          >
+            v-hasPermi="['system:randomInsp:remove']"
+          >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -170,28 +125,80 @@
 
     <!-- 添加或修改二级市场信息对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="900px">
-      <el-form ref="form" :model="form" :rules="rules" label-width="150px">
+      <el-form
+        ref="form"
+        :model="form"
+        :rules="rules"
+        label-width="150px"
+        :inline="true"
+        class="random"
+        :label-position="left"
+      >
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane label="基本信息" name="first">
             <!-- <el-form-item label="单据编号" prop="djNumber">
               <el-input v-model="form.djNumber" placeholder="" />
-            </el-form-item> -->
-            <el-form-item label="抑制率标准设定值%" prop="inhibitionNum">
-              <el-input
-                v-model="form.inhibitionNum"
-                placeholder=""
-                @change="changer"
-              />
+            </el-form-item>-->
+            <el-form-item label="标题" prop="djTitle" id="djTitless">
+              <el-input v-model="form.djTitle" placeholder />
             </el-form-item>
+            <el-form-item label="检测日期" prop="djTime" class="changeBlue pig" style="width:400px">
+              <el-date-picker
+                style="width: 100%"
+                v-model="form.djTime"
+                type="date"
+                placeholder="检测日期"
+                format="yyyy 年 MM 月 dd 日"
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+            </el-form-item>
+            <el-form-item label="检测人" class="changeBlue pig" style="width:400px">
+              <el-input v-model="user.ownerNameJc" :disabled="true" placeholder="检测人" />
+            </el-form-item>
+            <el-form-item label="检测单号" prop="djNumber" class="changeBlue pig" style="width:400px">
+              <el-input v-model="form.djNumber" :disabled="true" placeholder="后台自动生成" />
+            </el-form-item>
+            <el-form-item label="检测标准" prop="checkNum" class=" pig" style="width:400px">
+              <el-input v-model="form.checkNum"  :placeholder="numbers" />
+            </el-form-item>
+            <el-form-item label="检测设备" prop="checkDevice" class=" pig" style="width:400px">
+              <!-- <el-input
+                v-model="form.djNumber"
+                :disabled="true"
+                placeholder=""
+              />-->
+              <el-select
+                v-model="form.checkDevice"
+                :placeholder="placedevice"
+                filterable
+                style="width: 100%"
+              >
+                <el-option
+                  v-for="item in conderdevice"
+                  :key="item.deviceId"
+                  :label="item.deviceName "
+                  :value="item.deviceId"
+                >
+                  <span
+                    style="
+                      float: left;
+                      color: #8492a6;
+                      font-size: 13px;
+                      width: 100%;
+                    "
+                  >{{ item.deviceName }}</span>
+                </el-option>
+              </el-select>
+            </el-form-item>
+
             <!-- <el-form-item label="采用地点" prop="checkAddress">
               <el-input v-model="form.checkAddress" placeholder="" />
-            </el-form-item> -->
-            <el-form-item label="采用地点" prop="checkAddress">
+            </el-form-item>-->
+            <el-form-item label="检测地" prop="checkAddress" style="width:400px" class="pig">
               <el-select
                 v-model="form.checkAddress"
-                placeholder="请选择采用地点"
+                :placeholder="checking"
                 filterable
-                @change="selectOwner"
                 style="width: 100%"
               >
                 <el-option
@@ -207,62 +214,56 @@
                       font-size: 13px;
                       width: 100%;
                     "
-                    >{{ item.checkAddressDetail }}</span
-                  >
+                  >{{ item.checkAddressDetail }}</span>
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="检测说明" prop="djTitle">
-              <el-input v-model="form.djTitle" placeholder="" />
-            </el-form-item>
-            <el-form-item label="业户代码" class="changeBlue">
+
+            <el-form-item label="抑制率值%" prop="inhibitionNum" style="width:400px" class="pig">
               <el-input
-                v-model="user.ownerCode"
-                :disabled="true"
-                placeholder="业户代码"
+                v-model="form.inhibitionNum"
+                :placeholder="number"
+                @change="changer"
               />
             </el-form-item>
-            <el-form-item label="业户名称" class="changeBlue">
-              <el-input
-                v-model="user.ownerName"
-                :disabled="true"
-                placeholder="业户名称"
-              />
-            </el-form-item>
-            <el-form-item label="单据编号" prop="djNumber" class="changeBlue">
-              <el-input
-                v-model="form.djNumber"
-                :disabled="true"
-                placeholder="后台自动生成"
-              />
-            </el-form-item>
-            <el-form-item label="制单人" class="changeBlue">
-              <el-input
-                v-model="user.ownerNameJc"
-                :disabled="true"
-                placeholder="制单人"
-              />
-            </el-form-item>
-            <el-form-item label="制单日期" prop="djTime" class="changeBlue">
-              <el-date-picker
+            <el-form-item label="采样地" style="width:400px" class="pig">
+              <!-- <el-input
+                v-model="user.sampaddress"
+                placeholder=""
+                @change="changer"
+              />-->
+              <el-select
+                v-model="user.sampaddress"
+                :placeholder="place"
+                filterable
+                @change="selectOwner"
                 style="width: 100%"
-                v-model="form.djTime"
-                type="date"
-                placeholder="制单日期"
               >
-              </el-date-picker>
+                <el-option
+                  v-for="item in conderaddress"
+                  :key="item.sampAddressId"
+                  :label="item.sampAddressDetail"
+                  :value="item.sampAddressId"
+                >
+                  <span
+                    style="
+                      float: left;
+                      color: #8492a6;
+                      font-size: 13px;
+                      width: 100%;
+                    "
+                  >{{ item.sampAddressDetail }}</span>
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="说明" prop="remark" id="djTitles">
+              <el-input v-model="form.remark" placeholder />
             </el-form-item>
           </el-tab-pane>
           <el-tab-pane label="明细信息" name="second">
             <el-row :gutter="10" class="mb8">
               <el-col :span="1.5">
-                <el-button
-                  type="primary"
-                  icon="el-icon-plus"
-                  size="mini"
-                  @click="goodsSelect"
-                  >新增商品</el-button
-                >
+                <el-button type="primary" icon="el-icon-plus" size="mini" @click="goodsSelect">新增检测物</el-button>
               </el-col>
             </el-row>
             <el-table
@@ -273,7 +274,46 @@
               @row-click="handleCurrentChange"
               :header-cell-class-name="starAdd"
             >
-              <el-table-column prop="goodsCode" label="商品编码" width="200">
+              <el-table-column label="业户信息" prop="ownerCode" width="250">
+                <template scope="scope">
+                  <el-select
+                    v-model="scope.row.ownerCode"
+                    placeholder="请选择业户"
+                    filterable
+                    style="width:100%"
+                    @change="selectPerson(scope.$index, scope.row)"
+                  >
+                    <el-option
+                      v-for="item in personList"
+                      :key="item.ownerCode"
+                      :label="item.ownerName"
+                      :value="item.ownerCode"
+                    >
+                      <span style="width:100%">{{item.ownerName}}</span>
+                    </el-option>
+                  </el-select>
+                </template>
+              </el-table-column>
+              <el-table-column label="检测项目" prop="checkProject" width="150">
+                <template scope="scope">
+                  <el-select
+                    v-model="scope.row.checkProject"
+                    placeholder="请选择检测项目"
+                    filterable
+                    style="width:100%"
+                  >
+                    <el-option
+                      v-for="item in projectList"
+                      :key="item.projectName"
+                      :label="item.projectName"
+                      :value="item.projectName"
+                    >
+                      <span style="width:100%">{{ item.projectName }}</span>
+                    </el-option>
+                  </el-select>
+                </template>
+              </el-table-column>
+              <el-table-column prop="goodsCode" label="检测物编码" width="200">
                 <template scope="scope">
                   <el-input
                     :disabled="true"
@@ -284,7 +324,7 @@
                   <span>{{ scope.row.goodsCode }}</span>
                 </template>
               </el-table-column>
-              <el-table-column prop="goodsName" label="商品名称" width="200">
+              <el-table-column prop="goodsName" label="检测物名称" width="200">
                 <template scope="scope">
                   <el-input
                     :disabled="true"
@@ -293,6 +333,22 @@
                     placeholder="请输入内容"
                   ></el-input>
                   <span>{{ scope.row.goodsName }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="采样日期" width="150">
+                <template scope="scope">
+                  <el-date-picker v-model="scope.row.sampTime" type="date" placeholder="请选择采样日期"></el-date-picker>
+                  <span>{{ scope.row.sampTime }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="检测结果" width="150">
+                <template scope="scope">
+                  <el-input
+                    size="small"
+                    v-model="scope.row.testResult"
+                    placeholder="请输入检测结果"
+                  ></el-input>
+                  <span>{{ scope.row.testResult }}</span>
                 </template>
               </el-table-column>
               <el-table-column label="抑制率" width="150">
@@ -306,12 +362,14 @@
                   <span>{{ scope.row.inhibitionNum }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="检测结论" width="150">
+
+              <el-table-column label="合格状态" width="150">
                 <template scope="scope">
                   <el-input
+                    :disabled="true"
                     size="small"
                     v-model="scope.row.checkResultName"
-                    placeholder=""
+                    placeholder
                     @change="handleEdit(scope.$index, scope.row)"
                   ></el-input>
                   <span>{{ scope.row.checkResultName }}</span>
@@ -323,8 +381,7 @@
                     size="small"
                     type="danger"
                     @click="handleChildDelete(scope.$index, scope.row)"
-                    >删除</el-button
-                  >
+                  >删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -359,7 +416,7 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
-         <el-dialog :title="title" :visible.sync="iopen" width="600px">
+          <el-dialog :title="title" :visible.sync="iopen" width="600px">
                 <el-row :gutter="15" class="mb8">
             <el-col :span="1.5">
               <el-upload
@@ -398,7 +455,7 @@
 //   updateCgrkdStatus,
 //   exportCgrkd,
 //   getOwnerList,
-// } from "@/api/system/cgrkd";
+// } from "@/api/system/randomInsp";
 import {
   listRandomInsp,
   getRandomInsp,
@@ -406,7 +463,7 @@ import {
   updateRandomInsp,
   delRandomInsp,
   exportRandomInsp,
-  getAllCheckAddress,
+  getAllCheckAddress
   // updateCgrkd,
   // updateCgrkdStatus,
   // exportCgrkd,
@@ -414,13 +471,13 @@ import {
 } from "@/api/system/randomInsp";
 import {
   listRandomInspChild,
-  delRandomInspChild,
+  delRandomInspChild
   // updateCgrkd,
   // updateCgrkdStatus,
   // exportCgrkd,
   // getOwnerList,
 } from "@/api/system/randomInspChild";
-
+import { ownerList } from "@/api/system/owner";
 import goodsSelect from "./goodsSelect";
 import { getCkAll } from "@/api/system/ck";
 import { getInfo } from "@/api/login";
@@ -428,10 +485,14 @@ import { getPersonAll } from "@/api/system/person";
 import { getToken } from "@/utils/auth";
 import { goodsList } from "@/api/system/ownerGoods";
 import { getShopList } from "@/api/system/shopInfo";
+import { getAllSampAddress } from "@/api/system/sampAddress";
+import { getAllDeviceItem } from "@/api/system/deviceItem";
+import { listCheck } from "@/api/system/check";
+import { listCheckProject } from "@/api/system/checkProject";
 export default {
   name: "Lease",
   components: {
-    goodsSelect,
+    goodsSelect
   },
   data() {
     return {
@@ -441,7 +502,14 @@ export default {
         ownerCode: "",
         ownerName: "",
         ownerNameJc: "",
+        sampaddress: "",
+        device: ""
       },
+      checking: "",
+      left: "right",
+      place: "",
+      numbers: "",
+      number: "",
       fileList: [],
       upload: {
         // 是否显示弹出层（用户导入）
@@ -455,7 +523,7 @@ export default {
         // 设置上传的请求头部
         headers: { Authorization: "Bearer " + getToken() },
         // 上传的地址
-        url: process.env.VUE_APP_BASE_API + "/common/upload",
+        url: process.env.VUE_APP_BASE_API + "/common/upload"
       },
       //仓库列表
       storeList: [],
@@ -463,6 +531,10 @@ export default {
       shopList: [],
       // 地点列表
       conder: [],
+      conderaddress: [],
+      // 设备
+      conderdevice: [],
+      placedevice: "",
       //供应商
       personList: [],
       // 遮罩层
@@ -480,6 +552,8 @@ export default {
       total: 0,
       //子表数据
       tableData: [],
+      // 检测项目
+      projectList: [],
       // 仓库信息默认
       placeholderone: "",
       // 主表信息表格数据
@@ -497,7 +571,7 @@ export default {
         pageSize: 10,
         markCode: undefined,
         djNumber: undefined,
-        djTime: undefined,
+        djTime: undefined
       },
       // 表单参数
       form: {},
@@ -508,58 +582,79 @@ export default {
           {
             required: true,
             message: "抑制率标准设定值不能为空",
-            trigger: "blur",
-          },
+            trigger: "blur"
+          }
+        ],
+        checkDevice: [
+          { required: true, message: "检测设备不能为空", trigger: "blur" }
         ],
         checkAddress: [
-          { required: true, message: "采用地点不能为空", trigger: "blur" },
+          { required: true, message: "采用地点不能为空", trigger: "blur" }
         ],
         // count: [
         //   { required: true, message: "检测通道数量不能为空", trigger: "blur" },
         // ],
-        sampAddressPersonTel: [
-          { required: true, message: "联系电话不能为空", trigger: "blur" },
-        ],
-      },
+        checkNum: [
+          { required: true, message: "检测标准不能为空", trigger: "blur" }
+        ]
+      }
     };
   },
   created() {
+    ownerList(this.queryParams).then(response => {
+      this.personList = response.data;
+      // console.log(this.personList)
+    });
+    listCheckProject(this.queryParams).then(response => {
+      this.projectList = response.rows;
+      console.log(this.projectList);
+    });
     this.getList();
-    getCkAll(this.queryParams).then((response) => {
+    getCkAll(this.queryParams).then(response => {
       this.storeList = response.rows;
       for (let i = 0; i < this.storeList.length; i++) {
         this.placeholderone = this.storeList[0].ckName;
         //  console.log(this.placeholderone)
       }
     });
-    getPersonAll(this.queryParams).then((response) => {
-      this.personList = response.rows;
-      // console.log(this.personList)
-    });
-    getAllCheckAddress(this.queryParams).then((response) => {
+    // getPersonAll(this.queryParams).then(response => {
+    //   this.personList = response.rows;
+    //   // console.log(this.personList)
+    // });
+    getAllCheckAddress(this.queryParams).then(response => {
       this.conder = response.rows;
       console.log(this.conder);
     });
-
-    getInfo().then((response) => {
+    // 采样地
+    getAllSampAddress().then(response => {
+      this.conderaddress = response.rows;
+      this.place = response.rows[0].sampAddress;
+      console.log(response);
+      // this.user.sampaddress = response.user.userName;
+    });
+    // 抑制率值
+    listCheck().then(response => {
+      this.number = response.rows[0].inhibitionNum;
+      this.numbers = response.rows[1].checkNum;
+      // this.place=response.rows[0].sampAddress
+      console.log(response);
+    });
+    // 检测设备
+    getAllDeviceItem().then(response => {
+      this.conderdevice = response.rows;
+      this.placedevice = response.rows[0].deviceName;
+      console.log(response);
+      // this.user.sampaddress = response.user.userName;
+    });
+    getInfo().then(response => {
       this.user.ownerCode = response.user.userName;
       this.user.ownerName = response.user.nickName;
       this.user.ownerNameJc = response.user.nickName;
       this.form.djTime = this.getTime();
     });
-    getShopList(this.queryParams).then((response) => {
-      this.shopList = response.rows;
-    });
-    goodsList(this.queryParams).then((response) => {
-      // console.log(response)
-      this.goodsList = response.rows;
-      // console.log( this.goodsList )
-      // this.total = response.total;
-      // this.loading = false;
-    });
   },
   methods: {
-     submitUpload() {
+    submitUpload() {
         this.$refs.upload.submit();
       },
       /** 导入操作 */
@@ -569,15 +664,24 @@ export default {
       this.title = "导入检测明细";
       const id = this.ids;
       getRandomInsp(id).then((response) => {
-        alert(response.data.djNumber)
         this.importUrl=process.env.VUE_APP_BASE_API + "/system/randomInsp/import?djNumber="+response.data.djNumber
       });
+    },
+    //选择供应商
+    selectPerson(index, data) {
+      //根据编码找产地
+      for (let i = 0; i < this.personList.length; i++) {
+        if (this.personList[i].ownerCode == data.ownerCode) {
+          data.ownerName = this.personList[i].ownerName;
+          break;
+        }
+      }
     },
     changer(value) {
       console.log(this.tableData);
       for (let i = 0; i < this.tableData.length; i++) {
         console.log(this.tableData[i]);
-        if (parseFloat(value) < parseFloat(this.tableData[i].inhibitionNum)) {
+        if (parseFloat(value) > parseFloat(this.tableData[i].inhibitionNum)) {
           this.tableData[i].checkResultName = "合格";
         } else {
           this.tableData[i].checkResultName = "不合格";
@@ -639,13 +743,13 @@ export default {
     //追加子表必填样式
     starAdd(obj) {
       //if(obj.columnIndex === 0 || obj.columnIndex === 1 || obj.columnIndex === 4 || obj.columnIndex === 5 || obj.columnIndex === 6|| obj.columnIndex === 7) {
-      if (
-        obj.columnIndex === 0 ||
-        obj.columnIndex === 1 ||
-        obj.columnIndex === 2
-      ) {
-        return "star";
-      }
+      // if (
+      //   obj.columnIndex === 0 ||
+      //   obj.columnIndex === 1 ||
+      //   obj.columnIndex === 2
+      // ) {
+      //   return "star";
+      // }
     },
     // handleEditShop(data,index, row){
     //     //根据编码名称
@@ -671,8 +775,6 @@ export default {
     },
     //选择客户
     selectOwner(data) {},
-    //选择供应商
-    selectPerson(data) {},
     //选择仓库
     selectStore(data) {
       //根据仓库编码查找仓库名称
@@ -720,11 +822,11 @@ export default {
           if (
             parseFloat(row.inhibitionNum) > parseFloat(this.form.inhibitionNum)
           ) {
+             row.checkResult = 0;
+            row.checkResultName = "不合格";
+          } else {
             row.checkResult = 1;
             row.checkResultName = "合格";
-          } else {
-            row.checkResult = 0;
-            row.checkResultName = "不合格";
           }
         }
       } else {
@@ -735,21 +837,21 @@ export default {
       // }
       //含税
       // if(this.form.isRate==1){
-      //     if(row.goodsNum!=""&&row.goodsNum!=null&&row.goodsNum!=undefined&&row.goodsPrice!=""&&row.goodsPrice!=null&&row.goodsPrice!=undefined&&row.goodsRate!=""&&row.goodsRate!=null&&row.goodsRate!=undefined){
-      //       row.goodsMoney=(parseFloat(row.goodsNum)*parseFloat(row.goodsPrice)).toFixed(2);
+      //     if(row.goodsCode!=""&&row.goodsCode!=null&&row.goodsCode!=undefined&&row.goodsPrice!=""&&row.goodsPrice!=null&&row.goodsPrice!=undefined&&row.goodsRate!=""&&row.goodsRate!=null&&row.goodsRate!=undefined){
+      //       row.goodsMoney=(parseFloat(row.goodsCode)*parseFloat(row.goodsPrice)).toFixed(2);
       //       row.goodsMoneyRate=(((1+parseFloat(row.goodsRate)/100))*row.goodsMoney).toFixed(2);
-      //       row.goodsPriceRate=(parseFloat(row.goodsMoneyRate)/parseFloat(row.goodsNum)).toFixed(2);
+      //       row.goodsPriceRate=(parseFloat(row.goodsMoneyRate)/parseFloat(row.goodsCode)).toFixed(2);
       //     }
       // }
     },
     handleEditPerson(data, index, row) {
       //根据编码找产地
       for (let i = 0; i < this.goodsList.length; i++) {
-        console.log(this.goodsList[i].goodsCode == data);
-        if (this.goodsList[i].goodsCode == data) {
+        console.log(this.goodsList[i].objectNum == data);
+        if (this.goodsList[i].objectNum == data) {
           row.goodsAddress = this.goodsList[i].goodsAddress;
           row.goodsDw = this.goodsList[i].goodsDw;
-          row.goodsName = this.goodsList[i].goodsName;
+          row.goodsName = this.goodsList[i].objectName;
           break;
         }
       }
@@ -758,13 +860,13 @@ export default {
       //计算总金额
       let sumMoney = 0;
       for (let i = 0; i < this.tableData.length; i++) {
-        if (this.tableData[i].goodsNum != "") {
-          sumMoney += parseFloat(this.tableData[i].goodsNum);
+        if (this.tableData[i].goodsCode != "") {
+          sumMoney += parseFloat(this.tableData[i].goodsCode);
         }
       }
       this.form.storeName = sumMoney.toString();
       console.log(this.form);
-      // console.log(row.goodsNum);
+      // console.log(row.goodsCode);
     },
     handleChildDelete(index, row) {
       if (row.id != "" && row.id != undefined && row.id != null) {
@@ -789,15 +891,15 @@ export default {
       this.$nextTick(() => {
         //检查是否存在重复数据
         // for (let i = 0; i < this.tableData.length; i++) {
-        //   if (row.goodsCode == this.tableData[i].goodsCode) {
+        //   if (row.objectNum == this.tableData[i].objectNum) {
         //     this.msgError("信息重复!");
         //     return;
         //   }
         // }
 
         let goodsInfo = new Object();
-        goodsInfo.goodsCode = row.goodsCode;
-        goodsInfo.goodsName = row.goodsName;
+        goodsInfo.goodsCode = row.objectNum;
+        goodsInfo.goodsName = row.objectName;
         goodsInfo.ai = "";
         goodsInfo.af = "";
         goodsInfo.afAi = "";
@@ -816,7 +918,7 @@ export default {
       this.$nextTick(() => {
         //检查是否存在重复数据
         // for (let i = 0; i < this.tableData.length; i++) {
-        //   if (row.goodsCode == this.tableData[i].goodsCode) {
+        //   if (row.objectNum == this.tableData[i].objectNum) {
         //     this.msgError("信息重复!");
         //     return;
         //   }
@@ -826,8 +928,8 @@ export default {
         for (let i = 0; i < rows.length; i++) {
           let row = rows[i];
           let goodsInfo = new Object();
-          goodsInfo.goodsCode = row.goodsCode;
-          goodsInfo.goodsName = row.goodsName;
+          goodsInfo.goodsCode = row.objectNum;
+          goodsInfo.goodsName = row.objectName;
           goodsInfo.ai = "";
           goodsInfo.af = "";
           goodsInfo.afAi = "";
@@ -842,10 +944,11 @@ export default {
     /** 查询二级市场信息列表 */
     getList() {
       this.loading = true;
-      listRandomInsp(this.queryParams).then((response) => {
+      listRandomInsp(this.queryParams).then(response => {
         this.leaseList = response.rows;
         console.log(this.leaseList);
         this.total = response.total;
+        this.checking = response.rows[0].checkAddress;
         this.loading = false;
       });
     },
@@ -874,11 +977,12 @@ export default {
         sampAddress: undefined,
         sampAddressPerson: undefined,
         sampAddressPersonTel: undefined,
-        inhibitionNum: undefined,
+        inhibitionNum: this.number,
+        checkNum: this.numbers,
         afAi: undefined,
         checkResult: undefined,
         ai: undefined,
-        af: undefined,
+        af: undefined
       };
       this.resetForm("form");
       this.tableData = [];
@@ -895,7 +999,7 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.id);
+      this.ids = selection.map(item => item.id);
       this.single = selection.length != 1;
       this.multiple = !selection.length;
     },
@@ -909,7 +1013,7 @@ export default {
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids;
-      getRandomInsp(id).then((response) => {
+      getRandomInsp(id).then(response => {
         this.form = response.data;
         if (response.data.fileName != "") {
           this.fileList = [];
@@ -920,9 +1024,9 @@ export default {
         }
         // 查询参数
         let queryParams = {
-          djNumber: this.form.djNumber,
+          djNumber: this.form.djNumber
         };
-        listRandomInspChild(queryParams).then((response) => {
+        listRandomInspChild(queryParams).then(response => {
           //this.form.rows = response.data;
           this.tableData = response.rows;
         });
@@ -931,7 +1035,7 @@ export default {
       });
     },
     /** 提交按钮 */
-    submitForm: function () {
+    submitForm: function() {
       console.log(this.tableData.length);
       console.log(this.tableData);
       if (this.tableData.length > 0) {
@@ -939,7 +1043,7 @@ export default {
         for (let i = 0; i < this.tableData.length; i++) {
           console.log(this.tableData[i]);
           if (
-            this.tableData[i].goodsCode == "" ||
+            this.tableData[i].objectNum == "" ||
             // this.tableData[i].ai == "" ||
             // this.tableData[i].af == "" ||
             this.tableData[i].inhibitionNum == ""
@@ -949,10 +1053,10 @@ export default {
           }
         }
         this.form.rows = JSON.stringify(this.tableData);
-        this.$refs["form"].validate((valid) => {
+        this.$refs["form"].validate(valid => {
           if (valid) {
             if (this.form.id != undefined) {
-              updateRandomInsp(this.form).then((response) => {
+              updateRandomInsp(this.form).then(response => {
                 if (response.code === 200) {
                   this.msgSuccess("修改成功");
                   this.open = false;
@@ -963,7 +1067,7 @@ export default {
                 }
               });
             } else {
-              addRandomInsp(this.form).then((response) => {
+              addRandomInsp(this.form).then(response => {
                 if (response.code === 200) {
                   this.msgSuccess("新增成功");
                   this.open = false;
@@ -986,16 +1090,16 @@ export default {
       this.$confirm('是否确认删除单据编号为"' + ids + '"的数据项?', "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning",
+        type: "warning"
       })
-        .then(function () {
+        .then(function() {
           return delRandomInsp(ids);
         })
         .then(() => {
           this.getList();
           this.msgSuccess("删除成功");
         })
-        .catch(function () {});
+        .catch(function() {});
     },
     /** 生效按钮操作 */
     handleEffect(row) {
@@ -1003,16 +1107,16 @@ export default {
       this.$confirm('是否确认单据编号为"' + ids + '"的数据项已生效?', "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning",
+        type: "warning"
       })
-        .then(function () {
+        .then(function() {
           return updateCgrkdStatus(ids);
         })
         .then(() => {
           this.getList();
           this.msgSuccess("操作成功");
         })
-        .catch(function () {});
+        .catch(function() {});
     },
     /** 导出按钮操作 */
     handleExport() {
@@ -1020,17 +1124,17 @@ export default {
       this.$confirm("是否确认导出所有租赁单据数据项?", "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning",
+        type: "warning"
       })
-        .then(function () {
+        .then(function() {
           return exportRandomInsp(queryParams);
         })
-        .then((response) => {
+        .then(response => {
           this.download(response.msg);
         })
-        .catch(function () {});
-    },
-  },
+        .catch(function() {});
+    }
+  }
 };
 </script>
 <style>
@@ -1068,5 +1172,18 @@ table th.star div::after {
 }
 .changeBlue .el-form-item__label {
   color: #1890ff;
+}
+
+.pig .el-form-item__content {
+  width: 215px;
+}
+#djTitles .el-form-item__content {
+  width: 630px;
+}
+#djTitles .el-input--medium .el-input__inner {
+  height: 70px;
+}
+#djTitless .el-form-item__content {
+  width: 630px;
 }
 </style>

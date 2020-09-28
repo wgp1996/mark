@@ -555,9 +555,7 @@ export default {
 };
 </script>
 <style>
-#pane-second{
-  display: block !important;
-}
+
 .cell .el-select+span{
   display: none;
 }

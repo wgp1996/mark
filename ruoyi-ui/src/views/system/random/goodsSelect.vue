@@ -28,18 +28,18 @@
       </el-col> -->
      <el-col :span="24" :xs="24">
     <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
-      <el-form-item label="商品名称" prop="goodsName">
+      <el-form-item label="检测物名称" prop="objectName">
         <el-input style="width:200px"
-          v-model="queryParams.goodsName"
+          v-model="queryParams.ownerName"
           placeholder="请输入商品名称"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="商品编码" prop="goodsCode">
+      <el-form-item label="检测物编码" prop="objectNum">
         <el-input style="width:200px"
-          v-model="queryParams.goodsCode"
+          v-model="queryParams.objectNum"
           placeholder="请输入摊位编码"
           clearable
           size="small"
@@ -59,8 +59,8 @@
     
     <el-table v-loading="loading" :data="goodsList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="商品编码" align="center" prop="goodsCode" />
-      <el-table-column label="商品名称" align="center" prop="goodsName" />
+      <el-table-column label="检测物编码" align="center" prop="objectNum" />
+      <el-table-column label="检测物名称" align="center" prop="objectName" />
       <!-- <el-table-column label="AI值" align="center" prop="ai" />
       <el-table-column label="AF值" align="center" prop="af" />
       <el-table-column label="AF_AI值" align="center" prop="afAi" />
@@ -93,6 +93,7 @@
 <script>
 import { leaseStallList } from "@/api/system/stall";
 import { listOwnerGoods, getGoods, delGoods, addGoods, updateGoods, exportGoods } from "@/api/system/ownerGoods";
+import{listCheckObject}from "@/api/system/checkObject";
 // import {
 //    listRandomInspChild, 
  
@@ -193,8 +194,9 @@ export default {
       //   this.total = response.total;
       //   this.loading = false;
       // });
-       listOwnerGoods(this.queryParams).then(response => {
+       listCheckObject(this.queryParams).then(response => {
         this.goodsList = response.rows;
+        console.log(this.goodsList )
         this.total = response.total;
         this.loading = false;
       });

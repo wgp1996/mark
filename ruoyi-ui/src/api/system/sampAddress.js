@@ -9,6 +9,15 @@ export function listSampAddress(query) {
   })
 }
 
+// 查询取样地检测
+export function getAllSampAddress(query) {
+  return request({
+    url: '/system/sampAddress/getAllSampAddress ',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询取样地建档详细
 export function getSampAddress(id) {
   return request({

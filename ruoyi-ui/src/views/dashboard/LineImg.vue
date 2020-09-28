@@ -6,7 +6,7 @@
 			<div class=" common">
 				<div class="c-child" style=";height: 90%;">
 			
-					<img src="https://www.lczhuisu.cn:443/qdzq/images/a1.jpg" style="width: 100%;height: 100%"/>
+					<img src="https://www.lczhuisu.cn:443/zspt/qdzq/images/a1.jpg" style="width: 100%;height: 100%"/>
           	<p style="font-size: 16px;;color:#fff;margin:0;height:20px;line-height:20px;text-align:center">3.25元/斤</p>
 					<p style="font-size: 15px;height: 30px;line-height: 30px;color: white;margin-top:0px;text-align: center;background:#666">5%&nbsp;&nbsp;<span style="font-size: 15px;position:relative;bottom:2px">↓</span></p>
 				</div>
@@ -14,7 +14,7 @@
 			<div class="common">
 				<div class="c-child" style="height: 90%;">
 				
-					<img src="https://www.lczhuisu.cn:443/qdzq/images/a2.jpg" style="width:100%;height: 100%"/>
+					<img src="https://www.lczhuisu.cn:443/zspt/qdzq/images/a2.jpg" style="width:100%;height: 100%"/>
           	<p style="font-size: 16px;;color:#fff;margin:0;height:20px;line-height:20px;text-align:center">3.25元/斤</p>
 					<p style="font-size: 15px;height: 30px;line-height: 30px;color: white;margin-top:0px;text-align: center;background:#666">5%&nbsp;&nbsp;<span style="font-size: 15px;position:relative;bottom:2px">↓</span></p>
 				</div>
@@ -22,7 +22,7 @@
 			<div class="common">
 					<div class="c-child" style="height: 90%;">
 				
-					<img src="https://www.lczhuisu.cn:443/qdzq/images/a3.jpg" style="width: 100%;height: 100%"/>
+					<img src="https://www.lczhuisu.cn:443/zspt/qdzq/images/a3.jpg" style="width: 100%;height: 100%"/>
           	<p style="font-size: 16px;;color:#fff;margin:0;height:20px;line-height:20px;text-align:center">3.25元/斤</p>
 					<p style="font-size: 15px;height: 30px;line-height: 30px;color: white;margin-top:0px;text-align: center;background:#666">5%&nbsp;&nbsp;<span style="font-size: 15px;position:relative;bottom:2px">↓</span></p>
 				</div>
@@ -30,7 +30,7 @@
 			<div class="common">
 					<div class="c-child" style="height: 90%;">
 			
-				<img src="https://www.lczhuisu.cn:443/qdzq/images/a4.jpg" style="width:100%;height: 100%"/>
+				<img src="https://www.lczhuisu.cn:443/zspt/qdzq/images/a4.jpg" style="width:100%;height: 100%"/>
         	<p style="font-size: 16px;;color:#fff;margin:0;height:20px;line-height:20px;text-align:center">3.25元/斤</p>
 					<p style="font-size: 15px;height: 30px;line-height: 30px;color: white;margin-top:0px;text-align: center;background:#666">5%&nbsp;&nbsp;<span style="font-size: 15px;position:relative;bottom:2px">↓</span></p>
 				</div>
@@ -38,7 +38,7 @@
 			<div class="common">
 					<div class="c-child" style="height: 90%;">
 					
-					<img src="https://www.lczhuisu.cn:443/qdzq/images/a5.jpg" style="width: 100%;height: 100%"/>
+					<img src="https://www.lczhuisu.cn:443/zspt/qdzq/images/a5.jpg" style="width: 100%;height: 100%"/>
           	<p style="font-size: 16px;;color:#fff;margin:0;height:20px;line-height:20px;text-align:center">3.25元/斤</p>
 					<p style="font-size: 15px;height: 30px;line-height: 30px;color: white;margin-top:0px;text-align: center;background:#666">5%&nbsp;&nbsp;<span style="font-size: 15px;position:relative;bottom:2px">↓</span></p>
 				</div>
@@ -46,7 +46,7 @@
 			<div class="common">
 					<div class="c-child" style="height: 90%;">
 				
-					<img src="https://www.lczhuisu.cn:443/qdzq/images/a6.jpg" style="width: 100%;height: 100%"/>
+					<img src="https://www.lczhuisu.cn:443/zspt/qdzq/images/a6.jpg" style="width: 100%;height: 100%"/>
           	<p style="font-size: 16px;;color:#fff;margin:0;height:20px;line-height:20px;text-align:center">3.25元/斤</p>
 					<p style="font-size: 15px;height: 30px;line-height: 30px;color: white;margin-top:0px;text-align: center;background:#666">5%&nbsp;&nbsp;<span style="font-size: 15px;position:relative;bottom:2px">↓</span></p>
 				</div>
@@ -54,7 +54,7 @@
 				<div class="common">
 					<div class="c-child" style="height: 90%;">
 					
-					<img src="https://www.lczhuisu.cn:443/qdzq/images/a7.jpg" style="width: 100%;height: 100%"/>
+					<img src="https://www.lczhuisu.cn:443/zspt/qdzq/images/a7.jpg" style="width: 100%;height: 100%"/>
           	<p style="font-size: 16px;;color:#fff;margin:0;height:20px;line-height:20px;text-align:center">3.25元/斤</p>
 					<p style="font-size: 15px;height: 30px;line-height: 30px;color: white;margin-top:0px;text-align: center;background:#666">5%&nbsp;&nbsp;<span style="font-size: 15px;position:relative;bottom:2px">↓</span></p>
 				</div>
@@ -62,7 +62,7 @@
 			<div class="common">
 					<div class="c-child" style="height: 90%;">
 				
-				<img src="https://www.lczhuisu.cn:443/qdzq/images/a8.jpg" style="width: 100%;height: 100%"/>
+				<img src="https://www.lczhuisu.cn:443/zspt/qdzq/images/a8.jpg" style="width: 100%;height: 100%"/>
         	<p style="font-size: 16px;;color:#fff;margin:0;height:20px;line-height:20px;text-align:center">3.25元/斤</p>
 					<p style="font-size: 15px;height: 30px;line-height: 30px;color: white;margin-top:0px;text-align: center;background:#666">5%&nbsp;&nbsp;<span style="font-size: 15px;position:relative;bottom:2px">↓</span></p>
 				</div>
@@ -71,8 +71,8 @@
               </div>
 	</div> 
         <!-- <p style="position: absolute; top: 10px;left: 10px;color:#fff">2019-11</p> -->
-	<div class="but_left" style="width: 50px;; position: absolute; top: 50%;left: 0;margin-top:-25px"><img style="width:50px" src="https://www.lczhuisu.cn:443/qdzq/images/left.png" /></div>
-	<div class="but_right" style="width: 50px;; position: absolute;top:50%;right: 0;;margin-top:-25px"><img style="width:50px"  src="https://www.lczhuisu.cn:443/qdzq/images/right.png" /></div>
+	<div class="but_left" style="width: 50px;; position: absolute; top: 50%;left: 0;margin-top:-25px"><img style="width:50px" src="https://www.lczhuisu.cn:443/zspt/qdzq/images/left.png" /></div>
+	<div class="but_right" style="width: 50px;; position: absolute;top:50%;right: 0;;margin-top:-25px"><img style="width:50px"  src="https://www.lczhuisu.cn:443/zspt/qdzq/images/right.png" /></div>
 </div>
 
 	</div>
@@ -86,49 +86,49 @@
           return{
    
             img_list: [
-              //  "https://www.lczhuisu.cn:443/qdzq/images/a1.jpg",
-              //  "https://www.lczhuisu.cn:443/qdzq/images/a2.jpg",
-              //  "https://www.lczhuisu.cn:443/qdzq/images/a3.jpg",
-              //   "https://www.lczhuisu.cn:443/qdzq/images/a4.jpg",
-              //   "https://www.lczhuisu.cn:443/qdzq/images/a5.jpg",
+              //  "https://www.lczhuisu.cn:443/zspt/qdzq/images/a1.jpg",
+              //  "https://www.lczhuisu.cn:443/zspt/qdzq/images/a2.jpg",
+              //  "https://www.lczhuisu.cn:443/zspt/qdzq/images/a3.jpg",
+              //   "https://www.lczhuisu.cn:443/zspt/qdzq/images/a4.jpg",
+              //   "https://www.lczhuisu.cn:443/zspt/qdzq/images/a5.jpg",
               {
-          url: "https://www.lczhuisu.cn:443/qdzq/images/a1.jpg",
+          url: "https://www.lczhuisu.cn:443/zspt/qdzq/images/a1.jpg",
           price:'2.55元/斤',
           symbol:"../assets/xia.png",
           text:"5%"
         },
         {
-          url: "https://www.lczhuisu.cn:443/qdzq/images/a2.jpg",
+          url: "https://www.lczhuisu.cn:443/zspt/qdzq/images/a2.jpg",
            price:'3.50/斤',
            symbol:"../assets/xia.png",
              text:"5%"
         },
         {
-          url: "https://www.lczhuisu.cn:443/qdzq/images/a3.jpg",
+          url: "https://www.lczhuisu.cn:443/zspt/qdzq/images/a3.jpg",
            price:'2.78/斤',
            symbol:"../assets/xia.png",
              text:"5%"
         },
         {
-          url: "https://www.lczhuisu.cn:443/qdzq/images/a4.jpg",
+          url: "https://www.lczhuisu.cn:443/zspt/qdzq/images/a4.jpg",
            price:'2.89/斤',
            symbol:"../assets/xia.png",
              text:"5%"
         },
         {
-          url: "https://www.lczhuisu.cn:443/qdzq/images/a5.jpg",
+          url: "https://www.lczhuisu.cn:443/zspt/qdzq/images/a5.jpg",
            price:'1.85/斤',
            symbol:"../assets/xia.png",
              text:"5%"
         },
         {
-          url: "https://www.lczhuisu.cn:443/qdzq/images/a6.jpg",
+          url: "https://www.lczhuisu.cn:443/zspt/qdzq/images/a6.jpg",
            price:'2.54/斤',
            symbol:"../assets/xia.png",
              text:"5%"
         },
         {
-          url: "https://www.lczhuisu.cn:443/qdzq/images/a8.jpg",
+          url: "https://www.lczhuisu.cn:443/zspt/qdzq/images/a8.jpg",
            price:'2.5/斤',
            symbol:"../assets/xia.png",
              text:"5%"
