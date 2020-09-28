@@ -72,7 +72,10 @@
       v-loading="loading"
       :data="leaseList"
       @selection-change="handleSelectionChange"
-      row-key="id"
+      :summary-method="getSummaries"
+      show-summary
+  
+    
     >
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
       <!-- <el-table-column type="expand">
@@ -97,8 +100,9 @@
       <el-table-column label="进货商品" align="center" prop="goodsName" />
       <el-table-column label="单位" align="center" prop="goodsDw" />
       <el-table-column label="产地" align="center" prop="goodsAddress" />
-      <!-- <el-table-column label="制单人" align="center" prop="createBy" />
-      <el-table-column label="制单日期" align="center" prop="createTime" /> -->
+      <el-table-column label="数量" align="center" prop="goodsNum" />
+       <el-table-column label="单价" align="center" prop="goodsPrice" />
+      <el-table-column label="金额" align="center" prop="goodsMoney" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -418,6 +422,7 @@ export default {
        //仓库列表
       storeList: [],
       fileList: [],
+       sumNum:0,
       upload: {
         // 是否显示弹出层（用户导入）
         open: false,
@@ -510,6 +515,23 @@ export default {
     });
   },
   methods: {
+    getSummaries(param) {
+        const { columns, data } = param;
+        const sums = [];
+        columns.forEach((column, index) => {
+          if (index === 8) {
+            sums[index] = '金额总数:';
+            return;
+          }
+          if (index === 9) {
+            sums[index] = this.sumNum;
+            return;
+          }
+   
+         });
+
+        return sums;
+      },
     editTime(i){
       if(i<10){
       i="0"+i;
@@ -771,6 +793,14 @@ export default {
       this.loading = true;
       listCgrkdSingle(this.queryParams).then((response) => {
         this.leaseList = response.rows;
+        for(let i=0;i<response.rows.length;i++){
+            if(response.rows[i].goodsMoney==null){
+             response.rows[i].goodsMoney='0';
+           }else{
+             this.sumNum+=parseFloat(response.rows[i].goodsMoney);
+           }
+       
+        }
          console.log(this.leaseList)
         this.total = response.total;
         this.loading = false;
