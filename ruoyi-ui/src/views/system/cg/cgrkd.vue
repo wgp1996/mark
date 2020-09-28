@@ -845,6 +845,7 @@ export default {
     },
     /** 查询二级市场信息列表 */
     getList() {
+       this.sumNum=0
       this.loading = true;
       listCgrkd(this.queryParams).then((response) => {
          for(let i=0;i<response.rows.length;i++){

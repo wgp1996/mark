@@ -790,6 +790,7 @@ export default {
     },
     /** 查询二级市场信息列表 */
     getList() {
+      this.sumNum=0
       this.loading = true;
       listCgrkdSingle(this.queryParams).then((response) => {
         this.leaseList = response.rows;
