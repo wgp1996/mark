@@ -188,7 +188,7 @@
             </el-form-item>
              <label style="display:block;margin-bottom:5px">工作时间:</label>
              <div class="clearfix">
-             <el-form-item label="上午"  prop="workStartTime" id="onders" style="float:left;width:60%">
+             <el-form-item label="上午"  prop="workStartTime" id="onders" style="float:left;width:60%" :key='form.id'>
                <el-time-select style="width:75%"
                 v-model="form.workStartTime"
                  :picker-options="{
@@ -196,12 +196,13 @@
                   step: '00:30',
                   end: '24:00'
                 }"
+             
                 placeholder="上班时间">
               </el-time-select>
                <label style="padding-left:5px">至</label>
             </el-form-item>
            
-            <el-form-item label=""  prop="workEndTime" id="special" style="float:left;width:40%">
+            <el-form-item label=""  prop="workEndTime" id="special" style="float:left;width:40%" :key='form.id'>
                <el-time-select style="width:100%"
                 v-model="form.workEndTime"
                   :picker-options="{
@@ -214,7 +215,7 @@
             </el-form-item>
             </div>
            <div class="clearfix">
-             <el-form-item label="下午"  prop="workStartXtime" id="onders" style="float:left;width:60%">
+             <el-form-item label="下午"  prop="workStartXtime" id="onders" style="float:left;width:60%" :key='form.id' >
                <el-time-select style="width:75%"
                 v-model="form.workStartXtime"
                  :picker-options="{
@@ -227,7 +228,7 @@
                <label style="padding-left:5px">至</label>
             </el-form-item>
            
-            <el-form-item label=""  prop="workEndXtime" id="special" style="float:left;width:40%">
+            <el-form-item label=""  prop="workEndXtime" id="special" style="float:left;width:40%" :key='form.id'>
                <el-time-select style="width:100%"
                 v-model="form.workEndXtime"
                   :picker-options="{
@@ -300,6 +301,7 @@ export default {
         ownerName:"",
         ownerNameJc:"",
       },
+   
       fileList: [],
       upload: {
         // 是否显示弹出层（用户导入）
@@ -361,7 +363,7 @@ export default {
         djTime: undefined,
       },
       // 表单参数
-      form: {},
+      form: {workEndTime:undefined,workEndXtime:undefined,workStartTime:undefined,workStartXtime:undefined},
       activeName: "first",
       // 表单校验
       rules: {
@@ -375,9 +377,9 @@ export default {
         // count: [
         //   { required: true, message: "检测通道数量不能为空", trigger: "blur" },
         // ],
-         workTel: [
-          { required: true, message: "联系电话不能为空", trigger: "blur" },
-        ]
+        //  workTel: [
+        //   { required: true, message: "联系电话不能为空", trigger: "blur" },
+        // ]
       },
     };
   },
@@ -411,6 +413,7 @@ export default {
         // console.log( this.goodsList )
         // this.total = response.total;
         // this.loading = false;
+           this.$forceUpdate()
       });
   },
   
@@ -786,7 +789,7 @@ createMap() {
         checkAddress: undefined,   
         workTel: undefined , 
         workStartTime: undefined, 
-        workEndTime: undefined,  
+        workEndTime:'',  
         checkBz: undefined,  
         checkAddressLat: undefined, 
         checkAddressLng: undefined, 
@@ -795,11 +798,10 @@ createMap() {
         lat: undefined,
         lng: undefined,
         workDay:undefined,
-        workStartXtime:undefined,
-        workEndXtime:undefined,
-        workStartTime:undefined,
-         workEndTime:undefined,
-         checkHome:undefined,
+        workStartXtime:'',
+        workEndXtime:'',
+        workStartTime:'',
+        checkHome:undefined,
 
       };
       this.resetForm("form");
@@ -824,6 +826,16 @@ createMap() {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
+      console.log(this.form)
+     
+       this.$nextTick(() => {
+          
+      });
+      // this.$set(this.form,'workEndTime','beijing')
+    
+      // this.form.workEndTime="你好"
+      // this.$set(this.form,'workEndTime','beijing')
+      // console.log(this.form)
       this.open = true;
       this.title = "新增检测地点档案";
  
