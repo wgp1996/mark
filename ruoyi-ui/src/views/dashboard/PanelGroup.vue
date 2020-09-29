@@ -15,7 +15,7 @@
     </el-col>
     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:20% !important">
       <div class="card-panel" @click="handleSetLineChartData('messages')">
-        <div class="card-panel-icon-wrapper icon-message">
+        <div class="card-panel-icon-wrapper icon-message" style="margin:14px 0px 0px 0px;padding:16px 0px 0px">
           <!-- <svg-icon icon-class="message" class-name="card-panel-icon" /> -->
           <img src="../../assets/count.png" style="width:50px;height:50px">
         </div>
@@ -29,7 +29,7 @@
     </el-col>
     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:20% !important">
       <div class="card-panel" @click="handleSetLineChartData('purchases')">
-        <div class="card-panel-icon-wrapper icon-money">
+        <div class="card-panel-icon-wrapper icon-money" style="margin:14px 0px 0px 0px;padding:16px 0px 0px">
           <svg-icon icon-class="money" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
@@ -42,7 +42,7 @@
     </el-col>
     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:20% !important">
       <div class="card-panel" @click="handleSetLineChartData('shoppings')">
-        <div class="card-panel-icon-wrapper icon-shopping">
+        <div class="card-panel-icon-wrapper icon-shopping" style="margin:14px 0px 0px 0px;padding:16px 0px 0px">
           <!-- <svg-icon icon-class="shopping" class-name="card-panel-icon" /> -->
           <img src="../../assets/dan.png" style="width:50px;height:50px">
         </div>
@@ -56,7 +56,7 @@
     </el-col>
       <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:20% !important"> 
       <div class="card-panel" @click="handleSetLineChartData('shoppings')">
-        <div class="card-panel-icon-wrapper icon-shopping">
+        <div class="card-panel-icon-wrapper icon-shopping" style="margin:14px 0px 0px 0px;padding:16px 0px 0px">
           <!-- <svg-icon icon-class="shopping" class-name="card-panel-icon" /> -->
           <img src="../../assets/he.png" style="width:50px;height:50px">
         </div>
