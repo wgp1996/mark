@@ -52,7 +52,6 @@
           type="warning"
           icon="el-icon-edit"
           size="mini"
-          :disabled="single"
           @click="handleImport"
           v-hasPermi="['system:randomInsp:import']"
           >导入</el-button
@@ -79,8 +78,9 @@
             <!-- <el-table-column label="AF_AI值" align="center" prop="afAi" />  -->
             <el-table-column label="检测项目" align="center" prop="checkProject" />
             <el-table-column label="检测结果" align="center" prop="testResult" />
+             <el-table-column label="合格状态" align="center" prop="checkResultName" />
             <el-table-column label="抑制率(%)" align="center" prop="inhibitionNum" />
-            <el-table-column label="合格状态" align="center" prop="checkResultName" />
+            <el-table-column label="备注" align="center" prop="remark" />
           </el-table>
         </template>
       </el-table-column>
@@ -313,7 +313,7 @@
                   </el-select>
                 </template>
               </el-table-column>
-              <el-table-column prop="goodsCode" label="检测物编码" width="200">
+              <!-- <el-table-column prop="goodsCode" label="检测物编码" width="200">
                 <template scope="scope">
                   <el-input
                     :disabled="true"
@@ -323,7 +323,7 @@
                   ></el-input>
                   <span>{{ scope.row.goodsCode }}</span>
                 </template>
-              </el-table-column>
+              </el-table-column> -->
               <el-table-column prop="goodsName" label="检测物名称" width="200">
                 <template scope="scope">
                   <el-input
@@ -425,6 +425,7 @@
                 :action="importUrl"
                 :headers="upload.headers"
                 :on-preview="handlePreview"
+                 :on-success="handleSuccess"
                 :on-remove="handleRemove"
                 :auto-upload="false">
                 <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
@@ -656,6 +657,7 @@ export default {
   methods: {
     submitUpload() {
         this.$refs.upload.submit();
+
       },
       /** 导入操作 */
     handleImport() {
@@ -663,9 +665,7 @@ export default {
       this.iopen = true;
       this.title = "导入检测明细";
       const id = this.ids;
-      getRandomInsp(id).then((response) => {
-        this.importUrl=process.env.VUE_APP_BASE_API + "/system/randomInsp/import?djNumber="+response.data.djNumber
-      });
+      this.importUrl=process.env.VUE_APP_BASE_API + "/system/randomInsp/import";
     },
     //选择供应商
     selectPerson(index, data) {
@@ -769,6 +769,9 @@ export default {
       // 上传成功
       console.log(res.url);
       this.form.fileName = res.url;
+    },
+    handleSuccess(res, file, fileList) {
+       this.getList();
     },
     handleRemove(file, fileList) {
       this.form.fileName = "";
