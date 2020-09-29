@@ -71,141 +71,141 @@
         </div>
       </div>
     </el-col>
-     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:33.3% !important"> 
+     <!-- <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:33.3% !important"> 
      <a href="/shop/sensor/shopInfo">
       <div class="card-panel" @click="handleSetLineChartData('shoppings')">
         <div class="card-panel-icon-wrapper icon-message">
           <svg-icon icon-class="documentation" class-name="card-panel-icon" />
-          <!-- <img src="../../assets/he.png" style="width:50px;height:50px"> -->
+         
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text" style="margin-top:20px;">
              门店建档
             <br>
            
-            <!-- <span style="display:inline-block;color:#666;font-size:20px;margin-top:15px">89.7%</span> -->
+   
           </div>
-          <!-- <count-to :start-val="0" :duration="3600" class="card-panel-num" />  -->
+      
         </div>
       </div>
       </a>
-    </el-col>
-     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:33.3% !important"> 
+    </el-col> -->
+     <!-- <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:33.3% !important"> 
       <a href="/shop/sensor/shopLabel">
       <div class="card-panel" @click="handleSetLineChartData('shoppings')">
         <div class="card-panel-icon-wrapper icon-shopping">
           <svg-icon icon-class="bug" class-name="card-panel-icon" />
-          <!-- <img src="../../assets/he.png" style="width:50px;height:50px"> -->
+        
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text" style="margin-top:20px;">
              电子价签管理
             <br>
            
-            <!-- <span style="display:inline-block;color:#666;font-size:20px;margin-top:15px">89.7%</span> -->
+          
           </div>
-          <!-- <count-to :start-val="0" :duration="3600" class="card-panel-num" />  -->
+          
         </div>
       </div>
       </a>
-    </el-col>
-     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:33.3% !important"> 
+    </el-col> -->
+     <!-- <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:33.3% !important"> 
        <a href="/shop/sensor/shopGoods">
       <div class="card-panel" @click="handleSetLineChartData('shoppings')">
         <div class="card-panel-icon-wrapper icon-shopping">
           <svg-icon icon-class="drag" class-name="card-panel-icon" />
-          <!-- <img src="../../assets/he.png" style="width:50px;height:50px"> -->
+      
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text" style="margin-top:20px;">
              门店商品管理
             <br>
            
-            <!-- <span style="display:inline-block;color:#666;font-size:20px;margin-top:15px">89.7%</span> -->
+            
           </div>
-          <!-- <count-to :start-val="0" :duration="3600" class="card-panel-num" />  -->
+         
         </div>
       </div>
       </a>
-    </el-col>
+    </el-col> -->
      
-    <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:25% !important"> 
+    <!-- <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:25% !important"> 
         <a href="/shop/terminal/inquiry">
       <div class="card-panel" @click="handleSetLineChartData('shoppings')">
         <div class="card-panel-icon-wrapper icon-money">
           <svg-icon icon-class="money" class-name="card-panel-icon" />
-          <!-- <img src="../../assets/he.png" style="width:50px;height:50px"> -->
+        
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text" style="margin-top:20px;">
             询价
             <br>
            
-            <!-- <span style="display:inline-block;color:#666;font-size:20px;margin-top:15px">89.7%</span> -->
+          
           </div>
-          <!-- <count-to :start-val="0" :duration="3600" class="card-panel-num" />  -->
+          
         </div>
       </div>
       </a>
-    </el-col>
-        <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:25% !important"> 
+    </el-col> -->
+        <!-- <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:25% !important"> 
          <a href="/shop/terminal/singleBuy">
       <div class="card-panel" @click="handleSetLineChartData('shoppings')">
         <div class="card-panel-icon-wrapper icon-people ">
           <svg-icon icon-class="people" class-name="card-panel-icon" />
-          <!-- <img src="../../assets/he.png" style="width:50px;height:50px"> -->
+        
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text" style="margin-top:20px;">
             单供应商订单
             <br>
            
-            <!-- <span style="display:inline-block;color:#666;font-size:20px;margin-top:15px">89.7%</span> -->
+           
           </div>
-          <!-- <count-to :start-val="0" :duration="3600" class="card-panel-num" />  -->
+       
         </div>
       </div>
       </a>
-    </el-col>
-      <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:25% !important"> 
+    </el-col> -->
+      <!-- <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:25% !important"> 
           <a href="/shop/terminal/moreBuy">
       <div class="card-panel" @click="handleSetLineChartData('shoppings')">
         <div class="card-panel-icon-wrapper icon-people ">
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
-          <!-- <img src="../../assets/he.png" style="width:50px;height:50px"> -->
+         
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text" style="margin-top:20px;">
              多供应商订单
             <br>
            
-            <!-- <span style="display:inline-block;color:#666;font-size:20px;margin-top:15px">89.7%</span> -->
+            
           </div>
-          <!-- <count-to :start-val="0" :duration="3600" class="card-panel-num" />  -->
+       
         </div>
       </div>
       </a>
-    </el-col>
-     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:25% !important"> 
+    </el-col> -->
+     <!-- <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:25% !important"> 
         <a href="/shop/terminal/owner">
       <div class="card-panel" @click="handleSetLineChartData('shoppings')">
         
         <div class="card-panel-icon-wrapper icon-shopping">
           <svg-icon icon-class="user" class-name="card-panel-icon" />
-          <!-- <img src="../../assets/he.png" style="width:50px;height:50px"> -->
+         
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text" style="margin-top:20px;">
             业户查询
             <br>
            
-            <!-- <span style="display:inline-block;color:#666;font-size:20px;margin-top:15px">89.7%</span> -->
+          
           </div>
-          <!-- <count-to :start-val="0" :duration="3600" class="card-panel-num" />  -->
+     
         </div>
       </div>
       </a>
-    </el-col>
+    </el-col> -->
     
   </el-row>
   
