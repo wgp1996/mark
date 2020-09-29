@@ -79,7 +79,7 @@
             <!-- <el-table-column label="AF_AI值" align="center" prop="afAi" />  -->
             <el-table-column label="检测项目" align="center" prop="checkProject" />
             <el-table-column label="检测结果" align="center" prop="testResult" />
-            <el-table-column label="抑制率" align="center" prop="inhibitionNum" />
+            <el-table-column label="抑制率(%)" align="center" prop="inhibitionNum" />
             <el-table-column label="合格状态" align="center" prop="checkResultName" />
           </el-table>
         </template>
@@ -219,7 +219,7 @@
               </el-select>
             </el-form-item>
 
-            <el-form-item label="抑制率值%" prop="inhibitionNum" style="width:400px" class="pig">
+            <el-form-item label="抑制率值(%)" prop="inhibitionNum" style="width:400px" class="pig">
               <el-input
                 v-model="form.inhibitionNum"
                 :placeholder="number"
