@@ -27,11 +27,11 @@
         </div>
       </el-col> -->
      <el-col :span="24" :xs="24">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="120px">
       <el-form-item label="检测物名称" prop="objectName">
         <el-input style="width:200px"
           v-model="queryParams.ownerName"
-          placeholder="请输入商品名称"
+          placeholder="请输入名称"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -40,7 +40,7 @@
       <el-form-item label="检测物编码" prop="objectNum">
         <el-input style="width:200px"
           v-model="queryParams.objectNum"
-          placeholder="请输入摊位编码"
+          placeholder="请输入编码"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -58,16 +58,8 @@
   
     
     <el-table v-loading="loading" :data="goodsList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="检测物编码" align="center" prop="objectNum" />
-      <el-table-column label="检测物名称" align="center" prop="objectName" />
-      <!-- <el-table-column label="AI值" align="center" prop="ai" />
-      <el-table-column label="AF值" align="center" prop="af" />
-      <el-table-column label="AF_AI值" align="center" prop="afAi" />
-      <el-table-column label="抑制率" align="center" prop="inhibitionNum" />
-      <el-table-column label="结论" align="center" prop="checkResult" />
-      <el-table-column label="单号" align="center" prop="djNumber" /> -->
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column type="selection" width="55" align="center" />.
+            <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template slot-scope="scope">
           <el-button
             size="mini"
@@ -77,6 +69,15 @@
           >选择</el-button>
         </template>
       </el-table-column>
+      <el-table-column label="检测物编码" align="center" prop="objectNum" />
+      <el-table-column label="检测物名称" align="center" prop="objectName" />
+      <!-- <el-table-column label="AI值" align="center" prop="ai" />
+      <el-table-column label="AF值" align="center" prop="af" />
+      <el-table-column label="AF_AI值" align="center" prop="afAi" />
+      <el-table-column label="抑制率" align="center" prop="inhibitionNum" />
+      <el-table-column label="结论" align="center" prop="checkResult" />
+      <el-table-column label="单号" align="center" prop="djNumber" /> -->
+
     </el-table>
     <pagination
       v-show="total>0"
