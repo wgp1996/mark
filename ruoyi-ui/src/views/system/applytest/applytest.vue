@@ -18,15 +18,6 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <!-- <el-col :span="1.5">
-        <el-button
-          type="primary"
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['system:randomInsp:add']"
-        >新增</el-button>
-      </el-col> -->
       <el-col :span="1.5">
         <el-button
           type="success"
@@ -34,29 +25,19 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['system:randomInsp:edit']"
-        >修改</el-button>
+          v-hasPermi="['system:TestApplicationForm:edit']"
+        >安排检测</el-button>
       </el-col>
-      <!-- <el-col :span="1.5">
+       <el-col :span="1.5">
         <el-button
           type="danger"
           icon="el-icon-delete"
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['system:randomInsp:remove']"
-        >删除</el-button>
-      </el-col> -->
-      <!-- <el-col :span="1.5">
-        <el-button
-          type="warning"
-          icon="el-icon-edit"
-          size="mini"
-          @click="handleImport"
-          v-hasPermi="['system:randomInsp:import']"
-          >导入</el-button
-        >
-      </el-col> -->
+          v-hasPermi="['system:TestApplicationForm:remove']"
+        >拒绝检测</el-button>
+      </el-col> 
     </el-row>
 
     <el-table
@@ -69,50 +50,19 @@
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-table style="padding: 0; margin: 0" :data="props.row.childrenList">
-            <el-table-column label="业户名称" align="center" prop="ownerName" />
-            
             <el-table-column label="检测物名称" align="center" prop="goodsName" />
-            <!-- <el-table-column label="检测物编码" align="center" prop="goodsCode" /> -->
-            <!-- <el-table-column label="AI值" align="center" prop="ai" /> -->
-            <!-- <el-table-column label="AF值" align="center" prop="af" /> -->
-            <!-- <el-table-column label="AF_AI值" align="center" prop="afAi" />  -->
             <el-table-column label="检测项目" align="center" prop="checkProject" />
-            <el-table-column label="检测结果" align="center" prop="testResult" />
-             <el-table-column label="合格状态" align="center" prop="checkResultName" />
+            <el-table-column label="合格状态" align="center" prop="checkResultName" />
             <el-table-column label="抑制率(%)" align="center" prop="inhibitionNum" />
             <el-table-column label="备注" align="center" prop="remark" />
           </el-table>
         </template>
       </el-table-column>
-      <!-- <el-table-column type="selection" width="55" align="center" /> -->
-      <!-- <el-table-column label="单据状态" align="center" prop="djStatus" /> -->
       <el-table-column label="单据编号" align="center" prop="djNumber" />
-      <el-table-column label="单据日期" align="center" prop="djTime" />
-
-      <!-- <el-table-column label="采用地点" align="center" prop="checkAddress" /> -->
-
-      <!-- <el-table-column label="抑制率标准值" align="center" prop="inhibitionNum" /> -->
-      <el-table-column label="检测说明" align="center" prop="djTitle" />
-      <!-- <el-table-column label="制单日期" align="center" prop="create_Time" /> -->
-
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:randomInsp:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['system:randomInsp:remove']"
-          >删除</el-button>
-        </template>
-      </el-table-column>
+      <el-table-column label="业户代码" align="center" prop="createBy" />
+      <el-table-column label="检测日期" align="center" prop="checkTime" />
+      <el-table-column label="检测类型" align="center" prop="checkType" />
+      <el-table-column label="检测说明" align="center" prop="checkNote" />
     </el-table>
 
     <pagination
@@ -158,7 +108,7 @@
             <el-form-item label="检测单号" prop="djNumber" class="changeBlue pig" style="width:400px">
               <el-input v-model="form.djNumber" :disabled="true" placeholder="后台自动生成" />
             </el-form-item>
-            <el-form-item label="业户信息" prop="createBy" style="width:400px">
+            <el-form-item label="业户代码" prop="createBy" style="width:400px">
                   <el-input v-model="form.createBy"  :disabled="true" />
                   <!-- <el-select
                     v-model="form.createBy"
@@ -181,103 +131,22 @@
             <el-form-item label="检测类型" prop="checkType" class=" pig" style="width:400px" >
               <el-input v-model="form.checkType"  :disabled="true" />
             </el-form-item>
-            <!-- <el-form-item label="检测设备" prop="checkDevice" class=" pig" style="width:400px">
-           
-              <el-select
-                v-model="form.checkDevice"
-                :placeholder="placedevice"
-                filterable
-                style="width: 100%"
-              >
-                <el-option
-                  v-for="item in conderdevice"
-                  :key="item.deviceId"
-                  :label="item.deviceName "
-                  :value="item.deviceId"
-                >
-                  <span
-                    style="
-                      float: left;
-                      color: #8492a6;
-                      font-size: 13px;
-                      width: 100%;
-                    "
-                  >{{ item.deviceName }}</span>
-                </el-option>
-              </el-select>
-            </el-form-item> -->
-
-            <!-- <el-form-item label="采用地点" prop="checkAddress">
-              <el-input v-model="form.checkAddress" placeholder="" />
-            </el-form-item>-->
-            <!-- <el-form-item label="检测地" prop="checkAddress" style="width:400px" class="pig">
-              <el-select
-                v-model="form.checkAddress"
-                :placeholder="checking"
-                filterable
-                style="width: 100%"
-              >
-                <el-option
-                  v-for="item in conder"
-                  :key="item.id"
-                  :label="item.checkAddressDetail"
-                  :value="item.id"
-                >
-                  <span
-                    style="
-                      float: left;
-                      color: #8492a6;
-                      font-size: 13px;
-                      width: 100%;
-                    "
-                  >{{ item.checkAddressDetail }}</span>
-                </el-option>
-              </el-select>
-            </el-form-item> -->
-
             <el-form-item label="抑制率值(%)" prop="inhibitionNum" style="width:400px" class="pig">
               <el-input
                 v-model="form.inhibitionNum"
-              
                 @change="changer"
               />
           </el-form-item>
-             <!--  <el-form-item label="采样地" style="width:400px" class="pig">
-             
-              <el-select
-                v-model="user.sampaddress"
-                :placeholder="place"
-                filterable
-                @change="selectOwner"
-                style="width: 100%"
-              >
-                <el-option
-                  v-for="item in conderaddress"
-                  :key="item.sampAddressId"
-                  :label="item.sampAddressDetail"
-                  :value="item.sampAddressId"
-                >
-                  <span
-                    style="
-                      float: left;
-                      color: #8492a6;
-                      font-size: 13px;
-                      width: 100%;
-                    "
-                  >{{ item.sampAddressDetail }}</span>
-                </el-option>
-              </el-select>
-            </el-form-item> -->
-            <el-form-item label="说明" prop="checkNote" id="djTitles">
+            <el-form-item label="检测说明" prop="checkNote" id="djTitles">
               <el-input v-model="form.checkNote" placeholder />
             </el-form-item>
           </el-tab-pane>
           <el-tab-pane label="明细信息" name="second">
-            <el-row :gutter="10" class="mb8">
+            <!-- <el-row :gutter="10" class="mb8">
               <el-col :span="1.5">
                 <el-button type="primary" icon="el-icon-plus" size="mini" @click="goodsSelect">新增检测物</el-button>
               </el-col>
-            </el-row>
+            </el-row> -->
             <el-table
               :data="tableData"
               class="tb-edit"
@@ -286,57 +155,7 @@
               @row-click="handleCurrentChange"
               :header-cell-class-name="starAdd"
             >
-              <!-- <el-table-column label="业户信息" prop="ownerCode" width="250">
-                <template scope="scope">
-                  <el-select
-                    v-model="scope.row.ownerCode"
-                    placeholder="请选择业户"
-                    filterable
-                    style="width:100%"
-                    @change="selectPerson(scope.$index, scope.row)"
-                  >
-                    <el-option
-                      v-for="item in personList"
-                      :key="item.ownerCode"
-                      :label="item.ownerName"
-                      :value="item.ownerCode"
-                    >
-                      <span style="width:100%">{{item.ownerName}}</span>
-                    </el-option>
-                  </el-select>
-                </template>
-              </el-table-column> -->
-              <el-table-column label="检测项目" prop="checkProject" width="150">
-                <template scope="scope">
-                  <el-select
-                    v-model="scope.row.checkProject"
-                    placeholder="请选择检测项目"
-                    filterable
-                    style="width:100%"
-                    :disabled="true"
-                  >
-                    <el-option
-                      v-for="item in projectList"
-                      :key="item.projectName"
-                      :label="item.projectName"
-                      :value="item.projectName"
-                    >
-                      <span style="width:100%">{{ item.projectName }}</span>
-                    </el-option>
-                  </el-select>
-                </template>
-              </el-table-column>
-              <!-- <el-table-column prop="goodsCode" label="检测物编码" width="200">
-                <template scope="scope">
-                  <el-input
-                    :disabled="true"
-                    size="small"
-                    v-model="scope.row.goodsCode"
-                    placeholder="请输入内容"
-                  ></el-input>
-                  <span>{{ scope.row.goodsCode }}</span>
-                </template>
-              </el-table-column> -->
+   
               <el-table-column prop="goodsName" label="检测物名称" width="200">
                 <template scope="scope">
                   <el-input
@@ -354,16 +173,26 @@
                   <span>{{ scope.row.sampTime }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="检测结果" width="150">
+              <el-table-column label="检测项目" prop="checkProject" width="150">
                 <template scope="scope">
-                  <el-input
-                    size="small"
-                    v-model="scope.row.testResult"
-                    placeholder="请输入检测结果"
-                  ></el-input>
-                  <span>{{ scope.row.testResult }}</span>
+                  <el-select
+                    v-model="scope.row.checkProject"
+                    placeholder="请选择检测项目"
+                    filterable
+                    style="width:100%"
+                  >
+                    <el-option
+                      v-for="item in projectList"
+                      :key="item.projectName"
+                      :label="item.projectName"
+                      :value="item.projectName"
+                    >
+                      <span style="width:100%">{{ item.projectName }}</span>
+                    </el-option>
+                  </el-select>
                 </template>
               </el-table-column>
+
               <el-table-column label="抑制率" width="150">
                 <template scope="scope">
                   <el-input
@@ -388,39 +217,17 @@
                   <span>{{ scope.row.checkResultName }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="操作">
+            <el-table-column label="备注" width="150">
                 <template scope="scope">
-                  <el-button
+                  <el-input
                     size="small"
-                    type="danger"
-                    @click="handleChildDelete(scope.$index, scope.row)"
-                  >删除</el-button>
+                    v-model="scope.row.remark"
+                    placeholder="请输入备注"
+                  ></el-input>
+                  <span>{{ scope.row.remark }}</span>
                 </template>
               </el-table-column>
             </el-table>
-          </el-tab-pane>
-          <el-tab-pane label="附件信息" name="three">
-            <el-row :gutter="15" class="mb8">
-              <el-col :span="1.5">
-                <el-upload
-                  class="upload-demo"
-                  :limit="1"
-                  drag
-                  :file-list="fileList"
-                  :action="upload.url"
-                  :headers="upload.headers"
-                  :on-success="handleFileSuccess"
-                  :on-remove="handleRemove"
-                  :on-preview="clickFile"
-                >
-                  <i class="el-icon-upload"></i>
-                  <div class="el-upload__text">
-                    将文件拖到此处，或
-                    <em>点击上传</em>
-                  </div>
-                </el-upload>
-              </el-col>
-            </el-row>
           </el-tab-pane>
         </el-tabs>
       </el-form>
@@ -429,60 +236,10 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
-          <el-dialog :title="title" :visible.sync="iopen" width="600px">
-                <el-row :gutter="15" class="mb8">
-            <el-col :span="1.5">
-              <el-upload
-                class="upload-demo"
-                ref="upload"
-                :action="importUrl"
-                :headers="upload.headers"
-              
-                 :on-success="handleSuccess"
-                :on-remove="handleRemove"
-                :auto-upload="false">
-                <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-                <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
-                <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
-              </el-upload>
-            </el-col>
-          </el-row>
-    </el-dialog>
-    <goods-select
-      v-if="selectGoodsDialog"
-      ref="selectGoods"
-      @selectData="selectData"
-      @selectDataMore="selectDataMore"
-    ></goods-select>
   </div>
 </template>
 
 <script>
-// import {
-//   listCgrkd,
-//   getCgrkd,F
-//   getCgrkdChild,
-//   delCgrkd,
-//   delCgrkdChild,
-//   addCgrkd,
-//   updateCgrkd,
-//   updateCgrkdStatus,
-//   exportCgrkd,
-//   getOwnerList,
-// } from "@/api/system/randomInsp";
-import {
-  listRandomInsp,
-  getRandomInsp,
-  addRandomInsp,
-  updateRandomInsp,
-  delRandomInsp,
-  exportRandomInsp,
-  getAllCheckAddress
-  // updateCgrkd,
-  // updateCgrkdStatus,
-  // exportCgrkd,
-  // getOwnerList,
-} from "@/api/system/randomInsp";
 import {
   listTestApplicationForm,
   getTestApplicationForm,
@@ -505,11 +262,7 @@ import {
   // getOwnerList,
 } from "@/api/system/randomInspChild";
 
-import { ownerList } from "@/api/system/owner";
-import goodsSelect from "./goodsSelect";
-import { getCkAll } from "@/api/system/ck";
 import { getInfo } from "@/api/login";
-import { getPersonAll } from "@/api/system/person";
 import { getToken } from "@/utils/auth";
 import { goodsList } from "@/api/system/ownerGoods";
 import { getShopList } from "@/api/system/shopInfo";
@@ -519,9 +272,6 @@ import { listCheck } from "@/api/system/check";
 import { listCheckProject } from "@/api/system/checkProject";
 export default {
   name: "Lease",
-  components: {
-    goodsSelect
-  },
   data() {
     return {
       importUrl:"",
@@ -606,23 +356,6 @@ export default {
       activeName: "first",
       // 表单校验
       rules: {
-        inhibitionNum: [
-          {
-            required: true,
-            message: "抑制率标准设定值不能为空",
-            trigger: "blur"
-          }
-        ],
-        checkDevice: [
-          { required: true, message: "检测设备不能为空", trigger: "blur" }
-        ],
-        checkAddress: [
-          { required: true, message: "采用地点不能为空", trigger: "blur" }
-        ],
-        // count: [
-        //   { required: true, message: "检测通道数量不能为空", trigger: "blur" },
-        // ],
-      
       }
     };
   },
@@ -732,24 +465,15 @@ export default {
     // },
     //追加子表必填样式
     starAdd(obj) {
-      //if(obj.columnIndex === 0 || obj.columnIndex === 1 || obj.columnIndex === 4 || obj.columnIndex === 5 || obj.columnIndex === 6|| obj.columnIndex === 7) {
-      // if (
-      //   obj.columnIndex === 0 ||
-      //   obj.columnIndex === 1 ||
-      //   obj.columnIndex === 2
-      // ) {
-      //   return "star";
-      // }
+     // if(obj.columnIndex === 0 || obj.columnIndex === 1 || obj.columnIndex === 4 || obj.columnIndex === 5 || obj.columnIndex === 6|| obj.columnIndex === 7) {
+      if (
+        obj.columnIndex === 0 ||
+        obj.columnIndex === 1 ||
+        obj.columnIndex === 3
+      ) {
+        return "star";
+      }
     },
-    // handleEditShop(data,index, row){
-    //     //根据编码名称
-    //     for(let i=0;i<this.shopList.length;i++){
-    //       if(this.shopList[i].storeid==data){
-    //         row.shopName=this.shopList[i].shopName;
-    //         break;
-    //       }
-    //     }
-    // },
     clickFile(file) {
       if (file.url != "") {
         window.location.href = file.url;
@@ -970,7 +694,7 @@ export default {
         sampAddress: undefined,
         sampAddressPerson: undefined,
         sampAddressPersonTel: undefined,
-        inhibitionNum: this.number,
+        inhibitionNum: undefined,
         checkType: undefined,
         afAi: undefined,
         checkResult: undefined,
@@ -980,6 +704,7 @@ export default {
         checkTime:undefined,
       };
       this.resetForm("form");
+      this.form.inhibitionNum=this.number;
       this.tableData = [];
     },
     /** 搜索按钮操作 */
@@ -998,12 +723,6 @@ export default {
       this.single = selection.length != 1;
       this.multiple = !selection.length;
     },
-    /** 新增按钮操作 */
-    handleAdd() {
-      this.reset();
-      this.open = true;
-      this.title = "随机抽检单";
-    },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
@@ -1016,14 +735,6 @@ export default {
            this.form = response.data;
            this.form.checkType="取检"
         }
-       
-        if (response.data.fileName != "") {
-          this.fileList = [];
-          let info = new Object();
-          info.name = response.data.fileName;
-          info.url = response.data.fileName;
-          this.fileList.push(info);
-        }
         // 查询参数
         let queryParams = {
           djNumber: this.form.djNumber
@@ -1033,7 +744,7 @@ export default {
           this.tableData = response.rows;
         });
         this.open = true;
-        this.title = "修改检测申请单";
+        this.title = "检测申请单";
       });
     },
     /** 提交按钮 */
@@ -1045,10 +756,7 @@ export default {
         for (let i = 0; i < this.tableData.length; i++) {
           console.log(this.tableData[i]);
           if (
-            this.tableData[i].objectNum == "" ||
-            // this.tableData[i].ai == "" ||
-            // this.tableData[i].af == "" ||
-            this.tableData[i].inhibitionNum == ""
+            this.tableData[i].inhibitionNum == ""||this.tableData[i].checkProject==""
           ) {
             this.msgError("检查明细信息必填项!");
             return;
@@ -1060,7 +768,7 @@ export default {
             if (this.form.id != undefined) {
               updateTestApplicationForm(this.form).then(response => {
                 if (response.code === 200) {
-                  this.msgSuccess("修改成功");
+                  this.msgSuccess("检测成功");
                   this.open = false;
                   this.getList();
                   this.$refs.selectGoods.getList();
@@ -1089,7 +797,7 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$confirm('是否确认删除单据编号为"' + ids + '"的数据项?', "警告", {
+      this.$confirm('是否确认拒绝检测编号为"' + ids + '"的数据项?', "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
@@ -1099,40 +807,7 @@ export default {
         })
         .then(() => {
           this.getList();
-          this.msgSuccess("删除成功");
-        })
-        .catch(function() {});
-    },
-    /** 生效按钮操作 */
-    handleEffect(row) {
-      const ids = row.id || this.ids;
-      this.$confirm('是否确认单据编号为"' + ids + '"的数据项已生效?', "警告", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(function() {
-          return updateCgrkdStatus(ids);
-        })
-        .then(() => {
-          this.getList();
-          this.msgSuccess("操作成功");
-        })
-        .catch(function() {});
-    },
-    /** 导出按钮操作 */
-    handleExport() {
-      const queryParams = this.queryParams;
-      this.$confirm("是否确认导出所有租赁单据数据项?", "警告", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(function() {
-          return exportTestApplicationForm(queryParams);
-        })
-        .then(response => {
-          this.download(response.msg);
+          this.msgSuccess("拒绝成功");
         })
         .catch(function() {});
     }

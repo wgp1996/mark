@@ -77,7 +77,7 @@
             <!-- <el-table-column label="AF值" align="center" prop="af" /> -->
             <!-- <el-table-column label="AF_AI值" align="center" prop="afAi" />  -->
             <el-table-column label="检测项目" align="center" prop="checkProject" />
-            <el-table-column label="检测结果" align="center" prop="testResult" />
+            <!-- <el-table-column label="检测结果" align="center" prop="testResult" /> -->
              <el-table-column label="合格状态" align="center" prop="checkResultName" />
             <el-table-column label="抑制率(%)" align="center" prop="inhibitionNum" />
             <el-table-column label="备注" align="center" prop="remark" />
@@ -169,7 +169,6 @@
               />-->
               <el-select
                 v-model="form.checkDevice"
-                :placeholder="placedevice"
                 filterable
                 style="width: 100%"
               >
@@ -197,12 +196,11 @@
             <el-form-item label="检测地" prop="checkAddress" style="width:400px" class="pig">
               <el-select
                 v-model="form.checkAddress"
-                :placeholder="checking"
                 filterable
                 style="width: 100%"
               >
                 <el-option
-                  v-for="item in conder"
+                  v-for="item in checkaddress"
                   :key="item.id"
                   :label="item.checkAddressDetail"
                   :value="item.id"
@@ -222,21 +220,13 @@
             <el-form-item label="抑制率值(%)" prop="inhibitionNum" style="width:400px" class="pig">
               <el-input
                 v-model="form.inhibitionNum"
-                :placeholder="number"
                 @change="changer"
               />
             </el-form-item>
-            <el-form-item label="采样地" style="width:400px" class="pig">
-              <!-- <el-input
-                v-model="user.sampaddress"
-                placeholder=""
-                @change="changer"
-              />-->
+            <el-form-item label="采样地"  prop="sampaddress" style="width:400px" class="pig">
               <el-select
-                v-model="user.sampaddress"
-                :placeholder="place"
+                v-model="form.sampAddress"
                 filterable
-                @change="selectOwner"
                 style="width: 100%"
               >
                 <el-option
@@ -341,7 +331,7 @@
                   <span>{{ scope.row.sampTime }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="检测结果" width="150">
+              <!-- <el-table-column label="检测结果" width="150">
                 <template scope="scope">
                   <el-input
                     size="small"
@@ -350,7 +340,7 @@
                   ></el-input>
                   <span>{{ scope.row.testResult }}</span>
                 </template>
-              </el-table-column>
+              </el-table-column> -->
               <el-table-column label="抑制率" width="150">
                 <template scope="scope">
                   <el-input
@@ -424,7 +414,6 @@
                 ref="upload"
                 :action="importUrl"
                 :headers="upload.headers"
-                :on-preview="handlePreview"
                  :on-success="handleSuccess"
                 :on-remove="handleRemove"
                 :auto-upload="false">
@@ -531,11 +520,12 @@ export default {
       // 门店信息
       shopList: [],
       // 地点列表
-      conder: [],
+      checkaddress: [],
       conderaddress: [],
       // 设备
       conderdevice: [],
       placedevice: "",
+      check:"",
       //供应商
       personList: [],
       // 遮罩层
@@ -604,32 +594,22 @@ export default {
   created() {
     ownerList(this.queryParams).then(response => {
       this.personList = response.data;
-      // console.log(this.personList)
     });
     listCheckProject(this.queryParams).then(response => {
       this.projectList = response.rows;
       console.log(this.projectList);
     });
     this.getList();
-    getCkAll(this.queryParams).then(response => {
-      this.storeList = response.rows;
-      for (let i = 0; i < this.storeList.length; i++) {
-        this.placeholderone = this.storeList[0].ckName;
-        //  console.log(this.placeholderone)
-      }
-    });
-    // getPersonAll(this.queryParams).then(response => {
-    //   this.personList = response.rows;
-    //   // console.log(this.personList)
-    // });
-    getAllCheckAddress(this.queryParams).then(response => {
-      this.conder = response.rows;
+    //检测地
+    getAllCheckAddress().then(response => {
+      this.checkaddress = response.rows;
+      this.check = response.rows[0].id;
       console.log(this.conder);
     });
     // 采样地
     getAllSampAddress().then(response => {
       this.conderaddress = response.rows;
-      this.place = response.rows[0].sampAddress;
+      this.place = response.rows[0].sampAddressId;
       console.log(response);
       // this.user.sampaddress = response.user.userName;
     });
@@ -643,7 +623,7 @@ export default {
     // 检测设备
     getAllDeviceItem().then(response => {
       this.conderdevice = response.rows;
-      this.placedevice = response.rows[0].deviceName;
+      this.placedevice = response.rows[0].deviceId;
       console.log(response);
       // this.user.sampaddress = response.user.userName;
     });
@@ -657,7 +637,6 @@ export default {
   methods: {
     submitUpload() {
         this.$refs.upload.submit();
-
       },
       /** 导入操作 */
     handleImport() {
@@ -729,37 +708,11 @@ export default {
       }
       return year + "-" + month + "-" + day;
     },
-    //是否含税
-    // changeRate(data){
-    //   //不含税时置空税率跟恢复含税金额
-    //   if(data==0){
-    //       for(let i=0;i<this.tableData.length;i++){
-    //         this.tableData[i].goodsRate="0";
-    //         this.tableData[i].goodsPriceRate= this.tableData[i].goodsPrice;
-    //         this.tableData[i].goodsMoneyRate= this.tableData[i].goodsMoney;
-    //       }
-    //   }
-    // },
     //追加子表必填样式
     starAdd(obj) {
-      //if(obj.columnIndex === 0 || obj.columnIndex === 1 || obj.columnIndex === 4 || obj.columnIndex === 5 || obj.columnIndex === 6|| obj.columnIndex === 7) {
-      // if (
-      //   obj.columnIndex === 0 ||
-      //   obj.columnIndex === 1 ||
-      //   obj.columnIndex === 2
-      // ) {
-      //   return "star";
-      // }
+
     },
-    // handleEditShop(data,index, row){
-    //     //根据编码名称
-    //     for(let i=0;i<this.shopList.length;i++){
-    //       if(this.shopList[i].storeid==data){
-    //         row.shopName=this.shopList[i].shopName;
-    //         break;
-    //       }
-    //     }
-    // },
+  
     clickFile(file) {
       if (file.url != "") {
         window.location.href = file.url;
@@ -795,11 +748,6 @@ export default {
       console.log(row, event, column, event.currentTarget);
     },
     handleEdit(index, row) {
-      //不含税
-      // if(this.form.isRate==0){
-      // if(row.goodsPrice!=""&&row.goodsPrice!=null&&row.goodsPrice!=undefined){
-      //    row.goodsPriceRate=row.goodsPrice;
-      // }
       if (
         row.ai != "" &&
         row.ai != null &&
@@ -837,15 +785,6 @@ export default {
         this.msgError("请先填写抑制率标准设定值!");
         return;
       }
-      // }
-      //含税
-      // if(this.form.isRate==1){
-      //     if(row.goodsCode!=""&&row.goodsCode!=null&&row.goodsCode!=undefined&&row.goodsPrice!=""&&row.goodsPrice!=null&&row.goodsPrice!=undefined&&row.goodsRate!=""&&row.goodsRate!=null&&row.goodsRate!=undefined){
-      //       row.goodsMoney=(parseFloat(row.goodsCode)*parseFloat(row.goodsPrice)).toFixed(2);
-      //       row.goodsMoneyRate=(((1+parseFloat(row.goodsRate)/100))*row.goodsMoney).toFixed(2);
-      //       row.goodsPriceRate=(parseFloat(row.goodsMoneyRate)/parseFloat(row.goodsCode)).toFixed(2);
-      //     }
-      // }
     },
     handleEditPerson(data, index, row) {
       //根据编码找产地
@@ -951,7 +890,7 @@ export default {
         this.leaseList = response.rows;
         console.log(this.leaseList);
         this.total = response.total;
-        this.checking = response.rows[0].checkAddress;
+       // this.checking = response.rows[0].checkAddress;
         this.loading = false;
       });
     },
@@ -988,6 +927,9 @@ export default {
         af: undefined
       };
       this.resetForm("form");
+      this.form.checkAddress=this.check;
+      this.form.sampAddress=this.place;
+      this.form.checkDevice=this.placedevice;
       this.tableData = [];
     },
     /** 搜索按钮操作 */
