@@ -367,7 +367,7 @@ export default {
     listCheck().then(response => {
       this.number = response.rows[0].inhibitionNum;
       // this.place=response.rows[0].sampAddress
-      console.log(response);
+      console.log(this.number);
     });
     this.getList();
     getInfo().then(response => {
@@ -694,7 +694,7 @@ export default {
         sampAddress: undefined,
         sampAddressPerson: undefined,
         sampAddressPersonTel: undefined,
-        inhibitionNum: undefined,
+        inhibitionNum: this.number,
         checkType: undefined,
         afAi: undefined,
         checkResult: undefined,
@@ -704,7 +704,7 @@ export default {
         checkTime:undefined,
       };
       this.resetForm("form");
-      this.form.inhibitionNum=this.number;
+      
       this.tableData = [];
     },
     /** 搜索按钮操作 */
@@ -726,6 +726,7 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
+     alert(this.form.inhibitionNum)
       const id = row.id || this.ids;
       getTestApplicationForm(id).then(response => {
         if(response.data.checkType=="0"){
@@ -735,6 +736,8 @@ export default {
            this.form = response.data;
            this.form.checkType="取检"
         }
+        this.form.inhibitionNum=this.number;
+        console.log(this.form)
         // 查询参数
         let queryParams = {
           djNumber: this.form.djNumber
