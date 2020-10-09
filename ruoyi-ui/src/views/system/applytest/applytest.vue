@@ -726,7 +726,7 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-     alert(this.form.inhibitionNum)
+  
       const id = row.id || this.ids;
       getTestApplicationForm(id).then(response => {
         if(response.data.checkType=="0"){
