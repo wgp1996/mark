@@ -9,7 +9,7 @@
           <div class="card-panel-text">
             当日下发订单
           </div>
-          <count-to :start-val="0" :end-val="227" :duration="3000" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="total" :duration="3000" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -213,15 +213,44 @@
 
 <script>
 import CountTo from 'vue-count-to'
-
+import {
+  rkdSummaryList
+} from "@/api/system/cgrkd";
 export default {
   components: {
     CountTo
   },
+    data() {
+    return {
+   
+       // 总条数
+      total: 0,
+        /** 查询二级市场信息列表 */
+        // 查询参数
+      queryParams: {
+        pageNum: 1,
+        pageSize: 10,
+        markCode: undefined,
+        djNumber: undefined,
+        djTime: undefined,
+      },
+    }
+  },
   methods: {
     handleSetLineChartData(type) {
       this.$emit('handleSetLineChartData', type)
-    }
+    },
+   getList() {
+      this.loading = true;
+      rkdSummaryList(this.queryParams).then((response) => {
+        console.log(response)
+      this.total = response.total;
+     
+      });
+    },
+  },
+  created() {
+    this.getList();
   }
 }
 </script>

@@ -8,6 +8,15 @@ export function listOwnerGoods(query) {
     params: query
   })
 }
+// 查询账面数量
+export function goodsRklist(query) {
+  return request({
+    url: '/system/ownerGoods/goodsRklist',
+    method: 'get',
+    params: query
+  })
+}
+
 
 // 查询业户商品建档下拉列表
 export function goodsList(query) {
