@@ -66,34 +66,31 @@
       row-key="id"
     >
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column type="expand">
-        <template slot-scope="props">
-          <el-table style="padding: 0; margin: 0" :data="props.row.childrenList">
+      <!-- <el-table-column type="expand"> -->
+        <!-- <template slot-scope="props"> -->
+          <!-- <el-table style="padding: 0; margin: 0" :data="props.row.childrenList"> -->
+            <el-table-column label="单号" align="center" prop="djNumber" />
             <el-table-column label="业户名称" align="center" prop="ownerName" />
             
             <el-table-column label="检测物名称" align="center" prop="goodsName" />
-            <!-- <el-table-column label="检测物编码" align="center" prop="goodsCode" /> -->
-            <!-- <el-table-column label="AI值" align="center" prop="ai" /> -->
-            <!-- <el-table-column label="AF值" align="center" prop="af" /> -->
-            <!-- <el-table-column label="AF_AI值" align="center" prop="afAi" />  -->
+        
             <el-table-column label="检测项目" align="center" prop="checkProject" />
-            <!-- <el-table-column label="检测结果" align="center" prop="testResult" /> -->
+  
              <el-table-column label="合格状态" align="center" prop="checkResultName" />
             <el-table-column label="抑制率(%)" align="center" prop="inhibitionNum" />
             <el-table-column label="备注" align="center" prop="remark" />
-          </el-table>
-        </template>
-      </el-table-column>
-      <!-- <el-table-column type="selection" width="55" align="center" /> -->
-      <!-- <el-table-column label="单据状态" align="center" prop="djStatus" /> -->
+          <!-- </el-table> -->
+        <!-- </template> -->
+      <!-- </el-table-column> -->
+<!-- 
       <el-table-column label="单据编号" align="center" prop="djNumber" />
       <el-table-column label="单据日期" align="center" prop="djTime" />
 
       <el-table-column label="采用地点" align="center" prop="checkAddress" />
 
       <el-table-column label="抑制率标准值" align="center" prop="inhibitionNum" />
-      <el-table-column label="检测说明" align="center" prop="djTitle" />
-      <!-- <el-table-column label="制单日期" align="center" prop="create_Time" /> -->
+      <el-table-column label="检测说明" align="center" prop="djTitle" /> -->
+     
 
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
