@@ -7,9 +7,9 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            当日下发订单
+            节点业户
           </div>
-          <count-to :start-val="0" :end-val="total" :duration="3000" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="593" :duration="3000" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -21,9 +21,9 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            当日相应订单
+           溯源商品
           </div>
-          <count-to :start-val="0" :end-val="272" :duration="3000" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="847" :duration="3000" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -34,9 +34,9 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-           当日下发询价单
+           溯源单据
           </div>
-          <count-to :start-val="0" :end-val="376542.76" :duration="3200" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="total" :duration="3000" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -48,9 +48,9 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            当日回复询价单
+            产地档案
           </div>
-          <count-to :start-val="0" :end-val="1732" :duration="3600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="642" :duration="3600" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -62,12 +62,10 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            当日药残检测批次
-            <br>
-           
-            <span style="display:inline-block;color:#666;font-size:20px;margin-top:15px">89.7%</span>
+           销货单据
+          <!-- <span style="display:inline-block;color:#666;font-size:20px;margin-top:15px">89.7%</span> -->
           </div>
-          <!-- <count-to :start-val="0" :duration="3600" class="card-panel-num" />  -->
+          <count-to :start-val="0" :end-val="642" :duration="3600" class="card-panel-num" /> 
         </div>
       </div>
     </el-col>
@@ -245,8 +243,8 @@ export default {
       rkdSummaryList(this.queryParams).then((response) => {
         console.log(response)
       this.total = response.total;
+     });
      
-      });
     },
   },
   created() {

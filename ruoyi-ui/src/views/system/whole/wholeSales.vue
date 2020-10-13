@@ -238,6 +238,7 @@
                   v-model="scope.row.wholeNum"
                   placeholder="请输入数量"
                   :onkeyup="scope.row.wholeNum=scope.row.wholeNum.replace(/[^\d.]/g,'')"
+                   @change="handleEdit(scope.$index, scope.row)"
                 ></el-input>
                 <span>{{scope.row.wholeNum}}</span>
               </template>
@@ -247,10 +248,22 @@
                 <el-input
                   size="small"
                   v-model="scope.row.wholePrice"
-                  placeholder="请输入数量"
+                  placeholder="请输入单价"
                   :onkeyup="scope.row.wholePrice=scope.row.wholePrice.replace(/[^\d.]/g,'')"
+                   @change="handleEdit(scope.$index, scope.row)"
                 ></el-input>
                 <span>{{scope.row.wholePrice}}</span>
+              </template>
+            </el-table-column>
+             <el-table-column label="金额" width="120">
+              <template scope="scope">
+                <el-input
+                  size="small"
+                  v-model="scope.row.wholeMoney"
+                   @change="handleEdit(scope.$index, scope.row)"
+                  :onkeyup="scope.row.wholeMoney=scope.row.wholeMoney.replace(/[^\d.]/g,'')"
+                ></el-input>
+                <span>{{scope.row.wholeMoney}}</span>
               </template>
             </el-table-column>
             <el-table-column label="备注" width="150">
@@ -437,7 +450,23 @@ export default {
       console.log(row, event, column, event.currentTarget);
     },
     handleEdit(index, row) {
-      console.log(index, row);
+     
+        if (
+          row.wholePrice != "" &&
+          row.wholePrice != null &&
+          row.wholePrice != undefined&&
+         row.wholeNum  != "" &&
+          row.wholeNum  != null &&
+          row.wholeNum  != undefined
+        ) {
+         row.wholeMoney= (parseFloat(row.wholePrice) * parseFloat(row.wholeNum)).toFixed(2);
+        
+      //  else {
+      //   console.log(this.form.inhibitionNum);
+      //   this.msgError("请先填写抑制率标准设定值!");
+      //   return;
+       }
+  
     },
     handleChildDelete(index, row) {
       if (row.id != "" && row.id != undefined && row.id != null) {
