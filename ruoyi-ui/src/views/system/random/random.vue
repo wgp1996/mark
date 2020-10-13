@@ -70,6 +70,7 @@
         <!-- <template slot-scope="props"> -->
           <!-- <el-table style="padding: 0; margin: 0" :data="props.row.childrenList"> -->
             <el-table-column label="单号" align="center" prop="djNumber" />
+            <el-table-column label="检测日期" align="center" prop="testResult" />
             <el-table-column label="业户名称" align="center" prop="ownerName" />
             
             <el-table-column label="检测物名称" align="center" prop="goodsName" />

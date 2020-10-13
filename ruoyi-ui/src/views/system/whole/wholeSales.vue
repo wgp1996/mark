@@ -103,7 +103,7 @@
       <el-table-column label="单价" align="center" prop="wholePrice" />
        <el-table-column label="金额" align="center" prop="wholeMoney" />
       <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="制单日期" align="center" prop="createTime" />
+      <el-table-column label="销货日期" align="center" prop="createTime" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button

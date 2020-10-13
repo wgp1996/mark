@@ -96,7 +96,7 @@
       <el-table-column label="单价" align="center" prop="wholePrice" />
       <el-table-column label="金额" align="center" prop="wholeMoney" />
       <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="制单日期" align="center" prop="createTime" />
+      <el-table-column label="销货日期" align="center" prop="createTime" />
       <!-- <el-table-column label="客户编号" align="center" prop="khCode" /> -->
       <!-- <el-table-column label="单据状态" align="center" prop="djStatusName" />
       <el-table-column label="单据编号" align="center" prop="djNumber" />
