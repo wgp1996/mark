@@ -5,11 +5,11 @@
         <div class="card-panel-icon-wrapper icon-people"  style="margin:14px 0px 0px 0px;padding:16px 0px 0px 2px">
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
         </div>
-        <div class="card-panel-description">
+        <div class="card-panel-description" >
           <div class="card-panel-text">
             节点业户
           </div>
-          <count-to :start-val="0" :end-val="593" :duration="3000" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="total1" :duration="3000" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -41,7 +41,7 @@
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:20% !important">
-      <div class="card-panel" @click="handleSetLineChartData('shoppings')">
+      <div class="card-panel" @click="handleSetLineChartData('shopping')">
         <div class="card-panel-icon-wrapper icon-shopping special" style="margin:14px 0px 0px 0px;padding:16px 0px 0px 2px">
           <!-- <svg-icon icon-class="shopping" class-name="card-panel-icon" /> -->
           <img src="../../assets/dan.png" style="width:50px;height:50px">
@@ -65,7 +65,7 @@
            销货单据
           <!-- <span style="display:inline-block;color:#666;font-size:20px;margin-top:15px">89.7%</span> -->
           </div>
-          <count-to :start-val="0" :end-val="642" :duration="3600" class="card-panel-num" /> 
+          <count-to :start-val="0" :end-val="total2" :duration="3600" class="card-panel-num" /> 
         </div>
       </div>
     </el-col>
@@ -214,6 +214,11 @@ import CountTo from 'vue-count-to'
 import {
   rkdSummaryList
 } from "@/api/system/cgrkd";
+import {
+  listCgrkdSingle,
+
+} from "@/api/system/cgrkdSingle";
+import { listOwner } from "@/api/system/owner";
 export default {
   components: {
     CountTo
@@ -223,6 +228,8 @@ export default {
    
        // 总条数
       total: 0,
+      total2: 0,
+      total1:0,
         /** 查询二级市场信息列表 */
         // 查询参数
       queryParams: {
@@ -244,8 +251,19 @@ export default {
         console.log(response)
       this.total = response.total;
      });
-     
+      listCgrkdSingle(this.queryParams).then((response) => {
+      this.total2 = response.total;
+        this.loading = false;
+      });
+      listOwner(this.queryParams).then(response => {
+      
+        this.total1 = response.total;
+        this.loading = false;
+       
+      });
+
     },
+ 
   },
   created() {
     this.getList();

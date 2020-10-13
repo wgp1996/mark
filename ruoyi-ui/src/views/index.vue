@@ -3,7 +3,7 @@
 
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
 
-    <el-row style="background:#fff;padding:0px;margin-bottom:32px;">
+    <el-row style="background:#fff;padding:0px;margin-bottom:32px;" v-if="purchases">
       <!-- <line-chart :chart-data="lineChartData" /> -->
       <div style="text-align:center;background-color:#eee">
       <el-table
@@ -30,6 +30,71 @@
     />
 
       </div>
+    </el-row>
+    <el-row style="background:#fff;padding:0px;margin-bottom:32px;" v-if="newVisitis">
+      <!-- <line-chart :chart-data="lineChartData" /> -->
+      <div style="text-align:center;background-color:#eee">
+       <el-table v-loading="loading" :data="ownerList" >
+      <el-table-column type="selection" width="55" align="center" />
+      <!-- <el-table-column label="所属市场" align="center" prop="markTypeName" /> -->
+      <el-table-column label="业户编号" align="center" prop="ownerCode" />
+      <el-table-column label="业户名称" align="center" prop="ownerName" width="300"/>
+      <el-table-column label="信用代码/身份证号" align="center" prop="ownerPersonId" />
+      <el-table-column label="联系人" align="center" prop="ownerLxr" />
+      <el-table-column label="电话" align="center" prop="ownerLxrPhone" />
+      <el-table-column label="创建日期" align="center" prop="createTime" />
+
+    </el-table>
+     <pagination
+      v-show="total>0"
+      :total="total"
+      :page.sync="queryParams.pageNum"
+      :limit.sync="queryParams.pageSize"
+      @pagination="getList"
+    />
+
+      </div>
+    </el-row>
+    <el-row>
+          <el-table
+      v-loading="loading"
+      :data="List"
+  
+      :summary-method="getSummaries"
+      show-summary
+       v-if="shoppings"
+    
+    >
+
+      <el-table-column type="selection" width="55" align="center" />
+      <el-table-column label="业户代码" align="center" prop="createBy" />
+      <el-table-column label="业户名称" align="center" prop="createName" />
+      <el-table-column label="进货日期" align="center" prop="djTime" />
+      <el-table-column label="进货商品" align="center" prop="goodsName" />
+      <el-table-column label="单位" align="center" prop="goodsDw" />
+      <el-table-column label="产地" align="center" prop="goodsAddress" />
+      <el-table-column label="数量" align="center" prop="goodsNum" />
+       <el-table-column label="单价" align="center" prop="goodsPrice" />
+      <el-table-column label="金额" align="center" prop="goodsMoney" />
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleUpdate(scope.row)"
+            v-hasPermi="['system:cgrkd:edit']"
+          >修改</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-delete"
+            @click="handleDelete(scope.row)"
+            v-hasPermi="['system:cgrkd:remove']"
+          >删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
     </el-row>
     <el-row style="background:#fff;padding:16px 16px 16px;margin-bottom:32px;height:auto">
       <line-img  />
@@ -66,6 +131,11 @@ import BarChart from './dashboard/BarChart'
 import {
   rkdSummaryList
 } from "@/api/system/cgrkd";
+import { listOwner } from "@/api/system/owner";
+import {
+  listCgrkdSingle,
+
+} from "@/api/system/cgrkdSingle";
 const lineChartData = {
   newVisitis: {
     expectedData: [2.5, 3.5, 3.15, 2.7, 5.78, 3.15, 4.25],
@@ -99,7 +169,12 @@ export default {
     return {
       sumNum:0,
        // 主表信息表格数据
+      //  溯源单据
       leaseList: [],
+      // 节点业户
+      ownerList:[],
+      // 销货单据
+       List:[],
       lineChartData: lineChartData.newVisitis,
        // 总条数
       total: 0,
@@ -112,6 +187,11 @@ export default {
         djNumber: undefined,
         djTime: undefined,
       },
+      newVisitis:false,
+      // messages:false,
+      purchases:true,
+      // shopping:false,
+      shoppings:false,
     }
   },
   methods: {
@@ -148,16 +228,70 @@ export default {
     getList() {
       this.loading = true;
       rkdSummaryList(this.queryParams).then((response) => {
+        console.log(response)
         this.leaseList = response.rows;
         for(let i=0;i<response.rows.length;i++){
           this.sumNum+=parseFloat(response.rows[i].sumNum);
+          //  alert(this.sumNum)
         }
         this.total = response.total;
         this.loading = false;
       });
     },
     handleSetLineChartData(type) {
-      this.lineChartData = lineChartData[type]
+      // this.lineChartData = lineChartData[type]
+      if(type=="newVisitis"){
+        // 节点业户
+          this.newVisitis=true
+          this.purchases=false
+          this.shoppings=false
+        listOwner(this.queryParams).then(response => {
+        this.ownerList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+        this.sumNum=0
+      });
+      }else if(type=="purchases"){
+        // 溯源单据
+           this.purchases=true
+          this.newVisitis=false
+           this.shoppings=false
+        rkdSummaryList(this.queryParams).then((response) => {
+        console.log(response)
+        this.leaseList = response.rows;
+         this.sumNum=0
+        for(let i=0;i<response.rows.length;i++){
+          // alert(this.sumNum)
+          
+          this.sumNum+=parseFloat(response.rows[i].sumNum);
+        }
+        this.total = response.total;
+        this.loading = false;
+        
+      });
+
+      }else if(type=="shoppings"){
+        // 销货单据
+          this.shoppings=true
+          this.newVisitis=false
+          this.purchases=false
+        listCgrkdSingle(this.queryParams).then((response) => {
+        this.List = response.rows;
+         this.sumNum=0;
+        for(let i=0;i<response.rows.length;i++){
+            if(response.rows[i].goodsMoney==null){
+             response.rows[i].goodsMoney='0';
+           }else{
+             this.sumNum+=(parseFloat(response.rows[i].goodsMoney)).toFixed(2);
+           }
+       
+        }
+        this.sumNum=this.sumNum.toFixed(2)
+         console.log(this.leaseList)
+        this.total = response.total;
+        this.loading = false;
+      });
+      }
     }
   },
     created() {
