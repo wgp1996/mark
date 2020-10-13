@@ -96,14 +96,14 @@
       <el-table-column label="制单人" align="center" prop="createBy" /> -->
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="客户名称" align="center" prop="khName" />
-      <el-table-column label="商品编号" align="center" prop="goodsCode" />
+      <!-- <el-table-column label="商品编号" align="center" prop="goodsCode" /> -->
       <el-table-column label="商品名称" align="center" prop="goodsName" />
       <el-table-column label="单位" align="center" prop="wholeDw" />
       <el-table-column label="销售量" align="center" prop="wholeNum" />
       <el-table-column label="单价" align="center" prop="wholePrice" />
+       <el-table-column label="金额" align="center" prop="wholeMoney" />
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="制单日期" align="center" prop="createTime" />
-
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -261,7 +261,6 @@
                   size="small"
                   v-model="scope.row.wholeMoney"
                    @change="handleEdit(scope.$index, scope.row)"
-                  :onkeyup="scope.row.wholeMoney=scope.row.wholeMoney.replace(/[^\d.]/g,'')"
                 ></el-input>
                 <span>{{scope.row.wholeMoney}}</span>
               </template>
@@ -605,13 +604,13 @@ export default {
       const id = row.id || this.ids;
       getWholeSales(id).then((response) => {
         this.form = response.data;
-        if (response.data.fileName != "") {
-          this.fileList = [];
-          let info = new Object();
-          info.name = response.data.fileName;
-          info.url = response.data.fileName;
-          this.fileList.push(info);
-        }
+        // if (response.data.fileName != "") {
+        //   this.fileList = [];
+        //   let info = new Object();
+        //   info.name = response.data.fileName;
+        //   info.url = response.data.fileName;
+        //   this.fileList.push(info);
+        // }
         getWholeSalesChild(this.form.djNumber).then((response) => {
           //this.form.rows = response.data;
           this.tableData = response.rows;
