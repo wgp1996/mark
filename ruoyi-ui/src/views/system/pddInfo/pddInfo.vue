@@ -1,6 +1,11 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="100px">
+    <el-form
+      :model="queryParams"
+      ref="queryForm"
+      :inline="true"
+      label-width="100px"
+    >
       <el-form-item label="单据编号" prop="djNumber">
         <el-input
           v-model="queryParams.djNumber"
@@ -12,8 +17,16 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button
+          type="primary"
+          icon="el-icon-search"
+          size="mini"
+          @click="handleQuery"
+          >搜索</el-button
+        >
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
+          >重置</el-button
+        >
       </el-form-item>
     </el-form>
 
@@ -24,8 +37,9 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['system:randomInsp:add']"
-        >新增</el-button>
+          v-hasPermi="['system:checkInfo:add']"
+          >新增</el-button
+        >
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -34,8 +48,9 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['system:randomInsp:edit']"
-        >修改</el-button>
+          v-hasPermi="['system:checkInfo:edit']"
+          >修改</el-button
+        >
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -44,17 +59,19 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['system:randomInsp:remove']"
-        >删除</el-button>
+          v-hasPermi="['system:checkInfo:remove']"
+          >删除</el-button
+        >
       </el-col>
       <el-col :span="1.5">
         <el-button
           type="warning"
-          icon="el-icon-edit"
+          icon="el-icon-s-promotion"
           size="mini"
-          @click="handleImport"
-          v-hasPermi="['system:randomInsp:import']"
-          >导入</el-button
+          :disabled="multiple"
+          @click="handleEffect"
+          v-hasPermi="['system:rkInfo:effect']"
+          >生效</el-button
         >
       </el-col>
     </el-row>
@@ -63,37 +80,46 @@
       v-loading="loading"
       :data="leaseList"
       @selection-change="handleSelectionChange"
-   
     >
       <el-table-column type="selection" width="55" align="center" />
-     
+
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
       <!-- <el-table-column label="单据状态" align="center" prop="djStatus" /> -->
       <el-table-column label="单据编号" align="center" prop="djNumber" />
       <el-table-column label="账面日期" align="center" prop="djTime" />
-        <el-table-column label="盘点结束日期" align="center" prop="checkEndTime" />
+      <el-table-column
+        label="盘点结束日期"
+        align="center"
+        prop="checkEndTime"
+      />
       <el-table-column label="仓库名称" align="center" prop="storeName" />
 
       <el-table-column label="制单人" align="center" prop="createBy" />
       <el-table-column label="制单日期" align="center" prop="createTime" />
       <!-- <el-table-column label="制单日期" align="center" prop="create_Time" /> -->
 
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column
+        label="操作"
+        align="center"
+        class-name="small-padding fixed-width"
+      >
         <template slot-scope="scope">
           <el-button
             size="mini"
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:randomInsp:edit']"
-          >修改</el-button>
+            v-hasPermi="['system:checkInfo:edit']"
+            >修改</el-button
+          >
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['system:randomInsp:remove']"
-          >删除</el-button>
+            v-hasPermi="['system:checkInfo:remove']"
+            >删除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -125,31 +151,52 @@
             <!-- <el-form-item label="标题" prop="djTitle" id="djTitless">
               <el-input v-model="form.djTitle" placeholder />
             </el-form-item> -->
-            <el-form-item label="账面日期" prop="djTime" class="changeBlue pig" style="width:400px">
+            <el-form-item
+              label="账面日期"
+              prop="djTime"
+              class="changeBlue pig"
+              style="width: 400px"
+            >
               <el-date-picker
                 style="width: 100%"
                 v-model="form.djTime"
                 type="date"
-               
                 format="yyyy 年 MM 月 dd 日"
                 value-format="yyyy-MM-dd"
               ></el-date-picker>
             </el-form-item>
-              <el-form-item label="盘点结束日期" prop="checkEndTime" class="changeBlue pig" style="width:400px">
+            <el-form-item
+              label="盘点结束日期"
+              prop="checkEndTime"
+              class="changeBlue pig"
+              style="width: 400px"
+            >
               <el-date-picker
                 style="width: 100%"
                 v-model="form.checkEndTime"
                 type="date"
-              
                 format="yyyy 年 MM 月 dd 日"
                 value-format="yyyy-MM-dd"
               ></el-date-picker>
             </el-form-item>
-             <el-form-item label="单据编号" prop="djNumber" class="changeBlue pig" style="width:400px">
-              <el-input v-model="form.djNumber" :disabled="true" placeholder="后台自动生成" />
+            <el-form-item
+              label="单据编号"
+              prop="djNumber"
+              class="changeBlue pig"
+              style="width: 400px"
+            >
+              <el-input
+                v-model="form.djNumber"
+                :disabled="true"
+                placeholder="后台自动生成"
+              />
             </el-form-item>
-         <el-form-item label="仓库" prop="storeName" class=" pig" style="width:400px">
-         
+            <el-form-item
+              label="仓库"
+              prop="storeName"
+              class="pig"
+              style="width: 400px"
+            >
               <el-select
                 v-model="form.storeName"
                 filterable
@@ -158,7 +205,7 @@
                 <el-option
                   v-for="item in storeList"
                   :key="item.ckCode"
-                  :label="item.ckName "
+                  :label="item.ckName"
                   :value="item.ckCode"
                 >
                   <span
@@ -168,7 +215,8 @@
                       font-size: 13px;
                       width: 100%;
                     "
-                  >{{ item.ckName}}</span>
+                    >{{ item.ckName }}</span
+                  >
                 </el-option>
               </el-select>
             </el-form-item>
@@ -176,7 +224,6 @@
             <!-- <el-form-item label="采用地点" prop="checkAddress">
               <el-input v-model="form.checkAddress" placeholder="" />
             </el-form-item>-->
-            
 
             <el-form-item label="说明" prop="remark" id="djTitles">
               <el-input v-model="form.remark" placeholder />
@@ -185,7 +232,13 @@
           <el-tab-pane label="明细信息" name="second">
             <el-row :gutter="10" class="mb8">
               <el-col :span="1.5">
-                <el-button type="primary" icon="el-icon-plus" size="mini" @click="goodsSelect">新增存货信息</el-button>
+                <el-button
+                  type="primary"
+                  icon="el-icon-plus"
+                  size="mini"
+                  @click="goodsSelect"
+                  >新增存货信息</el-button
+                >
               </el-col>
             </el-row>
             <el-table
@@ -196,45 +249,6 @@
               @row-click="handleCurrentChange"
               :header-cell-class-name="starAdd"
             >
-              <!-- <el-table-column label="业户信息" prop="ownerCode" width="250">
-                <template scope="scope">
-                  <el-select
-                    v-model="scope.row.ownerCode"
-                    placeholder="请选择业户"
-                    filterable
-                    style="width:100%"
-                    @change="selectPerson(scope.$index, scope.row)"
-                  >
-                    <el-option
-                      v-for="item in personList"
-                      :key="item.ownerCode"
-                      :label="item.ownerName"
-                      :value="item.ownerCode"
-                    >
-                      <span style="width:100%">{{item.ownerName}}</span>
-                    </el-option>
-                  </el-select>
-                </template>
-              </el-table-column> -->
-              <!-- <el-table-column label="检测项目" prop="checkProject" width="150">
-                <template scope="scope">
-                  <el-select
-                    v-model="scope.row.checkProject"
-                    placeholder="请选择检测项目"
-                    filterable
-                    style="width:100%"
-                  >
-                    <el-option
-                      v-for="item in projectList"
-                      :key="item.projectName"
-                      :label="item.projectName"
-                      :value="item.projectName"
-                    >
-                      <span style="width:100%">{{ item.projectName }}</span>
-                    </el-option>
-                  </el-select>
-                </template>
-              </el-table-column> -->
               <el-table-column prop="goodsCode" label="商品编码" width="200">
                 <template scope="scope">
                   <el-input
@@ -294,13 +308,12 @@
                     placeholder
                     @change="handleEdit(scope.$index, scope.row)"
                   ></el-input>
-                  <span>{{ scope.row.kcNum  }}</span>
+                  <span>{{ scope.row.kcNum }}</span>
                 </template>
               </el-table-column>
-               <el-table-column label="盘点数量" width="150">
+              <el-table-column label="盘点数量" width="150">
                 <template scope="scope">
                   <el-input
-                   
                     size="small"
                     v-model="scope.row.goodsNum"
                     placeholder
@@ -309,7 +322,7 @@
                   <span>{{ scope.row.goodsNum }}</span>
                 </template>
               </el-table-column>
-                <el-table-column label="盈亏数量" width="150">
+              <el-table-column label="盈亏数量" width="150">
                 <template scope="scope">
                   <el-input
                     :disabled="true"
@@ -321,10 +334,9 @@
                   <span>{{ scope.row.goodsLossNum }}</span>
                 </template>
               </el-table-column>
-                 <el-table-column label="单价" width="150">
+              <el-table-column label="单价" width="150">
                 <template scope="scope">
                   <el-input
-                  
                     size="small"
                     v-model="scope.row.goodsPrice"
                     placeholder
@@ -333,7 +345,7 @@
                   <span>{{ scope.row.goodsPrice }}</span>
                 </template>
               </el-table-column>
-                 <el-table-column label="盈亏金额" width="150">
+              <el-table-column label="盈亏金额" width="150">
                 <template scope="scope">
                   <el-input
                     :disabled="true"
@@ -351,34 +363,12 @@
                     size="small"
                     type="danger"
                     @click="handleChildDelete(scope.$index, scope.row)"
-                  >删除</el-button>
+                    >删除</el-button
+                  >
                 </template>
               </el-table-column>
             </el-table>
           </el-tab-pane>
-          <!-- <el-tab-pane label="附件信息" name="three">
-            <el-row :gutter="15" class="mb8">
-              <el-col :span="1.5">
-                <el-upload
-                  class="upload-demo"
-                  :limit="1"
-                  drag
-                  :file-list="fileList"
-                  :action="upload.url"
-                  :headers="upload.headers"
-                  :on-success="handleFileSuccess"
-                  :on-remove="handleRemove"
-                  :on-preview="clickFile"
-                >
-                  <i class="el-icon-upload"></i>
-                  <div class="el-upload__text">
-                    将文件拖到此处，或
-                    <em>点击上传</em>
-                  </div>
-                </el-upload>
-              </el-col>
-            </el-row>
-          </el-tab-pane> -->
         </el-tabs>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -386,24 +376,7 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
-          <el-dialog :title="title" :visible.sync="iopen" width="600px">
-                <el-row :gutter="15" class="mb8">
-            <el-col :span="1.5">
-              <el-upload
-                class="upload-demo"
-                ref="upload"
-                :action="importUrl"
-                :headers="upload.headers"
-                 :on-success="handleSuccess"
-                :on-remove="handleRemove"
-                :auto-upload="false">
-                <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-                <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
-                <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
-              </el-upload>
-            </el-col>
-          </el-row>
-    </el-dialog>
+
     <goods-select
       v-if="selectGoodsDialog"
       ref="selectGoods"
@@ -414,18 +387,6 @@
 </template>
 
 <script>
-// import {
-//   listCgrkd,
-//   getCgrkd,F
-//   getCgrkdChild,
-//   delCgrkd,
-//   delCgrkdChild,
-//   addCgrkd,
-//   updateCgrkd,
-//   updateCgrkdStatus,
-//   exportCgrkd,
-//   getOwnerList,
-// } from "@/api/system/randomInsp";
 import {
   listCheckInfo,
   getCheckInfo,
@@ -433,15 +394,11 @@ import {
   updateCheckInfo,
   delCheckInfo,
   exportCheckInfo,
-
-  // updateCgrkd,
-  // updateCgrkdStatus,
-  // exportCgrkd,
-  // getOwnerList,
+  updateCheckInfoStatus,
 } from "@/api/system/checkInfo";
 import {
   listCheckInfoChild,
-  delCheckInfoChild
+  delCheckInfoChild,
   // updateCgrkd,
   // updateCgrkdStatus,
   // exportCgrkd,
@@ -462,18 +419,18 @@ import { listCheckProject } from "@/api/system/checkProject";
 export default {
   name: "Lease",
   components: {
-    goodsSelect
+    goodsSelect,
   },
   data() {
     return {
-      importUrl:"",
+      importUrl: "",
       //用户信息
       user: {
         ownerCode: "",
         ownerName: "",
         ownerNameJc: "",
         sampaddress: "",
-        device: ""
+        device: "",
       },
       checking: "",
       left: "right",
@@ -493,7 +450,7 @@ export default {
         // 设置上传的请求头部
         headers: { Authorization: "Bearer " + getToken() },
         // 上传的地址
-        url: process.env.VUE_APP_BASE_API + "/common/upload"
+        url: process.env.VUE_APP_BASE_API + "/common/upload",
       },
       //仓库列表
       storeList: [],
@@ -505,7 +462,7 @@ export default {
       // 设备
       conderdevice: [],
       placedevice: "",
-      check:"",
+      check: "",
       //供应商
       personList: [],
       // 遮罩层
@@ -533,7 +490,7 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
-      iopen:false,
+      iopen: false,
       perationOptions: [],
       operateOptions: [],
       // 查询参数
@@ -542,7 +499,7 @@ export default {
         pageSize: 10,
         markCode: undefined,
         djNumber: undefined,
-        djTime: undefined
+        djTime: undefined,
       },
       // 表单参数
       form: {},
@@ -553,33 +510,27 @@ export default {
           {
             required: true,
             message: "抑制率标准设定值不能为空",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
-     },
- 
+      },
     };
   },
   created() {
-     getCkAll(this.queryParams).then(response => {
-        this.storeList = response.rows;
-        this.place=response.rows[0].ckCode
-  
+    getCkAll(this.queryParams).then((response) => {
+      this.storeList = response.rows;
+      this.place = response.rows[0].ckCode;
     });
-    ownerList(this.queryParams).then(response => {
+    ownerList(this.queryParams).then((response) => {
       this.personList = response.data;
     });
-    listCheckProject(this.queryParams).then(response => {
+    listCheckProject(this.queryParams).then((response) => {
       this.projectList = response.rows;
       console.log(this.projectList);
     });
     this.getList();
- 
-  
-  
-  
-  
-    getInfo().then(response => {
+
+    getInfo().then((response) => {
       this.user.ownerCode = response.user.userName;
       this.user.ownerName = response.user.nickName;
       this.user.ownerNameJc = response.user.nickName;
@@ -588,15 +539,16 @@ export default {
   },
   methods: {
     submitUpload() {
-        this.$refs.upload.submit();
-      },
-      /** 导入操作 */
+      this.$refs.upload.submit();
+    },
+    /** 导入操作 */
     handleImport() {
       //this.reset();
       this.iopen = true;
       this.title = "导入检测明细";
       const id = this.ids;
-      this.importUrl=process.env.VUE_APP_BASE_API + "/system/randomInsp/import";
+      this.importUrl =
+        process.env.VUE_APP_BASE_API + "/system/checkInfo/import";
     },
     //选择供应商
     selectPerson(index, data) {
@@ -662,11 +614,11 @@ export default {
     },
     //追加子表必填样式
     starAdd(obj) {
-       if(obj.columnIndex === 5 || obj.columnIndex === 7) {
-          return 'star';
+      if (obj.columnIndex === 5 || obj.columnIndex === 7) {
+        return "star";
       }
     },
-  
+
     clickFile(file) {
       if (file.url != "") {
         window.location.href = file.url;
@@ -678,7 +630,7 @@ export default {
       this.form.fileName = res.url;
     },
     handleSuccess(res, file, fileList) {
-       this.getList();
+      this.getList();
     },
     handleRemove(file, fileList) {
       this.form.fileName = "";
@@ -702,20 +654,28 @@ export default {
       console.log(row, event, column);
     },
     handleEdit(index, row) {
-         
-         if(row.goodsNum!=""&&row.goodsNum!=null&&row.goodsNum!=undefined){
-             row.goodsLossNum=row.goodsNum;
-          }
-          if(row.goodsNum!=""&&row.goodsNum!=null&&row.goodsNum!=undefined&&row.goodsPrice!=""&&row.goodsPrice!=null&&row.goodsPrice!=undefined){
-          
-            row.goodsLossMoney=(parseFloat(row.goodsNum)*parseFloat(row.goodsPrice)).toFixed(2);
-            
-          }else{
+      if (
+        row.goodsNum != "" &&
+        row.goodsNum != null &&
+        row.goodsNum != undefined
+      ) {
+        row.goodsLossNum = row.goodsNum;
+      }
+      if (
+        row.goodsNum != "" &&
+        row.goodsNum != null &&
+        row.goodsNum != undefined &&
+        row.goodsPrice != "" &&
+        row.goodsPrice != null &&
+        row.goodsPrice != undefined
+      ) {
+        row.goodsLossMoney = (
+          parseFloat(row.goodsNum) * parseFloat(row.goodsPrice)
+        ).toFixed(2);
+      } else {
+      }
 
-          }  
-      
       //含税
-
     },
     handleEditPerson(data, index, row) {
       //根据编码找产地
@@ -773,7 +733,7 @@ export default {
         let goodsInfo = new Object();
         goodsInfo.goodsCode = row.goodsCode;
         goodsInfo.goodsName = row.goodsName;
-        goodsInfo.goodsGg  = row.goodsGg;
+        goodsInfo.goodsGg = row.goodsGg;
         goodsInfo.goodsDw = row.goodsDw;
         goodsInfo.kcNum = row.kcNum;
         goodsInfo.checkResult = "";
@@ -781,7 +741,7 @@ export default {
         goodsInfo.goodsRate = "0";
         goodsInfo.goodsPrice = "";
         goodsInfo.remark = "";
-         goodsInfo.goodsLossMoney = "";
+        goodsInfo.goodsLossMoney = "";
         this.tableData.push(goodsInfo);
         this.$refs.selectGoods.visible = false;
       });
@@ -803,16 +763,16 @@ export default {
           let row = rows[i];
           let goodsInfo = new Object();
           goodsInfo.goodsCode = row.goodsCode;
-        goodsInfo.goodsName = row.goodsName;
-        goodsInfo.goodsGg  = row.goodsGg;
-        goodsInfo.goodsDw = row.goodsDw;
-        goodsInfo.kcNum = row.kcNum;
-        goodsInfo.checkResult = "";
-        goodsInfo.checkResultName = "";
-        goodsInfo.goodsRate = "0";
-        goodsInfo.goodsPrice = "";
-        goodsInfo.remark = "";
-         goodsInfo.goodsLossMoney = "";
+          goodsInfo.goodsName = row.goodsName;
+          goodsInfo.goodsGg = row.goodsGg;
+          goodsInfo.goodsDw = row.goodsDw;
+          goodsInfo.kcNum = row.kcNum;
+          goodsInfo.checkResult = "";
+          goodsInfo.checkResultName = "";
+          goodsInfo.goodsRate = "0";
+          goodsInfo.goodsPrice = "";
+          goodsInfo.remark = "";
+          goodsInfo.goodsLossMoney = "";
           this.tableData.push(goodsInfo);
         }
         this.$refs.selectGoods.visible = false;
@@ -821,11 +781,11 @@ export default {
     /** 查询二级市场信息列表 */
     getList() {
       this.loading = true;
-      listCheckInfo(this.queryParams).then(response => {
+      listCheckInfo(this.queryParams).then((response) => {
         this.leaseList = response.rows;
         console.log(this.leaseList);
         this.total = response.total;
-       // this.checking = response.rows[0].checkAddress;
+        // this.checking = response.rows[0].checkAddress;
         this.loading = false;
       });
     },
@@ -863,13 +823,12 @@ export default {
         goodsLossMoney: undefined,
         goodsLossNum: undefined,
         kcNum: undefined,
-        checkEndTime:this.getTime(),
-
+        checkEndTime: this.getTime(),
       };
       this.resetForm("form");
-      this.form.checkAddress=this.check;
-      this.form.storeName=this.place;
-      this.form.checkDevice=this.placedevice;
+      this.form.checkAddress = this.check;
+      this.form.storeName = this.place;
+      this.form.checkDevice = this.placedevice;
       this.tableData = [];
     },
     /** 搜索按钮操作 */
@@ -884,7 +843,7 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.id);
+      this.ids = selection.map((item) => item.id);
       this.single = selection.length != 1;
       this.multiple = !selection.length;
     },
@@ -898,7 +857,7 @@ export default {
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids;
-      getCheckInfo(id).then(response => {
+      getCheckInfo(id).then((response) => {
         this.form = response.data;
         if (response.data.fileName != "") {
           this.fileList = [];
@@ -909,9 +868,9 @@ export default {
         }
         // 查询参数
         let queryParams = {
-          djNumber: this.form.djNumber
+          djNumber: this.form.djNumber,
         };
-        listCheckInfoChild(queryParams).then(response => {
+        listCheckInfoChild(queryParams).then((response) => {
           //this.form.rows = response.data;
           this.tableData = response.rows;
         });
@@ -920,7 +879,7 @@ export default {
       });
     },
     /** 提交按钮 */
-    submitForm: function() {
+    submitForm: function () {
       console.log(this.tableData.length);
       console.log(this.tableData);
       if (this.tableData.length > 0) {
@@ -938,10 +897,10 @@ export default {
           }
         }
         this.form.rows = JSON.stringify(this.tableData);
-        this.$refs["form"].validate(valid => {
+        this.$refs["form"].validate((valid) => {
           if (valid) {
             if (this.form.id != undefined) {
-              updateCheckInfo(this.form).then(response => {
+              updateCheckInfo(this.form).then((response) => {
                 if (response.code === 200) {
                   this.msgSuccess("修改成功");
                   this.open = false;
@@ -952,7 +911,7 @@ export default {
                 }
               });
             } else {
-              addCheckInfo(this.form).then(response => {
+              addCheckInfo(this.form).then((response) => {
                 if (response.code === 200) {
                   this.msgSuccess("新增成功");
                   this.open = false;
@@ -975,16 +934,16 @@ export default {
       this.$confirm('是否确认删除单据编号为"' + ids + '"的数据项?', "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       })
-        .then(function() {
+        .then(function () {
           return delCheckInfo(ids);
         })
         .then(() => {
           this.getList();
           this.msgSuccess("删除成功");
         })
-        .catch(function() {});
+        .catch(function () {});
     },
     /** 生效按钮操作 */
     handleEffect(row) {
@@ -992,16 +951,16 @@ export default {
       this.$confirm('是否确认单据编号为"' + ids + '"的数据项已生效?', "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       })
-        .then(function() {
-          return updateCgrkdStatus(ids);
+        .then(function () {
+          return updateCheckInfoStatus(ids);
         })
         .then(() => {
           this.getList();
           this.msgSuccess("操作成功");
         })
-        .catch(function() {});
+        .catch(function () {});
     },
     /** 导出按钮操作 */
     handleExport() {
@@ -1009,17 +968,17 @@ export default {
       this.$confirm("是否确认导出所有租赁单据数据项?", "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       })
-        .then(function() {
+        .then(function () {
           return exportCheckInfo(queryParams);
         })
-        .then(response => {
+        .then((response) => {
           this.download(response.msg);
         })
-        .catch(function() {});
-    }
-  }
+        .catch(function () {});
+    },
+  },
 };
 </script>
 <style>

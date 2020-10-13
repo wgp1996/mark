@@ -42,6 +42,14 @@ export function delLkckInfo(id) {
     method: 'delete'
   })
 }
+// 生效出库单
+export function updateLkckInfoStatus(id) {
+  return request({
+    url: '/system/lkckInfo/effect/' + id,
+    method: 'delete'
+  })
+}
+
 
 // 导出出库单
 export function exportLkckInfo(query) {

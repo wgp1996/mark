@@ -1,6 +1,11 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="100px">
+    <el-form
+      :model="queryParams"
+      ref="queryForm"
+      :inline="true"
+      label-width="100px"
+    >
       <el-form-item label="单据编号" prop="djNumber">
         <el-input
           v-model="queryParams.djNumber"
@@ -12,8 +17,16 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button
+          type="primary"
+          icon="el-icon-search"
+          size="mini"
+          @click="handleQuery"
+          >搜索</el-button
+        >
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
+          >重置</el-button
+        >
       </el-form-item>
     </el-form>
 
@@ -24,8 +37,9 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['system:randomInsp:add']"
-        >新增</el-button>
+          v-hasPermi="['system:rkInfo:add']"
+          >新增</el-button
+        >
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -34,8 +48,9 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['system:randomInsp:edit']"
-        >修改</el-button>
+          v-hasPermi="['system:rkInfo:edit']"
+          >修改</el-button
+        >
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -44,17 +59,19 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['system:randomInsp:remove']"
-        >删除</el-button>
+          v-hasPermi="['system:rkInfo:remove']"
+          >删除</el-button
+        >
       </el-col>
       <el-col :span="1.5">
         <el-button
           type="warning"
-          icon="el-icon-edit"
+          icon="el-icon-s-promotion"
           size="mini"
-          @click="handleImport"
-          v-hasPermi="['system:randomInsp:import']"
-          >导入</el-button
+          :disabled="multiple"
+          @click="handleEffect"
+          v-hasPermi="['system:rkInfo:effect']"
+          >生效</el-button
         >
       </el-col>
     </el-row>
@@ -63,47 +80,60 @@
       v-loading="loading"
       :data="rkInfoList"
       @selection-change="handleSelectionChange"
-     
     >
       <el-table-column type="selection" width="55" align="center" />
-        <el-table-column type="expand">
-          <template slot-scope="props">
-            <el-table style="padding:0;margin:0" :data="props.row.childrenList" id="special">
-              <el-table-column label="商品名称" align="center" prop="goodsName" />
-              <el-table-column label="商品编码" align="center" prop="goodsCode" />
-              <!-- <el-table-column label="商品规格" align="center" prop="goodsGg" /> -->
-              <el-table-column label="商品单位" align="center" prop="goodsDw" /> 
-              <el-table-column label="主进货地" align="center" prop="goodsAddress" /> 
-              <el-table-column label="数量" align="center" prop="goodsNum" /> 
-              <el-table-column label="单价" align="center" prop="goodsPrice" /> 
-              <el-table-column label="金额" align="center" prop="goodsMoney" /> 
-              <el-table-column label="备注" align="center" prop="remark" />
-            </el-table>
-          </template>
-        </el-table-column>
+      <el-table-column type="expand">
+        <template slot-scope="props">
+          <el-table
+            style="padding: 0; margin: 0"
+            :data="props.row.childrenList"
+            id="special"
+          >
+            <el-table-column label="商品名称" align="center" prop="goodsName" />
+            <el-table-column label="商品编码" align="center" prop="goodsCode" />
+            <!-- <el-table-column label="商品规格" align="center" prop="goodsGg" /> -->
+            <el-table-column label="商品单位" align="center" prop="goodsDw" />
+            <el-table-column
+              label="主进货地"
+              align="center"
+              prop="goodsAddress"
+            />
+            <el-table-column label="数量" align="center" prop="goodsNum" />
+            <el-table-column label="单价" align="center" prop="goodsPrice" />
+            <el-table-column label="金额" align="center" prop="goodsMoney" />
+            <el-table-column label="备注" align="center" prop="remark" />
+          </el-table>
+        </template>
+      </el-table-column>
       <el-table-column label="单据编号" align="center" prop="djNumber" />
-       <el-table-column label="批次" align="center" prop="rkPc" />
+      <el-table-column label="批次" align="center" prop="rkPc" />
       <el-table-column label="单据日期" align="center" prop="djTime" />
       <el-table-column label="仓库名称" align="center" prop="storeName" />
       <el-table-column label="制单人" align="center" prop="createBy" />
       <el-table-column label="制单日期" align="center" prop="createTime" />
 
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column
+        label="操作"
+        align="center"
+        class-name="small-padding fixed-width"
+      >
         <template slot-scope="scope">
           <el-button
             size="mini"
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:randomInsp:edit']"
-          >修改</el-button>
+            v-hasPermi="['system:rkInfo:edit']"
+            >修改</el-button
+          >
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['system:randomInsp:remove']"
-          >删除</el-button>
+            v-hasPermi="['system:rkInfo:remove']"
+            >删除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -135,7 +165,12 @@
             <!-- <el-form-item label="标题" prop="djTitle" id="djTitless">
               <el-input v-model="form.djTitle" placeholder />
             </el-form-item> -->
-            <el-form-item label="单据日期" prop="djTime" class="changeBlue pig" style="width:400px">
+            <el-form-item
+              label="单据日期"
+              prop="djTime"
+              class="changeBlue pig"
+              style="width: 400px"
+            >
               <el-date-picker
                 style="width: 100%"
                 v-model="form.djTime"
@@ -148,13 +183,27 @@
             <!-- <el-form-item label="检测人" class="changeBlue pig" style="width:400px">
               <el-input v-model="user.ownerNameJc" :disabled="true" placeholder="检测人" />
             </el-form-item> -->
-            <el-form-item label="单据编号" prop="djNumber" class="changeBlue pig" style="width:400px">
-              <el-input v-model="form.djNumber" :disabled="true" placeholder="后台自动生成" />
+            <el-form-item
+              label="单据编号"
+              prop="djNumber"
+              class="changeBlue pig"
+              style="width: 400px"
+            >
+              <el-input
+                v-model="form.djNumber"
+                :disabled="true"
+                placeholder="后台自动生成"
+              />
             </el-form-item>
             <!-- <el-form-item label="检测标准" prop="checkNum" class=" pig" style="width:400px">
               <el-input v-model="form.checkNum"  :placeholder="numbers" />
             </el-form-item> -->
-            <el-form-item label="仓库" prop="storeNum" class=" pig" style="width:400px">
+            <el-form-item
+              label="仓库"
+              prop="storeNum"
+              class="pig"
+              style="width: 400px"
+            >
               <!-- <el-input
                 v-model="form.djNumber"
                 :disabled="true"
@@ -165,12 +214,11 @@
                 filterable
                 @change="selectStore"
                 style="width: 100%"
-              
               >
                 <el-option
                   v-for="item in storeList"
                   :key="item.ckCode"
-                  :label="item.ckName "
+                  :label="item.ckName"
                   :value="item.ckCode"
                 >
                   <span
@@ -180,17 +228,18 @@
                       font-size: 13px;
                       width: 100%;
                     "
-                  >{{ item.ckName }}</span>
+                    >{{ item.ckName }}</span
+                  >
                 </el-option>
               </el-select>
             </el-form-item>
 
-              <el-form-item label="供应商" prop="khCode">
+            <el-form-item label="供应商" prop="khCode">
               <el-select
                 v-model="form.khCode"
                 placeholder="请选择供应商"
                 filterable
-                 style="width:100%"
+                style="width: 100%"
                 @change="selectPerson"
               >
                 <el-option
@@ -199,14 +248,16 @@
                   :label="item.personName"
                   :value="item.personCode"
                 >
-                  <span style="float: left;width:50%">{{ item.personCode }}</span>
-                  <span style="float: left;width:50%">{{ item.personName }}</span>
+                  <span style="float: left; width: 50%">{{
+                    item.personCode
+                  }}</span>
+                  <span style="float: left; width: 50%">{{
+                    item.personName
+                  }}</span>
                 </el-option>
               </el-select>
-            </el-form-item> 
-          
+            </el-form-item>
 
-         
             <!-- <el-form-item label="采样地"  prop="sampaddress" style="width:400px" class="pig">
               <el-select
                 v-model="form.sampAddress"
@@ -237,7 +288,13 @@
           <el-tab-pane label="明细信息" name="second">
             <el-row :gutter="10" class="mb8">
               <el-col :span="1.5">
-                <el-button type="primary" icon="el-icon-plus" size="mini" @click="goodsSelect">新增存货信息</el-button>
+                <el-button
+                  type="primary"
+                  icon="el-icon-plus"
+                  size="mini"
+                  @click="goodsSelect"
+                  >新增存货信息</el-button
+                >
               </el-col>
             </el-row>
             <el-table
@@ -309,7 +366,7 @@
                   <span>{{ scope.row.goodsName }}</span>
                 </template>
               </el-table-column>
-               <el-table-column prop="goodsCode" label="商品编码" width="200">
+              <el-table-column prop="goodsCode" label="商品编码" width="200">
                 <template scope="scope">
                   <el-input
                     :disabled="true"
@@ -341,7 +398,7 @@
                   <el-input
                     size="small"
                     v-model="scope.row.goodsGg"
-                         :disabled="true"
+                    :disabled="true"
                     @change="handleEdit(scope.$index, scope.row)"
                   ></el-input>
                   <span>{{ scope.row.goodsGg }}</span>
@@ -360,7 +417,7 @@
                   <span>{{ scope.row.goodsDw }}</span>
                 </template>
               </el-table-column>
-               <el-table-column label="主进货地" width="150">
+              <el-table-column label="主进货地" width="150">
                 <template scope="scope">
                   <el-input
                     :disabled="true"
@@ -372,10 +429,9 @@
                   <span>{{ scope.row.goodsAddress }}</span>
                 </template>
               </el-table-column>
-                <el-table-column label="数量" width="150">
+              <el-table-column label="数量" width="150">
                 <template scope="scope">
                   <el-input
-                   
                     size="small"
                     v-model="scope.row.goodsNum"
                     placeholder
@@ -384,10 +440,9 @@
                   <span>{{ scope.row.goodsNum }}</span>
                 </template>
               </el-table-column>
-                  <el-table-column label="单价" width="150">
+              <el-table-column label="单价" width="150">
                 <template scope="scope">
                   <el-input
-                  
                     size="small"
                     v-model="scope.row.goodsPrice"
                     placeholder
@@ -396,7 +451,7 @@
                   <span>{{ scope.row.goodsPrice }}</span>
                 </template>
               </el-table-column>
-                  <el-table-column label="金额" width="150">
+              <el-table-column label="金额" width="150">
                 <template scope="scope">
                   <el-input
                     :disabled="true"
@@ -414,7 +469,8 @@
                     size="small"
                     type="danger"
                     @click="handleChildDelete(scope.$index, scope.row)"
-                  >删除</el-button>
+                    >删除</el-button
+                  >
                 </template>
               </el-table-column>
             </el-table>
@@ -449,23 +505,32 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
-          <el-dialog :title="title" :visible.sync="iopen" width="700px">
-                <el-row :gutter="15" class="mb8">
-            <el-col :span="1.5">
-              <el-upload
-                class="upload-demo"
-                ref="upload"
-                :action="importUrl"
-                :headers="upload.headers"
-                 :on-success="handleSuccess"
-                :on-remove="handleRemove"
-                :auto-upload="false">
-                <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-                <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
-                <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
-              </el-upload>
-            </el-col>
-          </el-row>
+    <el-dialog :title="title" :visible.sync="iopen" width="700px">
+      <el-row :gutter="15" class="mb8">
+        <el-col :span="1.5">
+          <el-upload
+            class="upload-demo"
+            ref="upload"
+            :action="importUrl"
+            :headers="upload.headers"
+            :on-success="handleSuccess"
+            :on-remove="handleRemove"
+            :auto-upload="false"
+          >
+            <el-button slot="trigger" size="small" type="primary"
+              >选取文件</el-button
+            >
+            <el-button
+              style="margin-left: 10px"
+              size="small"
+              type="success"
+              @click="submitUpload"
+              >上传到服务器</el-button
+            >
+            <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
+          </el-upload>
+        </el-col>
+      </el-row>
     </el-dialog>
     <goods-select
       v-if="selectGoodsDialog"
@@ -477,21 +542,17 @@
 </template>
 
 <script>
-import { listRkInfo,
- getRkInfo, 
- delRkInfo,
- addRkInfo,
-updateRkInfo,
-exportRkInfo } from "@/api/system/rkInfo";
-
 import {
-  listRkInfoChild,
-  delRkInfoChild
-  // updateCgrkd,
-  // updateCgrkdStatus,
-  // exportCgrkd,
-  // getOwnerList,
-} from "@/api/system/rkInfoChild";
+  listRkInfo,
+  getRkInfo,
+  delRkInfo,
+  addRkInfo,
+  updateRkInfoStatus,
+  updateRkInfo,
+  exportRkInfo,
+} from "@/api/system/rkInfo";
+
+import { listRkInfoChild, delRkInfoChild } from "@/api/system/rkInfoChild";
 import { ownerList } from "@/api/system/owner";
 import goodsSelect from "./goodsSelect";
 import { getCkAll } from "@/api/system/ck";
@@ -507,25 +568,25 @@ import { listCheckProject } from "@/api/system/checkProject";
 export default {
   name: "RkInfo",
   components: {
-    goodsSelect
+    goodsSelect,
   },
   data() {
     return {
-      importUrl:"",
+      importUrl: "",
       //用户信息
       user: {
         ownerCode: "",
         ownerName: "",
         ownerNameJc: "",
         sampaddress: "",
-        device: ""
+        device: "",
       },
       checking: "",
       left: "right",
       place: "",
-      placename:"",
-       check: "",
-      checkname:"",
+      placename: "",
+      check: "",
+      checkname: "",
       numbers: "",
       number: "",
       fileList: [],
@@ -541,7 +602,7 @@ export default {
         // 设置上传的请求头部
         headers: { Authorization: "Bearer " + getToken() },
         // 上传的地址
-        url: process.env.VUE_APP_BASE_API + "/common/upload"
+        url: process.env.VUE_APP_BASE_API + "/common/upload",
       },
       //仓库列表
       storeList: [],
@@ -553,7 +614,7 @@ export default {
       // 设备
       conderdevice: [],
       placedevice: "",
-      check:"",
+      check: "",
       //供应商
       personList: [],
       // 遮罩层
@@ -581,7 +642,7 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
-      iopen:false,
+      iopen: false,
       perationOptions: [],
       operateOptions: [],
       // 查询参数
@@ -597,7 +658,7 @@ export default {
         lsNumber: undefined,
         rkPc: undefined,
         storeName: undefined,
-        khName: undefined
+        khName: undefined,
       },
       // 表单参数
       form: {},
@@ -608,44 +669,42 @@ export default {
           {
             required: true,
             message: "抑制率标准设定值不能为空",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
-     
-      }
+      },
     };
   },
   created() {
-      getPersonAll(this.queryParams).then(response => {
-        this.personList = response.rows;
-        this.check= response.rows[0].personCode
-        this.checkname= response.rows[0].personName
-        console.log( this.personList)
+    getPersonAll(this.queryParams).then((response) => {
+      this.personList = response.rows;
+      this.check = response.rows[0].personCode;
+      this.checkname = response.rows[0].personName;
+      console.log(this.personList);
     });
-     getCkAll(this.queryParams).then(response => {
-        this.storeList = response.rows;
-        this.place= response.rows[0].ckCode
-        this.placename= response.rows[0].ckName
+    getCkAll(this.queryParams).then((response) => {
+      this.storeList = response.rows;
+      this.place = response.rows[0].ckCode;
+      this.placename = response.rows[0].ckName;
     });
-  
+
     // listCheckProject(this.queryParams).then(response => {
     //   this.projectList = response.rows;
     //   console.log(this.projectList);
     // });
     this.getList();
-
   },
   methods: {
     submitUpload() {
-        this.$refs.upload.submit();
-      },
-      /** 导入操作 */
+      this.$refs.upload.submit();
+    },
+    /** 导入操作 */
     handleImport() {
       //this.reset();
       this.iopen = true;
       this.title = "导入检测明细";
       const id = this.ids;
-      this.importUrl=process.env.VUE_APP_BASE_API + "/system/randomInsp/import";
+      this.importUrl = process.env.VUE_APP_BASE_API + "/system/rkInfo/import";
     },
     //选择供应商
     selectPerson(index, data) {
@@ -660,10 +719,10 @@ export default {
     //选择仓库
     selectStore(data) {
       //根据仓库编码查找仓库名称
-     
-      for(let i=0;i<this.storeList.length;i++){
-        if(this.storeList[i].ckCode==data){
-          this.form.storeName=this.storeList[i].ckName;
+
+      for (let i = 0; i < this.storeList.length; i++) {
+        if (this.storeList[i].ckCode == data) {
+          this.form.storeName = this.storeList[i].ckName;
           break;
         }
       }
@@ -722,11 +781,11 @@ export default {
     },
     //追加子表必填样式
     starAdd(obj) {
-       if(obj.columnIndex === 5 || obj.columnIndex === 6  ) {
-          return 'star';
+      if (obj.columnIndex === 5 || obj.columnIndex === 6) {
+        return "star";
       }
     },
-  
+
     clickFile(file) {
       if (file.url != "") {
         window.location.href = file.url;
@@ -738,7 +797,7 @@ export default {
       this.form.fileName = res.url;
     },
     handleSuccess(res, file, fileList) {
-       this.getList();
+      this.getList();
     },
     handleRemove(file, fileList) {
       this.form.fileName = "";
@@ -753,16 +812,26 @@ export default {
       console.log(row, event, column, event.currentTarget);
     },
     handleEdit(index, row) {
-      if(row.goodsNum!=""&&row.goodsNum!=null&&row.goodsNum!=undefined){
-             row.goodsLossNum=row.goodsNum;
-          }
-          if(row.goodsNum!=""&&row.goodsNum!=null&&row.goodsNum!=undefined&&row.goodsPrice!=""&&row.goodsPrice!=null&&row.goodsPrice!=undefined){
-          
-            row.goodsMoney=(parseFloat(row.goodsNum)*parseFloat(row.goodsPrice)).toFixed(2);
-            
-          }else{
-
-        }  
+      if (
+        row.goodsNum != "" &&
+        row.goodsNum != null &&
+        row.goodsNum != undefined
+      ) {
+        row.goodsLossNum = row.goodsNum;
+      }
+      if (
+        row.goodsNum != "" &&
+        row.goodsNum != null &&
+        row.goodsNum != undefined &&
+        row.goodsPrice != "" &&
+        row.goodsPrice != null &&
+        row.goodsPrice != undefined
+      ) {
+        row.goodsMoney = (
+          parseFloat(row.goodsNum) * parseFloat(row.goodsPrice)
+        ).toFixed(2);
+      } else {
+      }
     },
     handleEditPerson(data, index, row) {
       //根据编码找产地
@@ -813,7 +882,7 @@ export default {
         goodsInfo.goodsDw = row.goodsDw;
         goodsInfo.goodsAddress = row.goodsAddress;
         goodsInfo.goodsNum = "";
-        goodsInfo.goodsPrice    = "";
+        goodsInfo.goodsPrice = "";
         goodsInfo.goodsRate = "0";
         goodsInfo.goodsMoney = "";
         goodsInfo.remark = "";
@@ -836,17 +905,17 @@ export default {
         console.log(rows);
         for (let i = 0; i < rows.length; i++) {
           let row = rows[i];
-         let goodsInfo = new Object();
-         goodsInfo.goodsCode = row.goodsCode;
-        goodsInfo.goodsName = row.goodsName;
-        goodsInfo.goodsGg = row.goodsGg;
-        goodsInfo.goodsDw = row.goodsDw;
-        goodsInfo.goodsAddress = row.goodsAddress;
-        goodsInfo.goodsNum = "";
-        goodsInfo.goodsPrice    = "";
-        goodsInfo.goodsRate = "0";
-        goodsInfo.goodsMoney = "";
-        goodsInfo.remark = "";
+          let goodsInfo = new Object();
+          goodsInfo.goodsCode = row.goodsCode;
+          goodsInfo.goodsName = row.goodsName;
+          goodsInfo.goodsGg = row.goodsGg;
+          goodsInfo.goodsDw = row.goodsDw;
+          goodsInfo.goodsAddress = row.goodsAddress;
+          goodsInfo.goodsNum = "";
+          goodsInfo.goodsPrice = "";
+          goodsInfo.goodsRate = "0";
+          goodsInfo.goodsMoney = "";
+          goodsInfo.remark = "";
           this.tableData.push(goodsInfo);
         }
         this.$refs.selectGoods.visible = false;
@@ -855,11 +924,11 @@ export default {
     /** 查询二级市场信息列表 */
     getList() {
       this.loading = true;
-      listRkInfo(this.queryParams).then(response => {
+      listRkInfo(this.queryParams).then((response) => {
         this.rkInfoList = response.rows;
         console.log(this.rkInfoList);
         this.total = response.total;
-       // this.checking = response.rows[0].checkAddress;
+        // this.checking = response.rows[0].checkAddress;
         this.loading = false;
       });
     },
@@ -904,15 +973,14 @@ export default {
         updateTime: undefined,
         remark: undefined,
         khName: undefined,
-        personCode:undefined
-        
+        personCode: undefined,
       };
       this.resetForm("form");
       // this.form.checkAddress=this.check;
-      this.form.storeNum=this.place;
-      this.form.storeName=this.placename;
-       this.form.khCode=this.check;
-      this.form.khName=this.checkname;
+      this.form.storeNum = this.place;
+      this.form.storeName = this.placename;
+      this.form.khCode = this.check;
+      this.form.khName = this.checkname;
       // this.form.checkDevice=this.placedevice;
       this.tableData = [];
     },
@@ -928,7 +996,7 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.id);
+      this.ids = selection.map((item) => item.id);
       this.single = selection.length != 1;
       this.multiple = !selection.length;
     },
@@ -942,13 +1010,13 @@ export default {
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids;
-      getRkInfo(id).then(response => {
+      getRkInfo(id).then((response) => {
         this.form = response.data;
         // 查询参数
         let queryParams = {
-          djNumber: this.form.djNumber
+          djNumber: this.form.djNumber,
         };
-        listRkInfoChild(queryParams).then(response => {
+        listRkInfoChild(queryParams).then((response) => {
           //this.form.rows = response.data;
           this.tableData = response.rows;
         });
@@ -957,7 +1025,7 @@ export default {
       });
     },
     /** 提交按钮 */
-    submitForm: function() {
+    submitForm: function () {
       console.log(this.tableData.length);
       console.log(this.tableData);
       if (this.tableData.length > 0) {
@@ -975,10 +1043,10 @@ export default {
           }
         }
         this.form.rows = JSON.stringify(this.tableData);
-        this.$refs["form"].validate(valid => {
+        this.$refs["form"].validate((valid) => {
           if (valid) {
             if (this.form.id != undefined) {
-              updateRkInfo(this.form).then(response => {
+              updateRkInfo(this.form).then((response) => {
                 if (response.code === 200) {
                   this.msgSuccess("修改成功");
                   this.open = false;
@@ -989,7 +1057,7 @@ export default {
                 }
               });
             } else {
-              addRkInfo(this.form).then(response => {
+              addRkInfo(this.form).then((response) => {
                 if (response.code === 200) {
                   this.msgSuccess("新增成功");
                   this.open = false;
@@ -1012,16 +1080,16 @@ export default {
       this.$confirm('是否确认删除单据编号为"' + ids + '"的数据项?', "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       })
-        .then(function() {
+        .then(function () {
           return delRkInfo(ids);
         })
         .then(() => {
           this.getList();
           this.msgSuccess("删除成功");
         })
-        .catch(function() {});
+        .catch(function () {});
     },
     /** 生效按钮操作 */
     handleEffect(row) {
@@ -1029,16 +1097,16 @@ export default {
       this.$confirm('是否确认单据编号为"' + ids + '"的数据项已生效?', "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       })
-        .then(function() {
-          return updateCgrkdStatus(ids);
+        .then(function () {
+          return updateRkInfoStatus(ids);
         })
         .then(() => {
           this.getList();
           this.msgSuccess("操作成功");
         })
-        .catch(function() {});
+        .catch(function () {});
     },
     /** 导出按钮操作 */
     handleExport() {
@@ -1046,17 +1114,17 @@ export default {
       this.$confirm("是否确认导出所有租赁单据数据项?", "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       })
-        .then(function() {
+        .then(function () {
           return exportRkInfo(queryParams);
         })
-        .then(response => {
+        .then((response) => {
           this.download(response.msg);
         })
-        .catch(function() {});
-    }
-  }
+        .catch(function () {});
+    },
+  },
 };
 </script>
 <style>

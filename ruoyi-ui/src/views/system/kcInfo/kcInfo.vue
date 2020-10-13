@@ -86,14 +86,12 @@
    
       <el-table-column label="仓库名称" align="center" prop="storeName" />
       <el-table-column label="仓库编码" align="center" prop="storeNum" />
-
       <el-table-column label="存货编码" align="center" prop="goodsCode" />
-
       <el-table-column label="存货名称" align="center" prop="goodsName" />
       <el-table-column label="规格型号" align="center" prop="goodsGg" />
       <el-table-column label="计量单位" align="center" prop="goodsDw" />
       <el-table-column label="入库总数量" align="center" prop="goodsNums" />
-       <el-table-column label="入库总金额" align="center" prop="goodsMoneys" />
+      <el-table-column label="入库总金额" align="center" prop="goodsMoneys" />
       <el-table-column label="出库总数量" align="center" prop="cgoodsNum" />
       <el-table-column label="出库总金额" align="center" prop="cgoodsMoney" />
       <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -123,308 +121,6 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
-
-    <!-- 添加或修改二级市场信息对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="900px">
-      <el-form
-        ref="form"
-        :model="form"
-        :rules="rules"
-        label-width="150px"
-        :inline="true"
-        class="random"
-        :label-position="left"
-      >
-        <el-tabs v-model="activeName" @tab-click="handleClick">
-          <el-tab-pane label="基本信息" name="first">
-            <!-- <el-form-item label="单据编号" prop="djNumber">
-              <el-input v-model="form.djNumber" placeholder="" />
-            </el-form-item>-->
-            <el-form-item label="标题" prop="djTitle" id="djTitless">
-              <el-input v-model="form.djTitle" placeholder />
-            </el-form-item>
-            <el-form-item label="检测日期" prop="djTime" class="changeBlue pig" style="width:400px">
-              <el-date-picker
-                style="width: 100%"
-                v-model="form.djTime"
-                type="date"
-                placeholder="检测日期"
-                format="yyyy 年 MM 月 dd 日"
-                value-format="yyyy-MM-dd"
-              ></el-date-picker>
-            </el-form-item>
-            <el-form-item label="检测人" class="changeBlue pig" style="width:400px">
-              <el-input v-model="user.ownerNameJc" :disabled="true" placeholder="检测人" />
-            </el-form-item>
-            <el-form-item label="检测单号" prop="djNumber" class="changeBlue pig" style="width:400px">
-              <el-input v-model="form.djNumber" :disabled="true" placeholder="后台自动生成" />
-            </el-form-item>
-            <el-form-item label="检测标准" prop="checkNum" class=" pig" style="width:400px">
-              <el-input v-model="form.checkNum"  :placeholder="numbers" />
-            </el-form-item>
-            <el-form-item label="检测设备" prop="checkDevice" class=" pig" style="width:400px">
-              <!-- <el-input
-                v-model="form.djNumber"
-                :disabled="true"
-                placeholder=""
-              />-->
-              <el-select
-                v-model="form.checkDevice"
-                filterable
-                style="width: 100%"
-              >
-                <el-option
-                  v-for="item in conderdevice"
-                  :key="item.deviceId"
-                  :label="item.deviceName "
-                  :value="item.deviceId"
-                >
-                  <span
-                    style="
-                      float: left;
-                      color: #8492a6;
-                      font-size: 13px;
-                      width: 100%;
-                    "
-                  >{{ item.deviceName }}</span>
-                </el-option>
-              </el-select>
-            </el-form-item>
-
-            <!-- <el-form-item label="采用地点" prop="checkAddress">
-              <el-input v-model="form.checkAddress" placeholder="" />
-            </el-form-item>-->
-            <el-form-item label="检测地" prop="checkAddress" style="width:400px" class="pig">
-              <el-select
-                v-model="form.checkAddress"
-                filterable
-                style="width: 100%"
-              >
-                <el-option
-                  v-for="item in checkaddress"
-                  :key="item.id"
-                  :label="item.checkAddressDetail"
-                  :value="item.id"
-                >
-                  <span
-                    style="
-                      float: left;
-                      color: #8492a6;
-                      font-size: 13px;
-                      width: 100%;
-                    "
-                  >{{ item.checkAddressDetail }}</span>
-                </el-option>
-              </el-select>
-            </el-form-item>
-
-            <el-form-item label="抑制率值(%)" prop="inhibitionNum" style="width:400px" class="pig">
-              <el-input
-                v-model="form.inhibitionNum"
-                @change="changer"
-              />
-            </el-form-item>
-            <el-form-item label="采样地"  prop="sampaddress" style="width:400px" class="pig">
-              <el-select
-                v-model="form.sampAddress"
-                filterable
-                style="width: 100%"
-              >
-                <el-option
-                  v-for="item in conderaddress"
-                  :key="item.sampAddressId"
-                  :label="item.sampAddressDetail"
-                  :value="item.sampAddressId"
-                >
-                  <span
-                    style="
-                      float: left;
-                      color: #8492a6;
-                      font-size: 13px;
-                      width: 100%;
-                    "
-                  >{{ item.sampAddressDetail }}</span>
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="说明" prop="remark" id="djTitles">
-              <el-input v-model="form.remark" placeholder />
-            </el-form-item>
-          </el-tab-pane>
-          <el-tab-pane label="明细信息" name="second">
-            <el-row :gutter="10" class="mb8">
-              <el-col :span="1.5">
-                <el-button type="primary" icon="el-icon-plus" size="mini" @click="goodsSelect">新增检测物</el-button>
-              </el-col>
-            </el-row>
-            <el-table
-              :data="tableData"
-              class="tb-edit"
-              style="width: 100%"
-              highlight-current-row
-              @row-click="handleCurrentChange"
-              :header-cell-class-name="starAdd"
-            >
-              <el-table-column label="业户信息" prop="ownerCode" width="250">
-                <template scope="scope">
-                  <el-select
-                    v-model="scope.row.ownerCode"
-                    placeholder="请选择业户"
-                    filterable
-                    style="width:100%"
-                    @change="selectPerson(scope.$index, scope.row)"
-                  >
-                    <el-option
-                      v-for="item in personList"
-                      :key="item.ownerCode"
-                      :label="item.ownerName"
-                      :value="item.ownerCode"
-                    >
-                      <span style="width:100%">{{item.ownerName}}</span>
-                    </el-option>
-                  </el-select>
-                </template>
-              </el-table-column>
-              <el-table-column label="检测项目" prop="checkProject" width="150">
-                <template scope="scope">
-                  <el-select
-                    v-model="scope.row.checkProject"
-                    placeholder="请选择检测项目"
-                    filterable
-                    style="width:100%"
-                  >
-                    <el-option
-                      v-for="item in projectList"
-                      :key="item.projectName"
-                      :label="item.projectName"
-                      :value="item.projectName"
-                    >
-                      <span style="width:100%">{{ item.projectName }}</span>
-                    </el-option>
-                  </el-select>
-                </template>
-              </el-table-column>
-              <!-- <el-table-column prop="goodsCode" label="检测物编码" width="200">
-                <template scope="scope">
-                  <el-input
-                    :disabled="true"
-                    size="small"
-                    v-model="scope.row.goodsCode"
-                    placeholder="请输入内容"
-                  ></el-input>
-                  <span>{{ scope.row.goodsCode }}</span>
-                </template>
-              </el-table-column> -->
-              <el-table-column prop="goodsName" label="检测物名称" width="200">
-                <template scope="scope">
-                  <el-input
-                    :disabled="true"
-                    size="small"
-                    v-model="scope.row.goodsName"
-                    placeholder="请输入内容"
-                  ></el-input>
-                  <span>{{ scope.row.goodsName }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column label="采样日期" width="150">
-                <template scope="scope">
-                  <el-date-picker v-model="scope.row.sampTime" type="date" placeholder="请选择采样日期"></el-date-picker>
-                  <span>{{ scope.row.sampTime }}</span>
-                </template>
-              </el-table-column>
-              <!-- <el-table-column label="检测结果" width="150">
-                <template scope="scope">
-                  <el-input
-                    size="small"
-                    v-model="scope.row.testResult"
-                    placeholder="请输入检测结果"
-                  ></el-input>
-                  <span>{{ scope.row.testResult }}</span>
-                </template>
-              </el-table-column> -->
-              <el-table-column label="抑制率" width="150">
-                <template scope="scope">
-                  <el-input
-                    size="small"
-                    v-model="scope.row.inhibitionNum"
-                    placeholder="请输入抑制率"
-                    @change="handleEdit(scope.$index, scope.row)"
-                  ></el-input>
-                  <span>{{ scope.row.inhibitionNum }}</span>
-                </template>
-              </el-table-column>
-
-              <el-table-column label="合格状态" width="150">
-                <template scope="scope">
-                  <el-input
-                    :disabled="true"
-                    size="small"
-                    v-model="scope.row.checkResultName"
-                    placeholder
-                    @change="handleEdit(scope.$index, scope.row)"
-                  ></el-input>
-                  <span>{{ scope.row.checkResultName }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column label="操作">
-                <template scope="scope">
-                  <el-button
-                    size="small"
-                    type="danger"
-                    @click="handleChildDelete(scope.$index, scope.row)"
-                  >删除</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-          </el-tab-pane>
-          <el-tab-pane label="附件信息" name="three">
-            <el-row :gutter="15" class="mb8">
-              <el-col :span="1.5">
-                <el-upload
-                  class="upload-demo"
-                  :limit="1"
-                  drag
-                  :file-list="fileList"
-                  :action="upload.url"
-                  :headers="upload.headers"
-                  :on-success="handleFileSuccess"
-                  :on-remove="handleRemove"
-                  :on-preview="clickFile"
-                >
-                  <i class="el-icon-upload"></i>
-                  <div class="el-upload__text">
-                    将文件拖到此处，或
-                    <em>点击上传</em>
-                  </div>
-                </el-upload>
-              </el-col>
-            </el-row>
-          </el-tab-pane>
-        </el-tabs>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
-      </div>
-    </el-dialog>
-          <el-dialog :title="title" :visible.sync="iopen" width="600px">
-                <el-row :gutter="15" class="mb8">
-            <el-col :span="1.5">
-              <el-upload
-                class="upload-demo"
-                ref="upload"
-                :action="importUrl"
-                :headers="upload.headers"
-                 :on-success="handleSuccess"
-                :on-remove="handleRemove"
-                :auto-upload="false">
-                <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-                <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
-                <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
-              </el-upload>
-            </el-col>
-          </el-row>
-    </el-dialog>
     <goods-select
       v-if="selectGoodsDialog"
       ref="selectGoods"
@@ -440,13 +136,8 @@ import {
  listKcInfo
 
 } from "@/api/system/kcInfo";
-import {
-  listRandomInspChild,
-  delRandomInspChild
 
-} from "@/api/system/randomInspChild";
 import { ownerList } from "@/api/system/owner";
-import goodsSelect from "./goodsSelect";
 import { getCkAll } from "@/api/system/ck";
 import { getInfo } from "@/api/login";
 import { getPersonAll } from "@/api/system/person";
@@ -459,9 +150,6 @@ import { listCheck } from "@/api/system/check";
 import { listCheckProject } from "@/api/system/checkProject";
 export default {
   name: "Lease",
-  components: {
-    goodsSelect
-  },
   data() {
     return {
       importUrl:"",

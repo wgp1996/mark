@@ -365,7 +365,9 @@ export default {
       console.log(this.projectList);
     });
     listCheck().then(response => {
-      this.number = response.rows[0].inhibitionNum;
+       if( response.rows.length>0){
+        this.number = response.rows[0].inhibitionNum;
+      }
       // this.place=response.rows[0].sampAddress
       console.log(this.number);
     });
@@ -665,7 +667,9 @@ export default {
         this.leaseList = response.rows;
         console.log(this.leaseList);
         this.total = response.total;
-        this.checking = response.rows[0].checkAddress;
+      if(response.rows.length>0){
+            this.checking = response.rows[0].checkAddress;
+        }
         this.loading = false;
       });
     },

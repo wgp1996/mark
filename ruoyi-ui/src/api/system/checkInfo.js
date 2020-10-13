@@ -43,6 +43,14 @@ export function delCheckInfo(id) {
   })
 }
 
+// 生效盘点单
+export function updateCheckInfoStatus(id) {
+  return request({
+    url: '/system/checkInfo/effect/' + id,
+    method: 'delete'
+  })
+}
+
 // 导出盘点单
 export function exportCheckInfo(query) {
   return request({

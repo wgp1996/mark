@@ -75,7 +75,7 @@
       row-key="id"
     >
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
-      <el-table-column type="expand">
+      <!-- <el-table-column type="expand">
         <template slot-scope="props">
           <el-table style="padding:0;margin:0" :data="props.row.childrenList" id="special">
             <el-table-column label="商品编号" align="center" prop="goodsCode" />
@@ -86,15 +86,22 @@
             <el-table-column label="备注" align="center" prop="remark" />
           </el-table>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="单据状态" align="center" prop="djStatusName" />
+      <el-table-column label="客户名称" align="center" prop="khName" />
+      <el-table-column label="商品编号" align="center" prop="goodsCode" />
+      <el-table-column label="商品名称" align="center" prop="goodsName" />
+      <el-table-column label="单位" align="center" prop="wholeDw" />
+      <el-table-column label="销售量" align="center" prop="wholeNum" />
+      <el-table-column label="单价" align="center" prop="wholePrice" />
+      <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column label="制单日期" align="center" prop="createTime" />
+      <!-- <el-table-column label="客户编号" align="center" prop="khCode" /> -->
+      <!-- <el-table-column label="单据状态" align="center" prop="djStatusName" />
       <el-table-column label="单据编号" align="center" prop="djNumber" />
       <el-table-column label="单据日期" align="center" prop="djTime" />
-      <el-table-column label="客户编号" align="center" prop="khCode" />
-      <el-table-column label="客户名称" align="center" prop="khName" />
-      <el-table-column label="制单人" align="center" prop="createBy" />
-      <el-table-column label="制单日期" align="center" prop="createTime" />
+      <el-table-column label="制单人" align="center" prop="createBy" /> -->
+      <!-- <el-table-column label="制单日期" align="center" prop="createTime" /> -->
 
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">

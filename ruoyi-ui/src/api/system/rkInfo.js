@@ -44,6 +44,13 @@ export function delRkInfo(id) {
     method: 'delete'
   })
 }
+// 生效入库单
+export function updateRkInfoStatus(id) {
+  return request({
+    url: '/system/rkInfo/effect/' + id,
+    method: 'delete'
+  })
+}
 
 // 导出入库单
 export function exportRkInfo(query) {
