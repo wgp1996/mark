@@ -219,6 +219,17 @@ import {
 
 } from "@/api/system/cgrkdSingle";
 import { listOwner } from "@/api/system/owner";
+import {
+  listWholeSales,
+  getWholeSales,
+  getWholeSalesChild,
+  delWholeSales,
+  delWholeSalesChild,
+  addWholeSales,
+  updateWholeSales,
+  updateWholeSalesStatus,
+  exportWholeSales,
+} from "@/api/system/wholeSales";
 export default {
   components: {
     CountTo
@@ -251,7 +262,7 @@ export default {
         console.log(response)
       this.total = response.total;
      });
-      listCgrkdSingle(this.queryParams).then((response) => {
+      listWholeSales(this.queryParams).then((response) => {
       this.total2 = response.total;
         this.loading = false;
       });

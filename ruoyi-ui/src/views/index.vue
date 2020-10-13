@@ -21,13 +21,13 @@
       <el-table-column label="单位" align="center" prop="goodsDw" />
       <el-table-column label="产地" align="center" prop="goodsAddress" />
     </el-table>
-     <pagination
+     <!-- <pagination
       v-show="total>0"
       :total="total"
       :page.sync="queryParams.pageNum"
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
-    />
+    /> -->
 
       </div>
     </el-row>
@@ -45,13 +45,13 @@
       <el-table-column label="创建日期" align="center" prop="createTime" />
 
     </el-table>
-     <pagination
+     <!-- <pagination
       v-show="total>0"
       :total="total"
       :page.sync="queryParams.pageNum"
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
-    />
+    /> -->
 
       </div>
     </el-row>
@@ -67,16 +67,16 @@
     >
 
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="业户代码" align="center" prop="createBy" />
-      <el-table-column label="业户名称" align="center" prop="createName" />
-      <el-table-column label="进货日期" align="center" prop="djTime" />
-      <el-table-column label="进货商品" align="center" prop="goodsName" />
-      <el-table-column label="单位" align="center" prop="goodsDw" />
-      <el-table-column label="产地" align="center" prop="goodsAddress" />
-      <el-table-column label="数量" align="center" prop="goodsNum" />
-       <el-table-column label="单价" align="center" prop="goodsPrice" />
-      <el-table-column label="金额" align="center" prop="goodsMoney" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+     <el-table-column label="销货日期"  width="100" align="center" prop="remark" />
+      <el-table-column label="业户名称" align="center" prop="createBy" />
+      <el-table-column label="客户名称" align="center" prop="khName" />
+      <!-- <el-table-column label="商品编号" align="center" prop="goodsCode" /> -->
+      <el-table-column label="商品名称" align="center" prop="goodsName" />
+      <el-table-column label="单位" width="80" align="center" prop="wholeDw" />
+      <el-table-column label="销售量" width="80" align="center" prop="wholeNum" />
+      <el-table-column label="单价" width="80" align="center" prop="wholePrice" />
+      <el-table-column label="金额" width="80" align="center" prop="wholeMoney" />
+      <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -93,10 +93,17 @@
             v-hasPermi="['system:cgrkd:remove']"
           >删除</el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
+        <pagination
+      v-show="total > 0"
+      :total="total"
+      :page.sync="queryParams.pageNum"
+      :limit.sync="queryParams.pageSize"
+      @pagination="getList"
+    />
     </el-row>
-    <el-row style="background:#fff;padding:16px 16px 16px;margin-bottom:32px;height:auto">
+    <el-row style="background:#fff;padding:16px 16px 16px;margin-bottom:0px;height:auto">
       <line-img  />
     </el-row>
     <el-row :gutter="32">
@@ -136,6 +143,17 @@ import {
   listCgrkdSingle,
 
 } from "@/api/system/cgrkdSingle";
+import {
+  listWholeSales,
+  getWholeSales,
+  getWholeSalesChild,
+  delWholeSales,
+  delWholeSalesChild,
+  addWholeSales,
+  updateWholeSales,
+  updateWholeSalesStatus,
+  exportWholeSales,
+} from "@/api/system/wholeSales";
 const lineChartData = {
   newVisitis: {
     expectedData: [2.5, 3.5, 3.15, 2.7, 5.78, 3.15, 4.25],
@@ -275,7 +293,7 @@ export default {
           this.shoppings=true
           this.newVisitis=false
           this.purchases=false
-        listCgrkdSingle(this.queryParams).then((response) => {
+        listWholeSales(this.queryParams).then((response) => {
         this.List = response.rows;
          this.sumNum=0;
         for(let i=0;i<response.rows.length;i++){
