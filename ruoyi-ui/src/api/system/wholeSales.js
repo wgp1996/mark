@@ -8,7 +8,13 @@ export function listWholeSales(query) {
     params: query
   })
 }
-
+export function selectWholeAllList(query) {
+  return request({
+    url: '/system/wholeSales/selectWholeAllList',
+    method: 'get',
+    params: query
+  })
+}
 // 查询批发销货一票通详细
 export function getWholeSales(id) {
   return request({

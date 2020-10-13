@@ -229,6 +229,7 @@ import {
   updateWholeSales,
   updateWholeSalesStatus,
   exportWholeSales,
+  selectWholeAllList
 } from "@/api/system/wholeSales";
 import {
   listWholeRetail,
@@ -269,20 +270,24 @@ export default {
       this.total = response.total;
      });
       listWholeSales(this.queryParams).then((response) => {
+    
       this.total2 = response.total;
+        
         this.loading = false;
       });
       listOwner(this.queryParams).then(response => {
-      
+       
         this.total1 = response.total;
         this.loading = false;
        
       });
-      listWholeRetail(this.queryParams).then((response) => {
+      selectWholeAllList(this.queryParams).then((response) => {
         
-        this.total3 = response.total;
-        this.loading = false;
-        this.total4=this.total3+this.total2
+        this.total4 = response.total;
+        //  alert(this.total3)
+        //  this.loading = false;
+        //    this.total4=this.total3+this.total2
+        //    alert(this.total4)
       });
 
     },
@@ -291,6 +296,9 @@ export default {
   created() {
     this.getList();
     
+  },
+  mounted(){
+     
   }
 }
 </script>

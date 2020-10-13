@@ -153,6 +153,7 @@ import {
   updateWholeSales,
   updateWholeSalesStatus,
   exportWholeSales,
+  selectWholeAllList
 } from "@/api/system/wholeSales";
 const lineChartData = {
   newVisitis: {
@@ -293,14 +294,16 @@ export default {
           this.shoppings=true
           this.newVisitis=false
           this.purchases=false
-        listWholeSales(this.queryParams).then((response) => {
+        selectWholeAllList(this.queryParams).then((response) => {
         this.List = response.rows;
+        console.log(this.List)
          this.sumNum=0;
         for(let i=0;i<response.rows.length;i++){
-            if(response.rows[i].goodsMoney==null){
-             response.rows[i].goodsMoney='0';
+            if(response.rows[i].wholeMoney==null){
+             response.rows[i].wholeMoney='0';
            }else{
-             this.sumNum+=(parseFloat(response.rows[i].goodsMoney)).toFixed(2);
+              // alert(response.rows[i].wholeMoney)
+             this.sumNum+=parseFloat(response.rows[i].wholeMoney);
            }
        
         }
