@@ -1,6 +1,11 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="100px">
+    <el-form
+      :model="queryParams"
+      ref="queryForm"
+      :inline="true"
+      label-width="100px"
+    >
       <el-form-item label="单据编号" prop="djNumber">
         <el-input
           v-model="queryParams.djNumber"
@@ -21,8 +26,16 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button
+          type="primary"
+          icon="el-icon-search"
+          size="mini"
+          @click="handleQuery"
+          >搜索</el-button
+        >
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
+          >重置</el-button
+        >
       </el-form-item>
     </el-form>
 
@@ -34,7 +47,8 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['system:wholeRetail:add']"
-        >新增</el-button>
+          >新增</el-button
+        >
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -44,7 +58,8 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['system:wholeRetail:edit']"
-        >修改</el-button>
+          >修改</el-button
+        >
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -54,9 +69,10 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['system:wholeRetail:remove']"
-        >删除</el-button>
-        </el-col>
-        <el-col :span="1.5">
+          >删除</el-button
+        >
+      </el-col>
+      <el-col :span="1.5">
         <el-button
           type="warning"
           icon="el-icon-s-promotion"
@@ -64,7 +80,8 @@
           :disabled="multiple"
           @click="handleEffect"
           v-hasPermi="['system:wholeRetail:effect']"
-        >生效</el-button>
+          >生效</el-button
+        >
       </el-col>
     </el-row>
 
@@ -88,15 +105,15 @@
         </template>
       </el-table-column> -->
       <el-table-column type="selection" width="55" align="center" />
-            <el-table-column label="销货日期" align="center" prop="remark" />
+      <el-table-column label="销货日期"  width="100" align="center" prop="remark" />
       <el-table-column label="业户名称" align="center" prop="createBy" />
       <el-table-column label="客户名称" align="center" prop="khName" />
       <!-- <el-table-column label="商品编号" align="center" prop="goodsCode" /> -->
       <el-table-column label="商品名称" align="center" prop="goodsName" />
-      <el-table-column label="单位" align="center" prop="wholeDw" />
-      <el-table-column label="销售量" align="center" prop="wholeNum" />
-      <el-table-column label="单价" align="center" prop="wholePrice" />
-      <el-table-column label="金额" align="center" prop="wholeMoney" />
+      <el-table-column label="单位" width="80" align="center" prop="wholeDw" />
+      <el-table-column label="销售量" width="80" align="center" prop="wholeNum" />
+      <el-table-column label="单价" width="80" align="center" prop="wholePrice" />
+      <el-table-column label="金额" width="80" align="center" prop="wholeMoney" />
 
       <!-- <el-table-column label="客户编号" align="center" prop="khCode" /> -->
       <!-- <el-table-column label="单据状态" align="center" prop="djStatusName" />
@@ -104,7 +121,11 @@
       <el-table-column label="单据日期" align="center" prop="djTime" />
       <el-table-column label="制单人" align="center" prop="createBy" /> -->
       <!-- <el-table-column label="制单日期" align="center" prop="createTime" /> -->
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column
+        label="操作"
+        align="center"
+        class-name="small-padding fixed-width"
+      >
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -112,20 +133,22 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:wholeRetail:edit']"
-          >修改</el-button>
+            >修改</el-button
+          >
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:wholeRetail:remove']"
-          >删除</el-button>
+            >删除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
 
     <pagination
-      v-show="total>0"
+      v-show="total > 0"
       :total="total"
       :page.sync="queryParams.pageNum"
       :limit.sync="queryParams.pageSize"
@@ -138,12 +161,16 @@
         <el-tab-pane label="基础信息" name="first">
           <el-form ref="form" :model="form" :rules="rules" label-width="120px">
             <el-form-item label="单据编号" prop="djNumber">
-              <el-input v-model="form.djNumber" :disabled="true" placeholder="后台自动生成" />
+              <el-input
+                v-model="form.djNumber"
+                :disabled="true"
+                placeholder="后台自动生成"
+              />
             </el-form-item>
-             <el-form-item label="单据时间" prop="djTime">
+            <el-form-item label="单据时间" prop="djTime">
               <el-date-picker
                 clearable
-                style="width:100%"
+                style="width: 100%"
                 v-model="form.djTime"
                 type="date"
                 value-format="yyyy-MM-dd"
@@ -153,17 +180,25 @@
             <el-form-item label="选择客户" prop="khName">
               <el-row :gutter="0">
                 <el-col :span="21">
-                  <el-input v-model="form.khName" placeholder="点击选择客户" :disabled="true" />
+                  <el-input
+                    v-model="form.khName"
+                    placeholder="点击选择客户"
+                    :disabled="true"
+                  />
                 </el-col>
                 <el-col :span="1" :offset="2">
-                  <i @click="khSelect" class="el-icon-plus" style="font-size:20px"></i>
+                  <i
+                    @click="khSelect"
+                    class="el-icon-plus"
+                    style="font-size: 20px"
+                  ></i>
                 </el-col>
               </el-row>
             </el-form-item>
-            <el-form-item label="零售类型" prop="wholeType" >
+            <el-form-item label="零售类型" prop="wholeType">
               <el-radio-group v-model="form.wholeType">
-                  <el-radio :label="0" >自由售货</el-radio>
-                  <el-radio :label="1">以采定销</el-radio>
+                <el-radio :label="0">自由售货</el-radio>
+                <el-radio :label="1">以采定销</el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item label="备注信息" prop="createBy">
@@ -174,7 +209,13 @@
         <el-tab-pane label="明细信息" name="second">
           <el-row :gutter="10" class="mb8">
             <el-col :span="1.5">
-              <el-button type="primary" icon="el-icon-plus" size="mini" @click="goodsSelect">添加商品</el-button>
+              <el-button
+                type="primary"
+                icon="el-icon-plus"
+                size="mini"
+                @click="goodsSelect"
+                >添加商品</el-button
+              >
             </el-col>
             <!-- <el-col :span="1.5">
         <el-button
@@ -204,7 +245,7 @@
                   placeholder="请输入内容"
                   @change="handleEdit(scope.$index, scope.row)"
                 ></el-input>
-                <span>{{scope.row.goodsCode}}</span>
+                <span>{{ scope.row.goodsCode }}</span>
               </template>
             </el-table-column>
             <el-table-column prop="goodsName" label="商品名称" width="150">
@@ -216,10 +257,10 @@
                   placeholder="请输入内容"
                   @change="handleEdit(scope.$index, scope.row)"
                 ></el-input>
-                <span>{{scope.row.goodsName}}</span>
+                <span>{{ scope.row.goodsName }}</span>
               </template>
             </el-table-column>
-             <el-table-column prop="wholeDw" label="单位" width="120">
+            <el-table-column prop="wholeDw" label="单位" width="120">
               <template scope="scope">
                 <el-input
                   :disabled="true"
@@ -228,19 +269,24 @@
                   placeholder="请输入单位信息"
                   @change="handleEdit(scope.$index, scope.row)"
                 ></el-input>
-                <span>{{scope.row.wholeDw}}</span>
+                <span>{{ scope.row.wholeDw }}</span>
               </template>
             </el-table-column>
-              <el-table-column label="销售量" width="120">
+            <el-table-column label="销售量" width="120">
               <template scope="scope">
                 <el-input
                   size="small"
                   v-model="scope.row.wholeNum"
                   placeholder="请输入数量"
-                  :onkeyup="scope.row.wholeNum=scope.row.wholeNum.replace(/[^\d.]/g,'')"
-                    @change="handleEdit(scope.$index, scope.row)"
+                  :onkeyup="
+                    (scope.row.wholeNum = scope.row.wholeNum.replace(
+                      /[^\d.]/g,
+                      ''
+                    ))
+                  "
+                  @change="handleEdit(scope.$index, scope.row)"
                 ></el-input>
-                <span>{{scope.row.wholeNum}}</span>
+                <span>{{ scope.row.wholeNum }}</span>
               </template>
             </el-table-column>
             <el-table-column label="单价" width="120">
@@ -249,9 +295,9 @@
                   size="small"
                   v-model="scope.row.wholePrice"
                   placeholder="请输入单价"
-                    @change="handleEdit(scope.$index, scope.row)"
+                  @change="handleEdit(scope.$index, scope.row)"
                 ></el-input>
-                <span>{{scope.row.wholePrice}}</span>
+                <span>{{ scope.row.wholePrice }}</span>
               </template>
             </el-table-column>
             <el-table-column label="金额" width="120">
@@ -259,9 +305,9 @@
                 <el-input
                   size="small"
                   v-model="scope.row.wholeMoney"
-                   @change="handleEdit(scope.$index, scope.row)"
+                  @change="handleEdit(scope.$index, scope.row)"
                 ></el-input>
-                <span>{{scope.row.wholeMoney}}</span>
+                <span>{{ scope.row.wholeMoney }}</span>
               </template>
             </el-table-column>
             <el-table-column label="备注" width="150">
@@ -272,7 +318,7 @@
                   placeholder="请输入备注"
                   @change="handleEdit(scope.$index, scope.row)"
                 ></el-input>
-                <span>{{scope.row.remark}}</span>
+                <span>{{ scope.row.remark }}</span>
               </template>
             </el-table-column>
             <el-table-column label="操作">
@@ -282,7 +328,8 @@
                   size="small"
                   type="danger"
                   @click="handleChildDelete(scope.$index, scope.row)"
-                >删除</el-button>
+                  >删除</el-button
+                >
               </template>
             </el-table-column>
           </el-table>
@@ -316,8 +363,17 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
-    <goods-select v-if="selectGoodsDialog" ref="selectGoods" @selectData="selectData" @selectDataMore="selectDataMore"></goods-select>
-    <kh-select v-if="selectKhDialog" ref="selectKh" @selectData="selectKhData"></kh-select>
+    <goods-select
+      v-if="selectGoodsDialog"
+      ref="selectGoods"
+      @selectData="selectData"
+      @selectDataMore="selectDataMore"
+    ></goods-select>
+    <kh-select
+      v-if="selectKhDialog"
+      ref="selectKh"
+      @selectData="selectKhData"
+    ></kh-select>
   </div>
 </template>
 
@@ -331,7 +387,7 @@ import {
   addWholeRetail,
   updateWholeRetail,
   updateWholeRetailStatus,
-  exportWholeRetail
+  exportWholeRetail,
 } from "@/api/system/wholeRetail";
 
 import goodsSelect from "./goodsSelect";
@@ -341,11 +397,11 @@ export default {
   name: "Lease",
   components: {
     goodsSelect,
-    khSelect
+    khSelect,
   },
   data() {
     return {
-      goodsDw:"",
+      goodsDw: "",
       fileList: [],
       upload: {
         // 是否显示弹出层（用户导入）
@@ -406,9 +462,7 @@ export default {
         djTime: [
           { required: true, message: "单据日期不能为空", trigger: "blur" },
         ],
-        khName: [
-          { required: true, message: "客户不能为空", trigger: "blur" },
-        ],
+        khName: [{ required: true, message: "客户不能为空", trigger: "blur" }],
       },
     };
   },
@@ -418,8 +472,12 @@ export default {
   methods: {
     //追加子表必填样式
     starAdd(obj) {
-      if(obj.columnIndex === 0 || obj.columnIndex === 1 || obj.columnIndex === 2) {
-          return 'star';
+      if (
+        obj.columnIndex === 0 ||
+        obj.columnIndex === 1 ||
+        obj.columnIndex === 2
+      ) {
+        return "star";
       }
     },
     clickFile(file) {
@@ -438,9 +496,7 @@ export default {
     //选择客户
     selectOwner(data) {},
     //选择供应商
-    selectPerson(data){
-
-    },
+    selectPerson(data) {},
     handleClick(tab, event) {
       // console.log(tab, event);
     },
@@ -448,21 +504,23 @@ export default {
       console.log(row, event, column, event.currentTarget);
     },
     handleEdit(index, row) {
-       if (
-          row.wholePrice != "" &&
-          row.wholePrice != null &&
-          row.wholePrice != undefined&&
-         row.wholeNum  != "" &&
-          row.wholeNum  != null &&
-          row.wholeNum  != undefined
-        ) {
-         row.wholeMoney= (parseFloat(row.wholePrice) * parseFloat(row.wholeNum)).toFixed(2);
-        
-      //  else {
-      //   console.log(this.form.inhibitionNum);
-      //   this.msgError("请先填写抑制率标准设定值!");
-      //   return;
-       }
+      if (
+        row.wholePrice != "" &&
+        row.wholePrice != null &&
+        row.wholePrice != undefined &&
+        row.wholeNum != "" &&
+        row.wholeNum != null &&
+        row.wholeNum != undefined
+      ) {
+        row.wholeMoney = (
+          parseFloat(row.wholePrice) * parseFloat(row.wholeNum)
+        ).toFixed(2);
+
+        //  else {
+        //   console.log(this.form.inhibitionNum);
+        //   this.msgError("请先填写抑制率标准设定值!");
+        //   return;
+      }
     },
     handleChildDelete(index, row) {
       if (row.id != "" && row.id != undefined && row.id != null) {
@@ -477,7 +535,6 @@ export default {
     goodsSelect() {
       this.selectGoodsDialog = true;
       this.$nextTick(() => {
-       
         this.$refs.selectGoods.visible = true;
       });
     },
@@ -487,20 +544,20 @@ export default {
         this.$refs.selectKh.visible = true;
       });
     },
-        //批量选择数据
+    //批量选择数据
     selectDataMore(rows) {
       //  this.selectGoodsDialog=false;
       this.$nextTick(() => {
-       for(let i=0;i<rows.length;i++){
-            let row=rows[i];
-            let goodsInfo = new Object();
-            goodsInfo.goodsCode = row.goodsCode;
-            goodsInfo.goodsName = row.goodsName;
-            goodsInfo.wholeDw = row.goodsViceDw;
-            goodsInfo.wholeNum = "";
-            goodsInfo.wholePrice = "";
-            this.tableData.push(goodsInfo);
-       }
+        for (let i = 0; i < rows.length; i++) {
+          let row = rows[i];
+          let goodsInfo = new Object();
+          goodsInfo.goodsCode = row.goodsCode;
+          goodsInfo.goodsName = row.goodsName;
+          goodsInfo.wholeDw = row.goodsViceDw;
+          goodsInfo.wholeNum = "";
+          goodsInfo.wholePrice = "";
+          this.tableData.push(goodsInfo);
+        }
         this.$refs.selectGoods.visible = false;
       });
     },
@@ -509,7 +566,7 @@ export default {
       //  this.selectGoodsDialog=false;
 
       this.$nextTick(() => {
-         let goodsInfo = new Object();
+        let goodsInfo = new Object();
         goodsInfo.goodsCode = row.goodsCode;
         goodsInfo.goodsName = row.goodsName;
         goodsInfo.wholeDw = row.goodsViceDw;
@@ -521,9 +578,9 @@ export default {
     },
     //选择数据
     selectKhData(row) {
-        this.form.khCode=row.khCode;
-        this.form.khName=row.khName;
-        this.$refs.selectKh.visible = false;
+      this.form.khCode = row.khCode;
+      this.form.khName = row.khName;
+      this.$refs.selectKh.visible = false;
     },
     /** 查询二级市场信息列表 */
     getList() {
@@ -546,10 +603,10 @@ export default {
         djNumber: undefined,
         djTime: undefined,
         khCode: undefined,
-        khName:undefined,
-        goodsDw:undefined,
-        wholeType:0,
-        from:0,
+        khName: undefined,
+        goodsDw: undefined,
+        wholeType: 0,
+        from: 0,
         createBy: undefined,
         createTime: undefined,
         updateBy: undefined,
@@ -653,15 +710,11 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$confirm(
-        '是否确认删除单据编号为"' + ids + '"的数据项?',
-        "警告",
-        {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
-        }
-      )
+      this.$confirm('是否确认删除单据编号为"' + ids + '"的数据项?', "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
         .then(function () {
           return delWholeRetail(ids);
         })
@@ -671,18 +724,14 @@ export default {
         })
         .catch(function () {});
     },
-     /** 生效按钮操作 */
+    /** 生效按钮操作 */
     handleEffect(row) {
       const ids = row.id || this.ids;
-      this.$confirm(
-        '是否确认单据编号为"' + ids + '"的数据项已生效?',
-        "警告",
-        {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
-        }
-      )
+      this.$confirm('是否确认单据编号为"' + ids + '"的数据项已生效?', "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
         .then(function () {
           return updateWholeRetailStatus(ids);
         })
@@ -712,10 +761,10 @@ export default {
 };
 </script>
 <style>
-.cell .el-select+span{
+.cell .el-select + span {
   display: none;
 }
-.cell .el-input+span{
+.cell .el-input + span {
   display: none;
 }
 .el-table__expanded-cell {
@@ -742,9 +791,7 @@ table th.star div::after {
   color: red;
 }
 .el-input.is-disabled .el-input__inner {
-    
-    color: #606266;
-    
+  color: #606266;
 }
 
 /* .cell .el-select+span{
