@@ -556,6 +556,7 @@ export default {
           goodsInfo.wholeDw = row.goodsViceDw;
           goodsInfo.wholeNum = "";
           goodsInfo.wholePrice = "";
+             goodsInfo.wholeMoney=""
           this.tableData.push(goodsInfo);
         }
         this.$refs.selectGoods.visible = false;
@@ -572,6 +573,7 @@ export default {
         goodsInfo.wholeDw = row.goodsViceDw;
         goodsInfo.wholeNum = "";
         goodsInfo.wholePrice = "";
+        goodsInfo.wholeMoney=""
         this.tableData.push(goodsInfo);
         this.$refs.selectGoods.visible = false;
       });
