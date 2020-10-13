@@ -65,7 +65,7 @@
            销货单据
           <!-- <span style="display:inline-block;color:#666;font-size:20px;margin-top:15px">89.7%</span> -->
           </div>
-          <count-to :start-val="0" :end-val="total2" :duration="3600" class="card-panel-num" /> 
+          <count-to :start-val="0" :end-val="total4" :duration="3600" class="card-panel-num" /> 
         </div>
       </div>
     </el-col>
@@ -230,6 +230,10 @@ import {
   updateWholeSalesStatus,
   exportWholeSales,
 } from "@/api/system/wholeSales";
+import {
+  listWholeRetail,
+
+} from "@/api/system/wholeRetail";
 export default {
   components: {
     CountTo
@@ -241,6 +245,8 @@ export default {
       total: 0,
       total2: 0,
       total1:0,
+      total3:0,
+      total4:0,
         /** 查询二级市场信息列表 */
         // 查询参数
       queryParams: {
@@ -272,12 +278,19 @@ export default {
         this.loading = false;
        
       });
+      listWholeRetail(this.queryParams).then((response) => {
+        
+        this.total3 = response.total;
+        this.loading = false;
+        this.total4=this.total3+this.total2
+      });
 
     },
  
   },
   created() {
     this.getList();
+    
   }
 }
 </script>
