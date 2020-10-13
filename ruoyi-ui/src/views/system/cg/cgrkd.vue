@@ -172,6 +172,8 @@
              <el-form-item label="制单日期"  prop="djTime" class="changeBlue">
               <el-date-picker style="width:100%"
                 v-model="form.djTime"
+                  format="yyyy 年 MM 月 dd 日"
+                value-format="yyyy-MM-dd"
                 type="date"
                 placeholder="制单日期">
               </el-date-picker>

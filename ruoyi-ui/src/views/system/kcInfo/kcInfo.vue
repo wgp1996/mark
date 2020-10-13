@@ -92,8 +92,8 @@
       <el-table-column label="计量单位" align="center" prop="goodsDw" />
       <el-table-column label="入库总数量" align="center" prop="goodsNums" />
       <el-table-column label="入库总金额" align="center" prop="goodsMoneys" />
-      <el-table-column label="出库总数量" align="center" prop="cgoodsNum" />
-      <el-table-column label="出库总金额" align="center" prop="cgoodsMoney" />
+      <el-table-column label="出库总数量" align="center" prop="cgoodsNums" />
+      <el-table-column label="出库总金额" align="center" prop="cgoodsMoneys" />
       <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -162,6 +162,9 @@ export default {
         device: ""
       },
       sumNum:0,
+       sumNum1:0,
+        sumNum2:0,
+         sumNum3:0,
       checking: "",
       left: "right",
       place: "",
@@ -283,12 +286,24 @@ export default {
         const { columns, data } = param;
         const sums = [];
         columns.forEach((column, index) => {
-          if (index === 5) {
+          if (index === 6) {
             sums[index] = '数量合计:';
             return;
           }
-          if (index === 6) {
+          if (index === 7) {
             sums[index] = this.sumNum;
+            return;
+          }
+          if (index === 8) {
+            sums[index] = this.sumNum1;
+            return;
+          }
+          if (index === 8) {
+            sums[index] = this.sumNum2;
+            return;
+          }
+           if (index === 10) {
+            sums[index] = this.sumNum3;
             return;
           }
     
@@ -550,7 +565,10 @@ export default {
       listKcInfo(this.queryParams).then(response => {
         this.leaseList = response.rows;
         for(let i=0;i<response.rows.length;i++){
-          this.sumNum+=parseFloat(response.rows[i].sumNum);
+          this.sumNum+=parseFloat(response.rows[i].goodsNums);
+          this.sumNum1+=parseFloat(response.rows[i].goodsMoneys);
+          this.sumNum2+=parseFloat(response.rows[i].cgoodsNums);
+          this.sumNum3+=parseFloat(response.rows[i].cgoodsMoneys);
         }
         this.total = response.total;
        this.loading = false;
