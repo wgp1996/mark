@@ -168,7 +168,7 @@
                 placeholder="请选择单据时间"
               ></el-date-picker>
             </el-form-item>
-            <el-form-item label="选择客户" prop="khName">
+            <!-- <el-form-item label="选择客户" prop="khName">
               <el-row :gutter="0">
                 <el-col :span="21">
                   <el-input
@@ -185,7 +185,7 @@
                   ></i>
                 </el-col>
               </el-row>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="零售类型" prop="wholeType">
               <el-radio-group v-model="form.wholeType">
                 <el-radio :label="0">自由售货</el-radio>
@@ -208,17 +208,7 @@
                 >添加商品</el-button
               >
             </el-col>
-            <!-- <el-col :span="1.5">
-        <el-button
-          type="danger"
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-        >删除</el-button>
-            </el-col>-->
           </el-row>
-
           <el-table
             :data="tableData"
             class="tb-edit"
@@ -227,6 +217,27 @@
             @row-click="handleCurrentChange"
             :header-cell-class-name="starAdd"
           >
+          <el-table-column prop="khCode" label="选择客户" width="200">
+               <template scope="scope">
+                 <el-select
+                v-model="scope.row.khCode"
+                placeholder="选择客户"
+                filterable
+                @change="handleEditPerson($event,scope.$index, scope.row)"
+                style="width:100%"
+                >
+                <el-option
+                  v-for="item in khList"
+                  :key="item.khCode"
+                  :label="item.khName"
+                  :value="item.khCode"
+                >
+                  <span style="float: left;width:100%">{{ item.khName }}</span>
+                </el-option>
+              </el-select>
+              <span  style="position: relative;top:-13px;">{{scope.row.khName}}</span>
+              </template>
+            </el-table-column>
             <el-table-column prop="goodsCode" label="商品编码" width="150">
               <template scope="scope">
                 <el-input
@@ -370,6 +381,7 @@
 
 <script>
 import {
+  allListWholeRetail,
   listWholeRetail,
   getWholeRetail,
   getWholeRetailChild,
@@ -411,7 +423,7 @@ export default {
       //业主列表
       stallList: [],
       //供应商
-      personList: [],
+      khList: [],
       // 遮罩层
       loading: false,
       selectGoodsDialog: false,
@@ -453,14 +465,28 @@ export default {
         djTime: [
           { required: true, message: "单据日期不能为空", trigger: "blur" },
         ],
-        khName: [{ required: true, message: "客户不能为空", trigger: "blur" }],
+        // khName: [{ required: true, message: "客户不能为空", trigger: "blur" }],
       },
     };
   },
   created() {
     this.getList();
+    allListWholeRetail(this.queryParams).then(response => {
+        this.khList = response.rows;
+        // console.log(this.personList)
+    });
   },
   methods: {
+       handleEditPerson(data,index, row){
+        //根据编码找产地
+      
+        for(let i=0;i<this.khList.length;i++){
+          if(this.khList[i].khCode==data){
+            row.khName=this.khList[i].khName;
+            break;
+          }
+        }
+    },
     //追加子表必填样式
     starAdd(obj) {
       if (

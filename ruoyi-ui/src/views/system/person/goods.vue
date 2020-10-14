@@ -129,7 +129,18 @@
                 ></el-option>
               </el-select>
         </el-form-item>
-          <el-form-item label="主进货地" prop="goodsAddress">
+        <el-form-item label="采购辅助单位" prop="goodsAssistDw">
+          <!-- <el-input v-model="form.goodsDw" placeholder="请输入主单位" /> -->
+          <el-select v-model="form.goodsAssistDw" placeholder="请输入采购辅助单位" style="width:100%">
+                <el-option
+                  v-for="dict in perationOptions"
+                  :key="dict.dictValue"
+                  :label="dict.dictLabel"
+                  :value="dict.dictValue"
+                ></el-option>
+              </el-select>
+        </el-form-item>
+        <el-form-item label="主进货地" prop="goodsAddress">
           <el-input v-model="form.goodsAddress" placeholder="请输入主进货地" />
         </el-form-item>
         <el-form-item label="规格" prop="goodsGg">

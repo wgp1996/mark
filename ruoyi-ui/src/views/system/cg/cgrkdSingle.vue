@@ -250,7 +250,6 @@
               <el-table-column label="产地" width="200">
               <template scope="scope">
                 <el-input
-                  :disabled="true"
                   size="small"
                   v-model="scope.row.goodsAddress"
                   placeholder="请输入产地"

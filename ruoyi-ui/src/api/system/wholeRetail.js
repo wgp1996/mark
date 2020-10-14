@@ -9,6 +9,15 @@ export function listWholeRetail(query) {
   })
 }
 
+// 查询批发销货一票通列表
+export function allListWholeRetail(query) {
+  return request({
+    url: '/system/wholeRetail/allList',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询批发销货一票通详细
 export function getWholeRetail(id) {
   return request({

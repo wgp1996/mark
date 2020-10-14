@@ -105,7 +105,6 @@
           </el-table>
         </template>
       </el-table-column>
-      <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="单据状态" align="center" prop="djStatusName" />
       <el-table-column label="单据编号" align="center" prop="djNumber" />
       <el-table-column label="单据日期" align="center" prop="djTime" />

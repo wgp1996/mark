@@ -316,7 +316,6 @@
              <el-table-column label="产地信息" width="200">
               <template scope="scope">
                 <el-input
-                  :disabled="true"
                   size="small"
                   v-model="scope.row.goodsAddress"
                   placeholder="产地信息"
