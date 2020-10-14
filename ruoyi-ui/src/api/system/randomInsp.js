@@ -9,6 +9,15 @@ export function listRandomInsp(query) {
   })
 }
 
+// 查询随机检测单列表
+export function allListRandomInsp(query) {
+  return request({
+    url: '/system/randomInsp/allList',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询随机检测单详细
 export function getRandomInsp(id) {
   return request({

@@ -66,33 +66,27 @@
       row-key="id"
     >
       <el-table-column type="selection" width="55" align="center" />
-      <!-- <el-table-column type="expand"> -->
-        <!-- <template slot-scope="props"> -->
-          <!-- <el-table style="padding: 0; margin: 0" :data="props.row.childrenList"> -->
-            <el-table-column label="单号" align="center" prop="djNumber" />
-            <el-table-column label="检测日期" align="center" prop="testResult" />
+      <el-table-column type="expand">
+        <template slot-scope="props">
+          <el-table style="padding: 0; margin: 0" :data="props.row.childrenList">
+            <!-- <el-table-column label="单号" width="150" align="center" prop="djNumber" />
+            <el-table-column label="检测日期"  width="100"  align="center" prop="testResult" /> -->
             <el-table-column label="业户名称" align="center" prop="ownerName" />
-            
             <el-table-column label="检测物名称" align="center" prop="goodsName" />
-        
-            <el-table-column label="检测项目" align="center" prop="checkProject" />
-  
-             <el-table-column label="合格状态" align="center" prop="checkResultName" />
-            <el-table-column label="抑制率(%)" align="center" prop="inhibitionNum" />
-            <el-table-column label="备注" align="center" prop="remark" />
-          <!-- </el-table> -->
-        <!-- </template> -->
-      <!-- </el-table-column> -->
-<!-- 
+            <el-table-column label="检测项目" width="120"   align="center" prop="checkProject" />
+            <el-table-column label="合格状态"  width="100"  align="center" prop="checkResultName" />
+            <el-table-column label="抑制率(%)"  width="100"  align="center" prop="inhibitionNum" />
+            <el-table-column label="备注"    align="center" prop="remark" />
+          </el-table>
+        </template>
+      </el-table-column>
       <el-table-column label="单据编号" align="center" prop="djNumber" />
-      <el-table-column label="单据日期" align="center" prop="djTime" />
-
-      <el-table-column label="采用地点" align="center" prop="checkAddress" />
-
-      <el-table-column label="抑制率标准值" align="center" prop="inhibitionNum" />
-      <el-table-column label="检测说明" align="center" prop="djTitle" /> -->
-     
-
+      <el-table-column label="检测日期" align="center" prop="djTime" />
+      <el-table-column label="检测地点" align="center" prop="checkAddress" />
+      <el-table-column label="抑制率标准值(%)" align="center" prop="inhibitionNum" />
+      <el-table-column label="检测说明" align="center" prop="djTitle" /> 
+      <el-table-column label="制单人" align="center" prop="createBy" /> 
+      <el-table-column label="制单日期" align="center" prop="createTime" /> 
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -446,6 +440,7 @@
 // } from "@/api/system/randomInsp";
 import {
   listRandomInsp,
+  allListRandomInsp,
   getRandomInsp,
   addRandomInsp,
   updateRandomInsp,
@@ -884,7 +879,7 @@ export default {
     /** 查询二级市场信息列表 */
     getList() {
       this.loading = true;
-      listRandomInsp(this.queryParams).then(response => {
+      allListRandomInsp(this.queryParams).then(response => {
         this.leaseList = response.rows;
         console.log(this.leaseList);
         this.total = response.total;

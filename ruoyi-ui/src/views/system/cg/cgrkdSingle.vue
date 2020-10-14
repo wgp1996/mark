@@ -77,8 +77,8 @@
   
     
     >
-      <!-- <el-table-column type="selection" width="55" align="center" /> -->
-      <!-- <el-table-column type="expand">
+      <el-table-column type="selection" width="55" align="center" />
+      <el-table-column type="expand">
         <template slot-scope="props">
           <el-table style="padding:0;margin:0" :data="props.row.childrenList" id="special">
             <el-table-column label="商品名称" align="center" prop="goodsName" />
@@ -92,8 +92,16 @@
             <el-table-column label="备注" align="center" prop="remark" />
           </el-table>
         </template>
-      </el-table-column> -->
-      <el-table-column type="selection" width="55" align="center" />
+      </el-table-column>
+      <el-table-column label="单据状态" align="center" prop="djStatusName" />
+      <el-table-column label="入库单号" align="center" prop="djNumber" />
+      <el-table-column label="进货日期" align="center" prop="djTime" /> 
+      <el-table-column label="业户代码" align="center" prop="createBy" />
+      <el-table-column label="供应商" align="center" prop="personName" />
+      <el-table-column label="仓库名称" align="center" prop="storeName" />
+      <el-table-column label="制单人" align="center" prop="createBy" />
+      <el-table-column label="制单日期" align="center" prop="createTime" /> 
+      <!-- <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="业户代码" align="center" prop="createBy" />
       <el-table-column label="业户名称" align="center" prop="createName" />
       <el-table-column label="进货日期" align="center" prop="djTime" />
@@ -102,7 +110,7 @@
       <el-table-column label="产地" align="center" prop="goodsAddress" />
       <el-table-column label="数量" align="center" prop="goodsNum" />
        <el-table-column label="单价" align="center" prop="goodsPrice" />
-      <el-table-column label="金额" align="center" prop="goodsMoney" />
+      <el-table-column label="金额" align="center" prop="goodsMoney" /> -->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button

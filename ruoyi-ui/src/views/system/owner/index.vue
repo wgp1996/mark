@@ -19,6 +19,24 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="联系人" prop="ownerLxr">
+        <el-input
+          v-model="queryParams.ownerLxr"
+          placeholder="请输入联系人"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="联系方式" prop="ownerLxrPhone">
+        <el-input
+          v-model="queryParams.ownerLxrPhone"
+          placeholder="请输入联系方式"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
