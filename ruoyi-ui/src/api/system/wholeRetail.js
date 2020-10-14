@@ -12,7 +12,7 @@ export function listWholeRetail(query) {
 // 查询批发销货一票通列表
 export function allListWholeRetail(query) {
   return request({
-    url: '/system/wholeRetail/allList',
+    url: '/system/kh/allList',
     method: 'get',
     params: query
   })

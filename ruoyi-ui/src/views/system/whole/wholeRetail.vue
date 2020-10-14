@@ -106,10 +106,11 @@
         </template>
       </el-table-column>
       <el-table-column label="销货日期" align="center" prop="djTime" />
-      <el-table-column label="客户编号" align="center" prop="khCode" />
-      <el-table-column label="客户名称" align="center" prop="khName" />
+      <!-- <el-table-column label="客户编号" align="center" prop="khCode" />
+      <el-table-column label="客户名称" align="center" prop="khName" /> -->
       <el-table-column label="单据状态" align="center" prop="djStatusName" />
       <el-table-column label="单据编号" align="center" prop="djNumber" />
+      <el-table-column label="备注说明" align="center" prop="remark" />
       <el-table-column label="制单人" align="center" prop="createBy" /> -->
       <el-table-column label="制单日期" align="center" prop="createTime" />
       <el-table-column
