@@ -55,6 +55,45 @@
 
       </div>
     </el-row>
+    <!-- 随机抽检单 -->
+    <el-row>
+    <el-table
+      v-loading="loading"
+      :data="randomList"
+       row-key="id"
+      v-if="random"
+    >
+      <el-table-column type="selection" width="55" align="center" />
+      <!-- <el-table-column type="expand"> -->
+        <!-- <template slot-scope="props"> -->
+          <!-- <el-table style="padding: 0; margin: 0" :data="props.row.childrenList"> -->
+            <el-table-column label="单号" align="center" prop="djNumber" />
+            <el-table-column label="检测日期" align="center" prop="testResult" />
+            <el-table-column label="业户名称" align="center" prop="ownerName" />
+            
+            <el-table-column label="检测物名称" align="center" prop="goodsName" />
+        
+            <el-table-column label="检测项目" align="center" prop="checkProject" />
+  
+             <el-table-column label="合格状态" align="center" prop="checkResultName" />
+            <el-table-column label="抑制率(%)" align="center" prop="inhibitionNum" />
+            <el-table-column label="备注" align="center" prop="remark" />
+          <!-- </el-table> -->
+        <!-- </template> -->
+      <!-- </el-table-column> -->
+<!-- 
+      <el-table-column label="单据编号" align="center" prop="djNumber" />
+      <el-table-column label="单据日期" align="center" prop="djTime" />
+
+      <el-table-column label="采用地点" align="center" prop="checkAddress" />
+
+      <el-table-column label="抑制率标准值" align="center" prop="inhibitionNum" />
+      <el-table-column label="检测说明" align="center" prop="djTitle" /> -->
+     
+
+
+    </el-table>
+    </el-row>
     <el-row>
           <el-table
       v-loading="loading"
@@ -155,6 +194,10 @@ import {
   exportWholeSales,
   selectWholeAllList
 } from "@/api/system/wholeSales";
+import {
+  listRandomInsp,
+
+} from "@/api/system/randomInsp";
 const lineChartData = {
   newVisitis: {
     expectedData: [2.5, 3.5, 3.15, 2.7, 5.78, 3.15, 4.25],
@@ -194,6 +237,8 @@ export default {
       ownerList:[],
       // 销货单据
        List:[],
+      //  随机抽检单
+       randomList:[],
       lineChartData: lineChartData.newVisitis,
        // 总条数
       total: 0,
@@ -211,6 +256,7 @@ export default {
       purchases:true,
       // shopping:false,
       shoppings:false,
+      random:false
     }
   },
   methods: {
@@ -264,6 +310,7 @@ export default {
           this.newVisitis=true
           this.purchases=false
           this.shoppings=false
+          this.random=false
         listOwner(this.queryParams).then(response => {
         this.ownerList = response.rows;
         this.total = response.total;
@@ -275,6 +322,7 @@ export default {
            this.purchases=true
           this.newVisitis=false
            this.shoppings=false
+          this.random=false
         rkdSummaryList(this.queryParams).then((response) => {
         console.log(response)
         this.leaseList = response.rows;
@@ -294,12 +342,13 @@ export default {
           this.shoppings=true
           this.newVisitis=false
           this.purchases=false
+           this.random=false
         selectWholeAllList(this.queryParams).then((response) => {
         this.List = response.rows;
         console.log(this.List)
          this.sumNum=0;
         for(let i=0;i<response.rows.length;i++){
-            if(response.rows[i].wholeMoney==null){
+            if(response.rows[i].wholeMoney==null||response.rows[i].wholeMoney==""||response.rows[i].wholeMoney==undefined){
              response.rows[i].wholeMoney='0';
            }else{
               // alert(response.rows[i].wholeMoney)
@@ -310,6 +359,18 @@ export default {
         this.sumNum=this.sumNum.toFixed(2)
          console.log(this.leaseList)
         this.total = response.total;
+        this.loading = false;
+      });
+      }else if(type=="random"){
+          this.shoppings=false
+          this.newVisitis=false
+          this.purchases=false
+           this.random=true
+        listRandomInsp(this.queryParams).then(response => {
+        this.randomList = response.rows;
+        console.log(this.leaseList);
+        this.total = response.total;
+       // this.checking = response.rows[0].checkAddress;
         this.loading = false;
       });
       }

@@ -1,6 +1,6 @@
 <template>
   <el-row :gutter="10" class="panel-group">
-    <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:20% !important">
+    <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:16.6% !important">
       <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
         <div class="card-panel-icon-wrapper icon-people"  style="margin:14px 0px 0px 0px;padding:16px 0px 0px 2px">
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
@@ -13,7 +13,7 @@
         </div>
       </div>
     </el-col>
-    <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:20% !important">
+    <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:16.6% !important">
       <div class="card-panel" @click="handleSetLineChartData('messages')">
         <div class="card-panel-icon-wrapper icon-message special" style="margin:14px 0px 0px 0px;padding:16px 0px 0px 2px">
           <!-- <svg-icon icon-class="message" class-name="card-panel-icon" /> -->
@@ -27,7 +27,7 @@
         </div>
       </div>
     </el-col>
-    <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:20% !important">
+    <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:16.6% !important">
       <div class="card-panel" @click="handleSetLineChartData('purchases')">
         <div class="card-panel-icon-wrapper icon-money special" style="margin:14px 0px 0px 0px;padding:16px 0px 0px 2px">
           <svg-icon icon-class="money" class-name="card-panel-icon" />
@@ -40,7 +40,7 @@
         </div>
       </div>
     </el-col>
-    <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:20% !important">
+    <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:16.6% !important">
       <div class="card-panel" @click="handleSetLineChartData('shopping')">
         <div class="card-panel-icon-wrapper icon-shopping special" style="margin:14px 0px 0px 0px;padding:16px 0px 0px 2px">
           <!-- <svg-icon icon-class="shopping" class-name="card-panel-icon" /> -->
@@ -54,7 +54,7 @@
         </div>
       </div>
     </el-col>
-      <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:20% !important"> 
+      <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:16.6% !important"> 
       <div class="card-panel" @click="handleSetLineChartData('shoppings')">
         <div class="card-panel-icon-wrapper icon-shopping special" style="margin:14px 0px 0px 0px;padding:16px 0px 0px 2px">
           <!-- <svg-icon icon-class="shopping" class-name="card-panel-icon" /> -->
@@ -69,25 +69,21 @@
         </div>
       </div>
     </el-col>
-     <!-- <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:33.3% !important"> 
-     <a href="/shop/sensor/shopInfo">
-      <div class="card-panel" @click="handleSetLineChartData('shoppings')">
-        <div class="card-panel-icon-wrapper icon-message">
+     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:16.6% !important"> 
+ 
+      <div class="card-panel" @click="handleSetLineChartData('random')">
+        <div class="card-panel-icon-wrapper icon-message" style="margin:14px 0px 0px 0px;padding:16px 0px 0px 2px">
           <svg-icon icon-class="documentation" class-name="card-panel-icon" />
-         
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text" style="margin-top:20px;">
-             门店建档
-            <br>
-           
-   
+          <div class="card-panel-text" >
+             随机抽检
           </div>
-      
+          <count-to :start-val="0" :end-val="total5" :duration="3600" class="card-panel-num" /> 
         </div>
       </div>
-      </a>
-    </el-col> -->
+
+    </el-col>
      <!-- <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:33.3% !important"> 
       <a href="/shop/sensor/shopLabel">
       <div class="card-panel" @click="handleSetLineChartData('shoppings')">
@@ -235,6 +231,10 @@ import {
   listWholeRetail,
 
 } from "@/api/system/wholeRetail";
+// 随机抽检单
+import {
+  listRandomInsp,
+} from "@/api/system/randomInsp";
 export default {
   components: {
     CountTo
@@ -248,6 +248,7 @@ export default {
       total1:0,
       total3:0,
       total4:0,
+      total5:0,
         /** 查询二级市场信息列表 */
         // 查询参数
       queryParams: {
@@ -288,6 +289,11 @@ export default {
         //  this.loading = false;
         //    this.total4=this.total3+this.total2
         //    alert(this.total4)
+      });
+      // 随机抽检单
+       listRandomInsp(this.queryParams).then(response => {
+       this.total5 = response.total;
+       this.loading = false;
       });
 
     },
