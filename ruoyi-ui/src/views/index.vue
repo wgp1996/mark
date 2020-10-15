@@ -21,13 +21,13 @@
       <el-table-column label="单位" align="center" prop="goodsDw" />
       <el-table-column label="产地" align="center" prop="goodsAddress" />
     </el-table>
-     <!-- <pagination
-      v-show="total>0"
-      :total="total"
+     <pagination
+      v-show="total0>0"
+      :total="total0"
       :page.sync="queryParams.pageNum"
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
-    /> -->
+    />
 
       </div>
     </el-row>
@@ -45,23 +45,23 @@
       <el-table-column label="创建日期" align="center" prop="createTime" />
 
     </el-table>
-     <!-- <pagination
-      v-show="total>0"
-      :total="total"
+     <pagination
+      v-show="total1>0"
+      :total="total1"
       :page.sync="queryParams.pageNum"
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
-    /> -->
+    />
 
       </div>
     </el-row>
     <!-- 随机抽检单 -->
-    <el-row>
+    <el-row  v-if="random">
     <el-table
       v-loading="loading"
       :data="randomList"
        row-key="id"
-      v-if="random"
+     
     >
       <el-table-column type="selection" width="55" align="center" />
       <!-- <el-table-column type="expand"> -->
@@ -93,17 +93,21 @@
 
 
     </el-table>
+        <pagination
+      v-show="total2>0"
+      :total="total2"
+      :page.sync="queryParams.pageNum"
+      :limit.sync="queryParams.pageSize"
+      @pagination="getList"
+    />
     </el-row>
-    <el-row>
-          <el-table
+    <el-row  v-if="shoppings">
+       <el-table
       v-loading="loading"
       :data="List"
-  
       :summary-method="getSummaries"
       show-summary
-       v-if="shoppings"
-    
-    >
+   >
 
       <el-table-column type="selection" width="55" align="center" />
      <el-table-column label="销货日期"  width="100" align="center" prop="remark" />
@@ -115,28 +119,11 @@
       <el-table-column label="销售量" width="80" align="center" prop="wholeNum" />
       <el-table-column label="单价" width="80" align="center" prop="wholePrice" />
       <el-table-column label="金额" width="80" align="center" prop="wholeMoney" />
-      <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:cgrkd:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['system:cgrkd:remove']"
-          >删除</el-button>
-        </template>
-      </el-table-column> -->
+  
     </el-table>
         <pagination
-      v-show="total > 0"
-      :total="total"
+      v-show="total3 > 0"
+      :total="total3"
       :page.sync="queryParams.pageNum"
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
@@ -241,7 +228,10 @@ export default {
        randomList:[],
       lineChartData: lineChartData.newVisitis,
        // 总条数
-      total: 0,
+      total0: 0,
+      total1: 0,
+      total2: 0,
+      total3: 0,
         /** 查询二级市场信息列表 */
         // 查询参数
       queryParams: {
@@ -293,15 +283,47 @@ export default {
     getList() {
       this.loading = true;
       rkdSummaryList(this.queryParams).then((response) => {
-        console.log(response)
+        this.sumNum=0
         this.leaseList = response.rows;
         for(let i=0;i<response.rows.length;i++){
           this.sumNum+=parseFloat(response.rows[i].sumNum);
           //  alert(this.sumNum)
         }
-        this.total = response.total;
+        this.total0 = response.total;
         this.loading = false;
       });
+      listOwner(this.queryParams).then(response => {
+        this.ownerList = response.rows;
+        this.total1 = response.total;
+        this.loading = false;
+        this.sumNum=0
+      });
+      selectWholeAllList(this.queryParams).then((response) => {
+        this.List = response.rows;
+        console.log(this.List)
+         this.sumNum=0;
+        for(let i=0;i<response.rows.length;i++){
+            if(response.rows[i].wholeMoney==null||response.rows[i].wholeMoney==""||response.rows[i].wholeMoney==undefined){
+             response.rows[i].wholeMoney='0';
+           }else{
+              //  alert(response.rows[i].wholeMoney)
+             this.sumNum+=parseFloat(response.rows[i].wholeMoney);
+           }
+       
+        }
+        this.sumNum=this.sumNum.toFixed(2)
+  
+        this.total3 = response.total;
+        this.loading = false;
+      });
+      listRandomInsp(this.queryParams).then(response => {
+        this.randomList = response.rows;
+     
+        this.total2 = response.total;
+       // this.checking = response.rows[0].checkAddress;
+        this.loading = false;
+      });
+
     },
     handleSetLineChartData(type) {
       // this.lineChartData = lineChartData[type]
@@ -313,10 +335,11 @@ export default {
           this.random=false
         listOwner(this.queryParams).then(response => {
         this.ownerList = response.rows;
-        this.total = response.total;
+        this.total1 = response.total;
         this.loading = false;
         this.sumNum=0
       });
+      this.queryParams.pageNum=1
       }else if(type=="purchases"){
         // 溯源单据
            this.purchases=true
@@ -332,11 +355,11 @@ export default {
           
           this.sumNum+=parseFloat(response.rows[i].sumNum);
         }
-        this.total = response.total;
+        this.total0 = response.total;
         this.loading = false;
         
       });
-
+       this.queryParams.pageNum=1
       }else if(type=="shoppings"){
         // 销货单据
           this.shoppings=true
@@ -351,16 +374,17 @@ export default {
             if(response.rows[i].wholeMoney==null||response.rows[i].wholeMoney==""||response.rows[i].wholeMoney==undefined){
              response.rows[i].wholeMoney='0';
            }else{
-              // alert(response.rows[i].wholeMoney)
+              //  alert(response.rows[i].wholeMoney)
              this.sumNum+=parseFloat(response.rows[i].wholeMoney);
            }
        
         }
         this.sumNum=this.sumNum.toFixed(2)
-         console.log(this.leaseList)
-        this.total = response.total;
+   
+        this.total3 = response.total;
         this.loading = false;
       });
+        this.queryParams.pageNum=1
       }else if(type=="random"){
           this.shoppings=false
           this.newVisitis=false
@@ -368,11 +392,12 @@ export default {
            this.random=true
         listRandomInsp(this.queryParams).then(response => {
         this.randomList = response.rows;
-        console.log(this.leaseList);
-        this.total = response.total;
+   
+        this.total2 = response.total;
        // this.checking = response.rows[0].checkAddress;
         this.loading = false;
       });
+        this.queryParams.pageNum=1
       }
     }
   },
