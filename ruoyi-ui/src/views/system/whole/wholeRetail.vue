@@ -555,6 +555,47 @@ export default {
         this.$refs.selectGoods.visible = true;
       });
     },
+    editTime(i) {
+      if (i < 10) {
+        i = "0" + i;
+      }
+      return i;
+    },
+      getTime() {
+      var date = new Date();
+      var year = date.getFullYear(); //得到当前年份
+      var month = this.editTime(date.getMonth() + 1); //得到当前月份
+      var day = this.editTime(date.getDate()); //得到当前几号
+      var hour = this.editTime(date.getHours()); //得到当前小时
+      var min = this.editTime(date.getMinutes()); //得到当前分钟
+      var seconds = this.editTime(date.getSeconds()); //得到当前秒
+      var weeks = date.getDay();
+      var week;
+      switch (weeks) {
+        case 0:
+          week = "星期日";
+          break;
+        case 1:
+          week = "星期一";
+          break;
+        case 2:
+          week = "星期二";
+          break;
+        case 3:
+          week = "星期三";
+          break;
+        case 4:
+          week = "星期四";
+          break;
+        case 5:
+          week = "星期五";
+          break;
+        case 6:
+          week = "星期六";
+          break;
+      }
+      return year + "-" + month + "-" + day;
+    },
     khSelect() {
       this.selectKhDialog = true;
       this.$nextTick(() => {
@@ -620,7 +661,7 @@ export default {
       this.form = {
         id: undefined,
         djNumber: undefined,
-        djTime: undefined,
+        djTime: this.getTime(),
         khCode: undefined,
         khName: undefined,
         goodsDw: undefined,
