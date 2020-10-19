@@ -83,6 +83,16 @@
           >生效</el-button
         >
       </el-col>
+          <el-col :span="1.5">
+        <el-button
+          type="warning"
+          icon="el-icon-edit"
+          size="mini"
+          @click="handleImport"
+          v-hasPermi="['system:wholeRetail:import']"
+          >导入</el-button
+        >
+      </el-col>
     </el-row>
 
     <el-table
@@ -95,7 +105,8 @@
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-table style="padding:0;margin:0" :data="props.row.childrenList" id="special">
-            <el-table-column label="商品编号" align="center" prop="goodsCode" />
+            <!-- <el-table-column label="商品编号" align="center" prop="goodsCode" /> -->
+            <el-table-column label="客户名称" align="center" prop="khName" />
             <el-table-column label="商品名称" align="center" prop="goodsName" />
             <el-table-column label="单位" align="center" prop="wholeDw" />
             <el-table-column label="销售量" align="center" prop="wholeNum" />
@@ -365,6 +376,24 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+      <el-dialog :title="title" :visible.sync="iopen" width="600px">
+                <el-row :gutter="15" class="mb8">
+            <el-col :span="1.5">
+              <el-upload
+                class="upload-demo"
+                ref="upload"
+                :action="importUrl"
+                :headers="upload.headers"
+                 :on-success="handleSuccess"
+                :on-remove="handleRemove"
+                :auto-upload="false">
+                <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+                <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+                <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
+              </el-upload>
+            </el-col>
+          </el-row>
+    </el-dialog>
     <goods-select
       v-if="selectGoodsDialog"
       ref="selectGoods"
@@ -404,6 +433,8 @@ export default {
   },
   data() {
     return {
+      importUrl:"",
+      iopen:false,
       goodsDw: "",
       fileList: [],
       upload: {
@@ -477,6 +508,21 @@ export default {
     });
   },
   methods: {
+    submitUpload() {
+        this.$refs.upload.submit();
+      },
+     handleSuccess(res, file, fileList) {
+       this.getList();
+    },
+     handleRemove(file, fileList) {
+
+    },
+         /** 导入操作 */
+    handleImport() {
+      this.iopen = true;
+      this.title = "导入多品配货";
+      this.importUrl=process.env.VUE_APP_BASE_API + "/system/wholeRetail/import";
+    },
        handleEditPerson(data,index, row){
         //根据编码找产地
       

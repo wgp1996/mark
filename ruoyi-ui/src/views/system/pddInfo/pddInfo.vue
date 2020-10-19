@@ -193,12 +193,12 @@
             </el-form-item>
             <el-form-item
               label="仓库"
-              prop="storeName"
+              prop="storeNum"
               class="pig"
               style="width: 400px"
             >
               <el-select
-                v-model="form.storeName"
+                v-model="form.storeNum"
                 filterable
                 style="width: 100%"
               >
@@ -207,6 +207,7 @@
                   :key="item.ckCode"
                   :label="item.ckName"
                   :value="item.ckCode"
+                  @change="selectStore(data)"
                 >
                   <span
                     style="
@@ -519,7 +520,7 @@ export default {
   created() {
     getCkAll(this.queryParams).then((response) => {
       this.storeList = response.rows;
-      this.place = response.rows[0].ckCode;
+      this.place = response.rows[0].ckName;
     });
     ownerList(this.queryParams).then((response) => {
       this.personList = response.data;
@@ -688,18 +689,6 @@ export default {
           break;
         }
       }
-    },
-    getSumMoney(index, row) {
-      //计算总金额
-      let sumMoney = 0;
-      for (let i = 0; i < this.tableData.length; i++) {
-        if (this.tableData[i].goodsCode != "") {
-          sumMoney += parseFloat(this.tableData[i].goodsCode);
-        }
-      }
-      this.form.storeName = sumMoney.toString();
-      console.log(this.form);
-      // console.log(row.goodsCode);
     },
     handleChildDelete(index, row) {
       if (row.id != "" && row.id != undefined && row.id != null) {

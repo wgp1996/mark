@@ -95,7 +95,7 @@
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-table style="padding:0;margin:0" :data="props.row.childrenList" id="special">
-            <el-table-column label="客户编号" align="center" prop="khCode" />
+            <!-- <el-table-column label="客户编号" align="center" prop="khCode" /> -->
             <el-table-column label="客户名称" align="center" prop="khName" />
             <el-table-column label="单位" align="center" prop="wholeDw" />
             <el-table-column label="销售量" align="center" prop="wholeNum" />
