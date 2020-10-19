@@ -356,7 +356,7 @@
               <el-table-column prop="goodsNum" label="出库数量" width="200">
                 <template scope="scope">
                   <el-input
-                    :disabled="true"
+                    @change="handleEdit(scope.$index, scope.row)"
                     size="small"
                     v-model="scope.row.goodsNum"
                     placeholder="请输入内容"
@@ -604,6 +604,7 @@ export default {
       iopen: false,
       perationOptions: [],
       operateOptions: [],
+      number:undefined,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -767,20 +768,30 @@ export default {
       // console.log(tab, event);
     },
     handleCurrentChange(row, event, column) {
-      console.log(row, event, column, event.currentTarget);
+      // console.log(row, event, column, event.currentTarget);
     },
     handleEdit(index, row) {
+      
       if (
         row.goodsNum != "" &&
         row.goodsNum != null &&
-        row.goodsNum != undefined &&
-        row.goodsPrice != "" &&
-        row.goodsPrice != null &&
-        row.goodsPrice != undefined
+        row.goodsNum != undefined 
+        // row.goodsPrice != "" &&
+        // row.goodsPrice != null &&
+        // row.goodsPrice != undefined
       ) {
-        row.goodsMoney = (
-          parseFloat(row.goodsNum) * parseFloat(row.goodsPrice)
-        ).toFixed(2);
+       if(row.goodsNum>this.number){
+            this.msgError("数字不正确");
+            return 
+        }else{
+          if( row.goodsPrice != "" &&
+         row.goodsPrice != null &&
+         row.goodsPrice != undefined){
+        row.goodsMoney = ( parseFloat(row.goodsNum) * parseFloat(row.goodsPrice)).toFixed(2);
+         }
+   
+        }
+     
       } else {
         this.msgError("!");
       }
@@ -826,7 +837,7 @@ export default {
       });
     },
     //选择数据
-
+     
     selectData(row) {
       //  this.selectGoodsDialog=false;
       this.$nextTick(() => {
@@ -837,7 +848,7 @@ export default {
         //     return;
         //   }
         // }
-
+  
         let goodsInfo = new Object();
         goodsInfo.goodsCode = row.goodsCode;
         goodsInfo.goodsName = row.goodsName;
@@ -846,12 +857,15 @@ export default {
         goodsInfo.storeNum = row.storeNum;
         goodsInfo.goodsGg = row.goodsGg;
         goodsInfo.goodsDw = row.goodsDw;
-        goodsInfo.goodsNum = row.goodsNum;
+        goodsInfo.goodsNum = row.syNum;
+          goodsInfo.rkMxid= row.id;
         goodsInfo.goodsPrice = "";
         goodsInfo.goodsMoney = "";
         goodsInfo.remark = "";
         this.tableData.push(goodsInfo);
+         this.number=row.syNum
         this.$refs.selectGoods.visible = false;
+       
       });
     },
     //批量选择数据
@@ -877,7 +891,9 @@ export default {
           goodsInfo.storeNum = row.storeNum;
           goodsInfo.goodsGg = row.goodsGg;
           goodsInfo.goodsDw = row.goodsDw;
-          goodsInfo.goodsNum = row.goodsNum;
+            goodsInfo.rkMxid= row.id;
+          goodsInfo.goodsNum = row.syNum;
+          this.number=row.syNum
           goodsInfo.goodsPrice = "";
           goodsInfo.goodsMoney = "";
           goodsInfo.remark = "";

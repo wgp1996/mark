@@ -96,8 +96,8 @@
     />
 
     <!-- 添加或修改【市场信息】对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="600px">
-      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
+    <el-dialog :title="title" :visible.sync="open" width="800px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane label="基础信息" name="first">
             <el-form-item label="市场名称" prop="markName">
@@ -138,50 +138,83 @@
             </el-form-item>
           </el-tab-pane>
           <el-tab-pane label="位置&简介" name="second">
-            <el-form-item label="省份" prop="markAddressProvince">
-              <el-select
-                v-model="form.markAddressProvince"
-                placeholder="请选择"
-                @change="getCityData"
-                style="width:100%"
-              >
-                <el-option
-                  v-for="dict in provinceDatas"
-                  :key="dict.code"
-                  :label="dict.name"
-                  :value="dict.code"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="城市" prop="markAddressCity">
-              <el-select
-                v-model="form.markAddressCity"
-                placeholder="请选择"
-                @change="getAreaData"
-                style="width:100%"
-              >
-                <el-option
-                  v-for="dict in cityDatas"
-                  :key="dict.code"
-                  :label="dict.name"
-                  :value="dict.code"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="区域" prop="markAddressArea">
-              <el-select v-model="form.markAddressArea" placeholder="请选择" style="width:100%">
-                <el-option
-                  v-for="dict in areaDatas"
-                  :key="dict.code"
-                  :label="dict.name"
-                  :value="dict.code"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="位置详情" prop="markAddressDetail">
+            <div style="width:100%" class="clearfix">
+                <el-form-item label="省份" prop="markAddressProvince" style="float:left;width:33%">
+                  <el-select
+                    v-model="form.markAddressProvince"
+                    placeholder="请选择"
+                    @change="getCityData"
+                    style="width:100%"
+                  >
+                    <el-option
+                      v-for="dict in provinceDatas"
+                      :key="dict.code"
+                      :label="dict.name"
+                      :value="dict.code"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="城市" prop="markAddressCity" style="float:left;width:33%">
+                  <el-select
+                    v-model="form.markAddressCity"
+                    placeholder="请选择"
+                    @change="getAreaData"
+                    style="width:100%"
+                  >
+                    <el-option
+                      v-for="dict in cityDatas"
+                      :key="dict.code"
+                      :label="dict.name"
+                      :value="dict.code"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="区域" prop="markAddressArea" style="float:left;width:33%">
+                  <el-select v-model="form.markAddressArea" placeholder="请选择" style="width:100%">
+                    <el-option
+                      v-for="dict in areaDatas"
+                      :key="dict.code"
+                      :label="dict.name"
+                      :value="dict.code"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+            </div>
+            <!-- <el-form-item label="位置详情" prop="markAddressDetail">
               <el-input v-model="form.markAddressDetail" placeholder="请输入详情" />
+            </el-form-item> -->
+          
+            <el-form-item>
+            <baidu-map class="bm-view" ak="cGklIMXA6RuKkir9UobkakSE0QhwyuoO" :center="center" :zoom="zoom" @ready="handler" 
+             :min-zoom="10"
+             :max-zoom="17"
+             :scroll-wheel-zoom="true"
+              @click="getClickInfo"
+              v-if="showMap"
+             >
+             <bm-view style="width: 100%; height:300px;"></bm-view>
+               <bm-control :offset="{width: '10px', height: '10px'}" style="display：none">
+              
+              </bm-control>
+               <bm-marker
+                :position="{lng: center.lng, lat: center.lat}"
+                :dragging="true"
+                animation="BMAP_ANIMATION_BOUNCE"
+              ></bm-marker>
+            
+            </baidu-map>
             </el-form-item>
-            <el-form-item label="市场简介" prop="markNote">
+             <el-form-item label="经度" prop="addressLat">
+              <el-input v-model="form.addressLat" placeholder="请输入经度" />
+            </el-form-item>
+            <el-form-item label="纬度" prop="addressLng">
+              <el-input v-model="form.addressLng" placeholder="请输入纬度" />
+            </el-form-item>
+            <el-form-item label="位置查询" prop="markAddressDetail" style="width:80%;height:40px">
+              <el-input v-model="form.markAddressDetail" placeholder="" />
+               <el-button type="primary" @click="checke" style="float: right;position: relative;top: -36px;right: -100px;" >查询</el-button>
+            </el-form-item>
+              <el-form-item label="市场简介" prop="markNote">
               <el-input
                 type="textarea"
                 :rows="3"
@@ -189,8 +222,31 @@
                 v-model="form.markNote">
               </el-input>
             </el-form-item>
-            
+
           </el-tab-pane>
+           <el-tab-pane label="形象展示" name="third">
+               <el-row :gutter="15" class="mb8">
+            <el-col :span="1.5">
+              <el-upload
+                class="upload-demo"
+                :limit="15"
+                drag
+                :file-list="fileList"
+                :action="upload.url"
+                :headers="upload.headers"
+                :on-success="handleFileSuccess"
+                :on-remove="handleRemove"
+                :on-preview="clickFile"
+              >
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">
+                  将文件拖到此处，或
+                  <em>点击上传</em>
+                </div>
+              </el-upload>
+            </el-col>
+          </el-row>
+           </el-tab-pane >
         </el-tabs>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -210,12 +266,46 @@ import {
   updateInfo,
   exportInfo,
 } from "@/api/system/mark";
-
+import { listFile, delFile } from "@/api/system/file";
+import { getToken } from "@/utils/auth";
+ var _that
+ let index=0;
+import {BaiduMap, BmMarker,BmControl,BmAutoComplete,BmLocalSearch, BmView,} from 'vue-baidu-map'
 export default {
   name: "Info",
+  components: {
+    BaiduMap,
+    BmMarker,
+    BmControl,
+    BmAutoComplete,
+  BmLocalSearch,
+   BmView,
+  },
   data() {
     return {
+      center: {lng: '', lat: ''},
+      zoom: 15,
+      showMap: true,
+      keyword:'',
+      BMap: null,
+      map: null,
       activeName: 'first',
+      // 文件列表
+      fileList: [],
+           upload: {
+        // 是否显示弹出层（用户导入）
+        open: false,
+        // 弹出层标题（用户导入）
+        title: "",
+        // 是否禁用上传
+        isUploading: false,
+        // 是否更新已经存在的用户数据
+        updateSupport: 0,
+        // 设置上传的请求头部
+        headers: { Authorization: "Bearer " + getToken() },
+        // 上传的地址
+        url: process.env.VUE_APP_BASE_API + "/common/upload",
+      },
       // 主体性质字典
       perationOptions: [],
       // 省份字典
@@ -245,6 +335,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         markName: undefined,
+        djNumber: undefined,
       },
       // 表单参数
       form: {},
@@ -257,37 +348,117 @@ export default {
     };
   },
   created() {
+     _that = this;
     this.getList();
     this.getDicts("sys_peration_type").then((response) => {
       this.perationOptions = response.data;
     });
     this.getArea("000000").then((response) => {
       this.provinceDatas = response.data;
+      console.log(this.provinceDatas)
     });
   },
   methods: {
+    handler ({BMap, map}) {
+      console.log(BMap, map)
+      map.clearOverlays();
+       _that.BMap = BMap;
+      _that.map = map;
+      map.enableScrollWheelZoom(true);
+      if (
+        _that.form.addressLng != "" &&
+        _that.form.addressLng != null &&
+        _that.form.addressLng != undefined
+      ) {
+
+        _that.center = { lng: _that.form.addressLng, lat: _that.form.addressLat }; // 设置center属性值
+      } else {
+        let geolocation = new BMap.Geolocation();
+        geolocation.getCurrentPosition(
+          function (r) {
+            console.log(r)
+            let gc = new _that.BMap.Geocoder();
+            gc.getLocation(r.point, function (rs) {
+               console.log(rs)
+              _that.form.markAddressDetail = rs.address;
+            });
+            _that.center = { lng: r.longitude, lat: r.latitude }; // 设置center属性值
+            // _that.autoLocationPoint = { lng: r.longitude, lat: r.latitude }        // 自定义覆盖物
+             _that.form.addressLat=r.point.lat
+            _that.form.addressLng=r.point.lng
+      
+            _that.initLocation = true;
+          },
+          { enableHighAccuracy: true }
+        );
+      }
+    },
+        // 地图点击事件
+       getClickInfo(e){
+          _that.center.lng = e.point.lng;
+          _that.center.lat = e.point.lat;
+          _that.form.addressLat=e.point.lat
+          _that.form.addressLng=e.point.lng
+            _that.map.panTo(e.point)
+          let gc = new _that.BMap.Geocoder();
+          gc.getLocation(e.point, function (rs) {
+            console.log(rs);
+            _that.form.markAddressDetail = rs.address;
+          });
+    },
+    // 查询金纬度
+    checke(res){
+      var localSearch = new _that.BMap.LocalSearch(_that.map);
+      // var keyword = document.getElementById("text_").value;
+       var keyword=_that.form.markAddressDetail
+　　localSearch.setSearchCompleteCallback(function (searchResult) {
+　　　　var poi = searchResult.getPoi(0);
+　　　　//document.getElementById("result_").value = poi.point.lng + "," + poi.point.lat; //获取经度和纬度，将结果显示在文本框中
+       console.log(poi)
+      _that.center.lng = poi.point.lng;
+      _that.center.lat = poi.point.lat;
+       _that.form.addressLat=poi.point.lat
+       _that.form.addressLng=poi.point.lng
+// 　　　　_that.map.centerAndZoom(poi.point, 13);
+          _that.map.panTo(poi.point)
+　　});
+　　localSearch.search(keyword);
+    },
     getCityData(code) {
       if (code != "") {
+        console.log(code)
         this.getArea(code).then((response) => {
+          console.log(response)
           this.form.markAddressCity = "";
           this.form.markAddressArea = "";
           this.cityDatas = [];
           this.areaDatas = [];
           this.cityDatas = response.data;
+        
         });
       }
     },
     getAreaData(code) {
       if (code != "") {
+             console.log(code)
         this.getArea(code).then((response) => {
+              console.log(response)
           this.areaDatas = [];
           this.form.markAddressArea = "";
           this.areaDatas = response.data;
         });
       }
     },
-     handleClick(tab, event) {
-        //console.log(tab, event);
+     handleClick(res) {
+            index++;
+       if (res.name == "second") {
+         _that.showMap = true;
+         if(index==1){
+            // _that.map.panBy(350, 300);
+         }
+        }else{
+          _that.showMap = false;
+        }
       },
     /** 查询【市场信息】列表 */
     getList() {
@@ -326,6 +497,17 @@ export default {
         updateBy: undefined,
         updateTime: undefined,
         remark: undefined,
+         sampAddress: undefined, 
+          sampAddressPerson: undefined,  
+          sampaddressPersonTel: undefined, 
+         sampBz: undefined,
+          addressLat: undefined, 
+          addressLng: undefined, 
+      
+          ckAddress: undefined,
+          lat: undefined,
+        lng: undefined,
+        fileName:undefined
       };
       this.resetForm("form");
     },
@@ -333,6 +515,32 @@ export default {
     handleQuery() {
       this.queryParams.pageNum = 1;
       this.getList();
+    },
+    // 照片上传成功
+     handleFileSuccess(res, file, fileList) {
+      this.fileList=fileList;
+      
+      console.log(res.url);
+     this.form.fileName = res.url;
+    },
+    // 删除照片
+    handleRemove(file, fileList) {
+      //alert(file.name)
+      this.fileList=fileList;
+      if(file.id!=undefined&&file.id!=""&&file.id!=null){
+        delFile(file.id);
+      }
+      this.form.fileName = "";
+    },
+    // 点击上传文件列表
+    clickFile(file) {
+      console.log(file)
+      if (file.response != ""&&file.response != undefined&&file.response != null) {
+          window.open(file.response.url);
+      }
+      if (file.url != ""&&file.url != undefined&&file.url != null) {
+          window.open (file.url);
+      }
     },
     /** 重置按钮操作 */
     resetQuery() {
@@ -357,6 +565,21 @@ export default {
       const id = row.id || this.ids;
       getInfo(id).then((response) => {
         this.form = response.data;
+          if(response.data.contractStatus=="已生效"){
+          this.checkStatus=false;
+        }
+       let queryParams={djNumber:response.data.contractCode}
+        listFile(queryParams).then((response) => {
+          this.fileList=[];
+          for(let i=0;i<response.rows.length;i++){
+                let file=response.rows[i];
+                let item= new Object();
+                item.id=file.id;
+                item.name=file.fileName;
+                item.url=file.fileUrl;
+                this.fileList.push(item);
+          }
+        });
         this.open = true;
         this.title = "修改【市场信息】";
       });
@@ -430,3 +653,10 @@ export default {
   },
 };
 </script>
+<style >
+  .clearfix{
+    display: block;
+    overflow: hidden;
+    clear: both;
+  }
+</style>>
