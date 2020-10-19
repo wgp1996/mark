@@ -780,8 +780,9 @@ export default {
         // row.goodsPrice != null &&
         // row.goodsPrice != undefined
       ) {
-       if(row.goodsNum>this.number){
-            this.msgError("数字不正确");
+       if(parseFloat(row.goodsNum)>parseFloat(this.number)){
+        //  alert(this.number)
+            this.msgError("数字要小于剩余数量");
             return 
         }else{
           if( row.goodsPrice != "" &&
