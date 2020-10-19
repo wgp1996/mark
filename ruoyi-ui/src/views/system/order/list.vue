@@ -102,7 +102,7 @@
     <!-- 添加或修改二级市场信息对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="900px">
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="明细信息" name="second">
+        <el-tab-pane label="明细信息" name="first">
           <el-table
             :data="tableData"
             class="tb-edit"
