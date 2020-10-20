@@ -201,13 +201,14 @@
                 v-model="form.storeNum"
                 filterable
                 style="width: 100%"
+                    @change="selectStore"
               >
                 <el-option
                   v-for="item in storeList"
                   :key="item.ckCode"
                   :label="item.ckName"
                   :value="item.ckCode"
-                  @change="selectStore(data)"
+              
                 >
                   <span
                     style="
@@ -377,13 +378,16 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
-
+   <div v-if="showen">
     <goods-select
-      v-if="selectGoodsDialog"
+    
       ref="selectGoods"
+      v-bind:sunny="sun"
       @selectData="selectData"
       @selectDataMore="selectDataMore"
     ></goods-select>
+      <!-- v-if="selectGoodsDialog" -->
+    </div>
   </div>
 </template>
 
@@ -424,7 +428,9 @@ export default {
   },
   data() {
     return {
-      importUrl: "",
+      // 传值数据
+    sun:"",
+    importUrl: "",
       //用户信息
       user: {
         ownerCode: "",
@@ -469,6 +475,8 @@ export default {
       // 遮罩层
       loading: false,
       selectGoodsDialog: false,
+      // 显示
+      showen:false,
       //选取主市场
       markDatas: [],
       // 选中数组
@@ -520,6 +528,9 @@ export default {
   created() {
     getCkAll(this.queryParams).then((response) => {
       this.storeList = response.rows;
+      this.form.storeNum=response.rows[0].ckCode
+      this.check = response.rows[0].ckCode;
+       this.sun= this.storeList[0].ckCode;
       this.place = response.rows[0].ckName;
     });
     ownerList(this.queryParams).then((response) => {
@@ -640,10 +651,13 @@ export default {
     selectOwner(data) {},
     //选择仓库
     selectStore(data) {
+    //  alert(data)
       //根据仓库编码查找仓库名称
       for (let i = 0; i < this.storeList.length; i++) {
         if (this.storeList[i].ckCode == data) {
           this.form.storeName = this.storeList[i].ckName;
+          this.sun= data;
+          // alert(this.sun)
           break;
         }
       }
@@ -702,8 +716,10 @@ export default {
     /** 操作 */
     goodsSelect() {
       this.selectGoodsDialog = true;
+      this.showen=true
       this.$nextTick(() => {
         this.$refs.selectGoods.visible = true;
+        
       });
     },
     //选择数据
@@ -725,6 +741,8 @@ export default {
         goodsInfo.goodsGg = row.goodsGg;
         goodsInfo.goodsDw = row.goodsDw;
         goodsInfo.kcNum = row.kcNum;
+        goodsInfo.goodsLossNum='';
+        goodsInfo.goodsNum='';
         goodsInfo.checkResult = "";
         goodsInfo.checkResultName = "";
         goodsInfo.goodsRate = "0";
@@ -756,6 +774,8 @@ export default {
           goodsInfo.goodsGg = row.goodsGg;
           goodsInfo.goodsDw = row.goodsDw;
           goodsInfo.kcNum = row.kcNum;
+          goodsInfo.goodsLossNum='';
+           goodsInfo.goodsNum='';
           goodsInfo.checkResult = "";
           goodsInfo.checkResultName = "";
           goodsInfo.goodsRate = "0";
@@ -813,9 +833,12 @@ export default {
         goodsLossNum: undefined,
         kcNum: undefined,
         checkEndTime: this.getTime(),
+        storeNum:undefined,
       };
       this.resetForm("form");
-      this.form.checkAddress = this.check;
+      // this.form.checkAddress = this.check;
+      this.form.storeNum = this.check;
+      //  this.form.storeNum=response.rows[0].ckCode
       this.form.storeName = this.place;
       this.form.checkDevice = this.placedevice;
       this.tableData = [];

@@ -1,6 +1,7 @@
 <template>
     <el-dialog :close-on-click-modal="false" :title="title"
-    :visible.sync="visible">
+    :visible.sync="visible"
+    :destroy-on-close="true">
     <el-row :gutter="20">
      <!--部门数据-->
       <!-- <el-col :span="4" :xs="24">
@@ -87,6 +88,7 @@
     />
        </el-col>
     </el-row>
+
      </el-dialog>
 </template>
 
@@ -104,12 +106,14 @@ import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 export default {
   name: "Stall",
   components: { Treeselect },
+  props:["sunny"],
   data() {
     return {
       goodsSelectList:[],
        goodsList:[],
        goodsTypeOptions:[],
        visible: false,
+       
       // 遮罩层
       loading: true,
       // 选中数组
@@ -145,6 +149,7 @@ export default {
         stallLeaseholder: undefined,
         stallNote: undefined,
         createUser: undefined,
+        sunny: this.sunny,
       },
       // 表单参数
       form: {},
@@ -159,11 +164,16 @@ export default {
       }
     };
   },
-  // watch:{
-  //     pshow(newValue,oldValue){
-  //        this.visible=newValue;
-  //     }
-  // },
+  watch:{
+      visible(val){
+        this.queryParams.sunny= this.sunny
+        val&&this.getList()
+        
+      },
+      // sunny(val){
+      //   alert(val)
+      // }
+  },
   created() {
        this.getList();
   },
