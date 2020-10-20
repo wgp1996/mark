@@ -20,7 +20,7 @@ module.exports = {
   //部署
   publicPath: process.env.NODE_ENV === "production" ? "/mark/" : "/mark/",
   //本地
- // publicPath: process.env.NODE_ENV === "production" ? "/" : "/",
+  //publicPath: process.env.NODE_ENV === "production" ? "/" : "/",
   // 在npm run build 或 yarn build 时 ，生成文件的目录名称（要和baseUrl的生产环境路径一致）（默认dist）
   outputDir: 'dist',
   // 用于放置生成的静态资源 (js、css、img、fonts) 的；（项目打包之后，静态资源会放在这个文件夹下）
@@ -32,12 +32,12 @@ module.exports = {
   // webpack-dev-server 相关配置 类似Nginx 部署
   // devServer: {
   //   host: 'localhost',
-  //   port: 80,
+  //   port: 443,
   //   proxy: {
   //     // detail: https://cli.vuejs.org/config/#devserver-proxy
   //     //target: `https://www.lczhuisu.cn/`,
   //     [process.env.VUE_APP_BASE_API]: {
-  //       target: `http://keboo.cn/`,
+  //       target: `https://www.lczhuisu.cn/mark/`,
   //       changeOrigin: true,
   //       pathRewrite: {
   //         ['^' + process.env.VUE_APP_BASE_API]: ''
@@ -46,15 +46,14 @@ module.exports = {
   //   },
   //   disableHostCheck: true
   // },
-  //本地
   devServer: {
     host: 'localhost',
     port: 80,
     proxy: {
-      
       // detail: https://cli.vuejs.org/config/#devserver-proxy
+      //target: `https://www.lczhuisu.cn/`,
       [process.env.VUE_APP_BASE_API]: {
-        target: `http://wrcrbj.natappfree.cc/`,
+        target: `http://keboo.cn/`,
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
@@ -63,6 +62,23 @@ module.exports = {
     },
     disableHostCheck: true
   },
+  //本地
+  // devServer: {
+  //   host: 'localhost',
+  //   port: 80,
+  //   proxy: {
+      
+  //     // detail: https://cli.vuejs.org/config/#devserver-proxy
+  //     [process.env.VUE_APP_BASE_API]: {
+  //       target: `http://s44z9i.natappfree.cc/`,
+  //       changeOrigin: true,
+  //       pathRewrite: {
+  //         ['^' + process.env.VUE_APP_BASE_API]: ''
+  //       }
+  //     }
+  //   },
+  //   disableHostCheck: true
+  // },
   configureWebpack: {
     name: name,
     resolve: {
