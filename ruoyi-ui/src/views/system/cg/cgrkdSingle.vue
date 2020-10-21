@@ -99,6 +99,7 @@
       <el-table-column label="业户代码" align="center" prop="createBy" />
       <el-table-column label="供应商" align="center" prop="personName" />
       <el-table-column label="仓库名称" align="center" prop="storeName" />
+      <el-table-column label="结算方式" align="center" prop="payTypeName" />
       <el-table-column label="制单人" align="center" prop="createBy" />
       <el-table-column label="制单日期" align="center" prop="createTime" /> 
       <!-- <el-table-column type="selection" width="55" align="center" />
@@ -166,10 +167,10 @@
             <el-form-item label="仓库信息" prop="storeCode">
               <el-select
                 v-model="form.storeCode"
-                :placeholder="placeholderone"
+              
                 filterable
-                @change="selectStore"
                 style="width:100%"
+                 @change="selectStore"
               >
                 <el-option
                   v-for="item in storeList"
@@ -189,10 +190,25 @@
                   <el-radio :label="1">是</el-radio>
               </el-radio-group>
             </el-form-item>
-            
-          
-          
-            <el-form-item label="备注信息" prop="remark">
+              <el-form-item label="结算方式" prop="payType">
+              <el-select
+                v-model="form.payType"
+                filterable
+              style="width:100%"
+               @change="selectCell"
+              >
+                <el-option
+                  v-for="item in perationOptions"
+                  :key="item.dictValue"
+                  :label="item.dictLabel"
+                  :value="item.dictValue"
+                >
+                  <!-- <span style="float: left;width:50%">{{ item.dictSort }}</span> -->
+                  <span style="float: left;width:50%">{{ item.dictLabel }}</span>
+                </el-option>
+              </el-select>
+            </el-form-item>
+           <el-form-item label="备注信息" prop="remark">
               <el-input v-model="form.remark" placeholder="请输入备注信息" />
             </el-form-item>
    
@@ -448,8 +464,7 @@ export default {
       },
       // 仓库信息默认
       placeholderone:'',
-      //业主列表
-      storeList: [],
+   
       //供应商
       personList: [],
       // 遮罩层
@@ -486,6 +501,14 @@ export default {
       },
       // 表单参数
       form: {},
+      // 默认现结
+      cash:undefined,
+      // 仓库默认
+      place:undefined,
+      // 结算方式名称默认
+      payTypes:undefined,
+      // 仓库名称
+      storeNames:undefined,
       activeName: "first",
       // 表单校验
       rules: {
@@ -503,8 +526,19 @@ export default {
   },
   created() {
     this.getList();
+     this.getDicts("pay_type").then((response) => {
+      this.perationOptions = response.data;
+       this.cash=response.data[1].dictValue;
+       this.payTypes=response.data[1].dictLabel
+     
+      console.log( this.perationOptions)
+    });
      getCkAll(this.queryParams).then(response => {
         this.storeList = response.rows;
+        console.log(this.storeList)
+        this.place=response.rows[0].ckCode
+         this.storeNames=response.rows[0].ckName;
+    
         // console.log(this.storeList)
            for(let i=0;i<this.storeList.length;i++){
             this.placeholderone=this.storeList[0].ckName;
@@ -629,8 +663,20 @@ export default {
       //根据摊位编码查找摊位名称
       for(let i=0;i<this.storeList.length;i++){
         if(this.storeList[i].ckCode==data){
-          this.form.storeName=this.storeList[i].ckName;
+           this.form.storeName=this.storeList[i].ckName;
+     
           break;
+        }
+      }
+    },
+    //选择结算方式
+    selectCell(data){
+      //根据摊位编码查找摊位名称
+      for(let i=0;i<this.perationOptions.length;i++){
+        if(this.perationOptions[i].dictValue==data){
+          this.form.payTypeName=this.perationOptions[i].dictLabel;
+            // alert(this.form.payTypeName)
+           break;
         }
       }
     },
@@ -841,7 +887,13 @@ export default {
         personCode:undefined,
         rows: "",
         isRate:0,
+        payType:undefined,
+        payTypeName:undefined
       };
+      this.form.payType=this.cash;
+      this.form.storeCode=this.place;
+      this.form.payTypeName=this.payTypes
+      this.form.storeName=this.storeNames,
       this.resetForm("form");
       this.tableData = [];
     },
