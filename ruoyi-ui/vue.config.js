@@ -18,9 +18,9 @@ module.exports = {
   // 默认情况下，Vue CLI 会假设你的应用是被部署在一个域名的根路径上
   // 例如 https://www.ruoyi.vip/。如果应用被部署在一个子路径上，你就需要用这个选项指定这个子路径。例如，如果你的应用被部署在 https://www.ruoyi.vip/admin/，则设置 baseUrl 为 /admin/。
   //部署
-  publicPath: process.env.NODE_ENV === "production" ? "/mark/" : "/mark/",
+  //publicPath: process.env.NODE_ENV === "production" ? "/mark/" : "/mark/",
   //本地
-  //publicPath: process.env.NODE_ENV === "production" ? "/" : "/",
+  publicPath: process.env.NODE_ENV === "production" ? "/" : "/",
   // 在npm run build 或 yarn build 时 ，生成文件的目录名称（要和baseUrl的生产环境路径一致）（默认dist）
   outputDir: 'dist',
   // 用于放置生成的静态资源 (js、css、img、fonts) 的；（项目打包之后，静态资源会放在这个文件夹下）
@@ -46,31 +46,14 @@ module.exports = {
   //   },
   //   disableHostCheck: true
   // },
-  devServer: {
-    host: 'localhost',
-    port: 80,
-    proxy: {
-      // detail: https://cli.vuejs.org/config/#devserver-proxy
-      //target: `https://www.lczhuisu.cn/`,
-      [process.env.VUE_APP_BASE_API]: {
-        target: `http://keboo.cn/`,
-        changeOrigin: true,
-        pathRewrite: {
-          ['^' + process.env.VUE_APP_BASE_API]: ''
-        }
-      }
-    },
-    disableHostCheck: true
-  },
-  //本地
   // devServer: {
   //   host: 'localhost',
   //   port: 80,
   //   proxy: {
-      
   //     // detail: https://cli.vuejs.org/config/#devserver-proxy
+  //     //target: `https://www.lczhuisu.cn/`,
   //     [process.env.VUE_APP_BASE_API]: {
-  //       target: `http://s44z9i.natappfree.cc/`,
+  //       target: `http://keboo.cn/`,
   //       changeOrigin: true,
   //       pathRewrite: {
   //         ['^' + process.env.VUE_APP_BASE_API]: ''
@@ -79,6 +62,23 @@ module.exports = {
   //   },
   //   disableHostCheck: true
   // },
+  //本地
+  devServer: {
+    host: 'localhost',
+    port: 80,
+    proxy: {
+      
+      // detail: https://cli.vuejs.org/config/#devserver-proxy
+      [process.env.VUE_APP_BASE_API]: {
+        target: `http://aub35j.natappfree.cc/`,
+        changeOrigin: true,
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_BASE_API]: ''
+        }
+      }
+    },
+    disableHostCheck: true
+  },
   configureWebpack: {
     name: name,
     resolve: {

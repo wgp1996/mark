@@ -149,7 +149,7 @@ export default {
         stallLeaseholder: undefined,
         stallNote: undefined,
         createUser: undefined,
-        sunny: this.sunny,
+        storeNum: this.sunny,
       },
       // 表单参数
       form: {},
@@ -166,7 +166,7 @@ export default {
   },
   watch:{
       visible(val){
-        this.queryParams.sunny= this.sunny
+        this.queryParams.storeNum= this.sunny
         val&&this.getList()
         
       },

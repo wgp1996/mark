@@ -97,7 +97,7 @@
 
     <!-- 添加或修改【市场信息】对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="800px">
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane label="基础信息" name="first">
             <el-form-item label="市场名称" prop="markName">
