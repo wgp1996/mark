@@ -156,6 +156,19 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
+         <el-col :span="24">
+            <el-form-item label="上传图片">
+               <el-upload
+                class="avatar-uploader"
+                  :action="upload.url"
+                  :headers="upload.headers"
+                :show-file-list="false"
+                :on-success="handleImageSuccess">
+                <img width="100%" v-if="form.fileName" :src="form.fileName" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
+            </el-form-item>
+          </el-col>
           <el-col :span="24">
             <el-form-item label="内容">
               <Editor v-model="form.noticeContent" />
@@ -174,6 +187,7 @@
 <script>
 import { listNotice, getNotice, delNotice, addNotice, updateNotice, exportNotice } from "@/api/system/notice";
 import Editor from '@/components/Editor';
+import { getToken } from "@/utils/auth";
 
 export default {
   name: "Notice",
@@ -182,6 +196,20 @@ export default {
   },
   data() {
     return {
+      upload: {
+        // 是否显示弹出层（用户导入）
+        open: false,
+        // 弹出层标题（用户导入）
+        title: "",
+        // 是否禁用上传
+        isUploading: false,
+        // 是否更新已经存在的用户数据
+        updateSupport: 0,
+        // 设置上传的请求头部
+        headers: { Authorization: "Bearer " + getToken() },
+        // 上传的地址
+        url: process.env.VUE_APP_BASE_API + "/common/upload"
+      },
       // 遮罩层
       loading: true,
       // 选中数组
@@ -242,6 +270,12 @@ export default {
         this.loading = false;
       });
     },
+    // 上传图片成功
+    handleImageSuccess(res, file, fileList) {
+      this.form.fileName = res.url;
+      // 上传成功
+      console.log(res.url);
+    },
     // 公告状态字典翻译
     statusFormat(row, column) {
       return this.selectDictLabel(this.statusOptions, row.status);
@@ -262,7 +296,8 @@ export default {
         noticeTitle: undefined,
         noticeType: undefined,
         noticeContent: undefined,
-        status: "0"
+        status: "0",
+        fileName: undefined,
       };
       this.resetForm("form");
     },
@@ -343,3 +378,31 @@ export default {
   }
 };
 </script>
+<style >
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 150px;
+    height: 150px;
+    line-height: 150px;
+    text-align: center;
+  }
+  .avatar {
+    width: 150px;
+    height: 150px;
+    display: block;
+  }
+  .el-upload-dragger{
+    height: auto !important;
+  }
+</style>>
