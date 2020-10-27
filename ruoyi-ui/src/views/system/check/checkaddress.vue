@@ -169,13 +169,13 @@
             </el-form-item>
             <div class="clearfix" style="width:100%;position:relative;top:-15px;height:40px">
             <div style="width:50%;float:left;height:100%">
-            <el-form-item label="经度" prop="checkAddressLat"   id="special" class="onders">
-              <el-input v-model="form.checkAddressLat" placeholder="请输入经度"  style="width:127px"/>
+            <el-form-item label="纬度" prop="checkAddressLat"   id="special" class="onders">
+              <el-input v-model="form.checkAddressLat" placeholder="请输入纬度"  style="width:127px"/>
             </el-form-item>
             </div>
             <div style="width:50%;float:left;height:100%">
-            <el-form-item label="纬度" prop="checkAddressLng"  id="specials" class="onders">
-              <el-input v-model="form.checkAddressLng" placeholder="请输入纬度" style="width:127px"/>
+            <el-form-item label="经度" prop="checkAddressLng"  id="specials" class="onders">
+              <el-input v-model="form.checkAddressLng" placeholder="请输入经度" style="width:127px"/>
             </el-form-item>
             </div>
             </div>

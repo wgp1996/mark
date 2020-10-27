@@ -155,11 +155,11 @@
                 :selectFirstResult="false"
               ></bm-local-search> -->
             </baidu-map>
-            <el-form-item label="经度" prop="sampAddressLat">
-              <el-input v-model="form.sampAddressLat" placeholder="请输入经度" />
+            <el-form-item label="纬度" prop="sampAddressLat">
+              <el-input v-model="form.sampAddressLat" placeholder="请输入纬度" />
             </el-form-item>
-            <el-form-item label="纬度" prop="sampAddressLng">
-              <el-input v-model="form.sampAddressLng" placeholder="请输入纬度" />
+            <el-form-item label="经度" prop="sampAddressLng">
+              <el-input v-model="form.sampAddressLng" placeholder="请输入经度" />
             </el-form-item>
             <el-form-item label="可输入位置查询" prop="sampAddressDetail" style="width:80%">
               <el-input v-model="form.sampAddressDetail" placeholder="" />

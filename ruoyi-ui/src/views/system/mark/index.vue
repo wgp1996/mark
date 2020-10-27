@@ -204,11 +204,11 @@
             
             </baidu-map>
             </el-form-item>
-             <el-form-item label="经度" prop="addressLat">
-              <el-input v-model="form.addressLat" placeholder="请输入经度" />
+             <el-form-item label="纬度" prop="addressLat">
+              <el-input v-model="form.addressLat" placeholder="请输入纬度" />
             </el-form-item>
-            <el-form-item label="纬度" prop="addressLng">
-              <el-input v-model="form.addressLng" placeholder="请输入纬度" />
+            <el-form-item label="经度" prop="addressLng">
+              <el-input v-model="form.addressLng" placeholder="请输入经度" />
             </el-form-item>
             <el-form-item label="位置查询" prop="markAddressDetail" style="width:80%;height:40px">
               <el-input v-model="form.markAddressDetail" placeholder="" />

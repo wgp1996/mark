@@ -2,7 +2,7 @@
     <div class="count">
     <div style="position:relative;background-color:#666666">
  		<div class="middle " style="background-color: #666666;margin-top: 20px;overflow: hidden;position:relative;width:90%;margin:0 auto;padding:20px 0px;height:auto">
- 			<div style="position:absolute;width:1000%;top:20px" class="mobile clearfix">
+ 			<div style="position:absolute;width:1000%;top:20px;height:100%" class="mobile clearfix">
 			<div class=" common">
 				<div class="c-child" style=";height: 90%;">
 			
