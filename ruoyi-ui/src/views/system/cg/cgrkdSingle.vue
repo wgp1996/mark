@@ -276,12 +276,20 @@
             </el-table-column>
              <el-table-column prop="goodsDw" label="单位" width="120">
               <template scope="scope">
-                <el-input
+                <!-- <el-input
                   :disabled="true"
                   size="small"
                   v-model="scope.row.goodsDw"
                   placeholder=""
-                ></el-input>
+                ></el-input> -->
+                <el-select v-model="scope.row.goodsDw" placeholder="请输入单位信息" style="width:100%">
+                    <el-option
+                      v-for="dict in dwOptions"
+                      :key="dict.dictValue"
+                      :label="dict.dictLabel"
+                      :value="dict.dictValue"
+                    ></el-option>
+                  </el-select>
                 <span>{{scope.row.goodsDw}}</span>
               </template>
             </el-table-column>
@@ -490,6 +498,7 @@ export default {
       // 是否显示弹出层
       open: false,
       perationOptions: [],
+      dwOptions: [],
       operateOptions: [],
       // 查询参数
       queryParams: {
@@ -532,6 +541,11 @@ export default {
        this.payTypes=response.data[1].dictLabel
      
       console.log( this.perationOptions)
+    });
+    this.getDicts("sys_dw").then((response) => {
+       console.log(response)
+      this.dwOptions = response.data;
+
     });
      getCkAll(this.queryParams).then(response => {
         this.storeList = response.rows;

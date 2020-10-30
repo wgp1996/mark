@@ -46,7 +46,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['system:wholeRetail:add']"
+          v-hasPermi="['info:wholeRetail:add']"
           >新增</el-button
         >
       </el-col>
@@ -57,7 +57,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['system:wholeRetail:edit']"
+          v-hasPermi="['info:wholeRetail:edit']"
           >修改</el-button
         >
       </el-col>
@@ -68,7 +68,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['system:wholeRetail:remove']"
+          v-hasPermi="['info:wholeRetail:remove']"
           >删除</el-button
         >
       </el-col>
@@ -79,7 +79,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleEffect"
-          v-hasPermi="['system:wholeRetail:effect']"
+          v-hasPermi="['info:wholeRetail:effect']"
           >生效</el-button
         >
       </el-col>
@@ -89,7 +89,7 @@
           icon="el-icon-edit"
           size="mini"
           @click="handleImport"
-          v-hasPermi="['system:wholeRetail:import']"
+          v-hasPermi="['info:wholeRetail:import']"
           >导入</el-button
         >
       </el-col>
@@ -306,13 +306,21 @@
             </el-table-column>
             <el-table-column prop="wholeDw" label="单位" width="120">
               <template scope="scope">
-                <el-input
+                <!-- <el-input
                   :disabled="true"
                   size="small"
                   v-model="scope.row.wholeDw"
                   placeholder="请输入单位信息"
                   @change="handleEdit(scope.$index, scope.row)"
-                ></el-input>
+                ></el-input> -->
+                 <el-select v-model="scope.row.wholeDw" placeholder="请输入单位信息" style="width:100%">
+                    <el-option
+                      v-for="dict in perationOptions"
+                      :key="dict.dictValue"
+                      :label="dict.dictLabel"
+                      :value="dict.dictValue"
+                    ></el-option>
+                  </el-select>
                 <span>{{ scope.row.wholeDw }}</span>
               </template>
             </el-table-column>
@@ -547,6 +555,11 @@ export default {
   },
   created() {
     this.getList();
+    this.getDicts("sys_dw").then((response) => {
+       console.log(response)
+      this.perationOptions = response.data;
+
+    });
     allListWholeRetail(this.queryParams).then(response => {
         this.khList = response.rows;
         // console.log(this.personList)

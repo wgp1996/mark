@@ -303,12 +303,20 @@
             </el-table-column>
              <el-table-column prop="goodsDw" label="单位" width="120">
               <template scope="scope">
-                <el-input
+                <!-- <el-input
                   :disabled="true"
                   size="small"
                   v-model="scope.row.goodsDw"
                   placeholder="单位信息"
-                ></el-input>
+                ></el-input> -->
+                <el-select v-model="scope.row.goodsDw" placeholder="请输入单位信息" style="width:100%">
+                    <el-option
+                      v-for="dict in perationOptions"
+                      :key="dict.dictValue"
+                      :label="dict.dictLabel"
+                      :value="dict.dictValue"
+                    ></el-option>
+                  </el-select>
                 <span>{{scope.row.goodsDw}}</span>
               </template>
             </el-table-column>
@@ -563,6 +571,11 @@ export default {
   },
   created() {
     this.getList();
+    this.getDicts("sys_dw").then((response) => {
+       console.log(response)
+      this.perationOptions = response.data;
+
+    });
     getCkAll(this.queryParams).then(response => {
         this.storeList = response.rows;
           for(let i=0;i<this.storeList.length;i++){
