@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-editor-container">
 
-    <panel-group @handleSetLineChartData="handleSetLineChartData" />
+    <panel-group @handleSetLineChartData="handleSetLineChartData"   @handleSetLineChart="handleSetLineChart" />
 
     <el-row style="background:#fff;padding:0px;margin-bottom:32px;" v-if="purchases">
       <!-- <line-chart :chart-data="lineChartData" /> -->
@@ -216,6 +216,7 @@ export default {
   },
   data() {
     return {
+      type:'purchases',
       sumNum:0,
        // 主表信息表格数据
       //  溯源单据
@@ -240,6 +241,7 @@ export default {
         markCode: undefined,
         djNumber: undefined,
         djTime: undefined,
+        markType:undefined
       },
       newVisitis:false,
       // messages:false,
@@ -325,7 +327,13 @@ export default {
       // });
 
     },
+     handleSetLineChart(type) {
+       
+       this.queryParams.markType=type;
+       this.handleSetLineChartData(this.type)
+     },
     handleSetLineChartData(type) {
+      this.type=type;
       this.loading =true;
       // this.lineChartData = lineChartData[type]
       if(type=="newVisitis"){
