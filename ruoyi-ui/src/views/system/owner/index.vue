@@ -308,7 +308,11 @@ export default {
         ],
          userName: [
           { required: true, message: "请输入关联账号", trigger: "blur" }
+        ],
+         markType: [
+          { required: true, message: "请选择市场分类", trigger: "blur" }
         ]
+        
         
       }
     };
