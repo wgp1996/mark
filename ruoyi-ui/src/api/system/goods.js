@@ -9,6 +9,15 @@ export function listGoods(query) {
   })
 }
 
+// 查询所有商品建档列表
+export function goodsListAll(query) {
+  return request({
+    url: '/system/goods/goodsListAll',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询商品建档详细
 export function getGoods(id) {
   return request({
