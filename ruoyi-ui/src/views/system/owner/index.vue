@@ -162,20 +162,20 @@
     />
 
     <!-- 添加或修改业户信息对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="600px">
+    <el-dialog :title="title" :visible.sync="open" width="800px">
       <el-form ref="form" :model="form" :rules="rules" label-width="140px">
         <el-tabs v-model="activeName">
           <el-tab-pane label="基础信息" name="first">
-            <el-form-item label="业户编号" prop="ownerCode">
+            <el-form-item label="业户编号" prop="ownerCode" style="margin-bottom:16px">
               <el-input v-model="form.ownerCode" placeholder="请输入业户编号" />
             </el-form-item>
-            <el-form-item label="业户名称" prop="ownerName">
+            <el-form-item label="业户名称" prop="ownerName" style="margin-bottom:16px">
               <el-input v-model="form.ownerName" placeholder="请输入业户名称" />
             </el-form-item>
-            <el-form-item label="关联账号" prop="userName">
+            <el-form-item label="关联账号" prop="userName" style="margin-bottom:16px">
               <el-input v-model="form.userName" placeholder="请输入关联账号" />
             </el-form-item>
-            <el-form-item label="市场分类" prop="markType">
+            <el-form-item label="市场分类" prop="markType" style="margin-bottom:16px">
               <treeselect
                 v-model="form.markType"
                 :options="markTypeOptions"
@@ -183,7 +183,7 @@
                 placeholder="请选择市场分类"
               />
             </el-form-item>
-            <el-form-item label="主营商品" prop="markGoodsList">
+            <el-form-item label="主营商品" prop="markGoodsList" style="margin-bottom:16px">
               <el-select style="width:100%"
                 v-model="form.markGoodsList"
                 multiple
@@ -201,44 +201,48 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="地址" prop="markAddress">
+            <el-form-item label="地址" prop="markAddress" style="margin-bottom:16px">
               <el-input v-model="form.markAddress" placeholder="请输入地址" />
             </el-form-item>
-            <el-form-item label="组织类型" prop="ownerOrg">
-              <el-select
-                v-model="form.ownerOrg"
-                placeholder="请选择组织类型"
-                style="width: 100%"
-              >
-                <el-option
-                  v-for="dict in orgOptions"
-                  :key="dict.dictValue"
-                  :label="dict.dictLabel"
-                  :value="dict.dictValue"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="机构性质" prop="ownerOrgNature">
-              <el-select
-                v-model="form.ownerOrgNature"
-                placeholder="请选择机构性质"
-                style="width: 100%"
-              >
-                <el-option
-                  v-for="dict in perationOptions"
-                  :key="dict.dictValue"
-                  :label="dict.dictLabel"
-                  :value="dict.dictValue"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="信用代码/身份证号" prop="ownerPersonId">
+              <el-form-item label="信用代码/身份证号" prop="ownerPersonId" style="margin-bottom:16px">
               <el-input
                 v-model="form.ownerPersonId"
                 placeholder="请输入信用代码/身份证号"
               />
             </el-form-item>
-            <el-form-item label="经营方式">
+            <div style="width:100%;height:40px" class="clearfix">
+                <el-form-item label="组织类型" prop="ownerOrg" style="width:50%;float:left;margin-bottom:16px">
+                  <el-select
+                    v-model="form.ownerOrg"
+                    placeholder="请选择组织类型"
+                    style="width: 100%"
+                  >
+                    <el-option
+                      v-for="dict in orgOptions"
+                      :key="dict.dictValue"
+                      :label="dict.dictLabel"
+                      :value="dict.dictValue"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="机构性质" prop="ownerOrgNature" style="width:50%;float:left;margin-bottom:16px">
+                  <el-select
+                    v-model="form.ownerOrgNature"
+                    placeholder="请选择机构性质"
+                    style="width: 100%"
+                  >
+                    <el-option
+                      v-for="dict in perationOptions"
+                      :key="dict.dictValue"
+                      :label="dict.dictLabel"
+                      :value="dict.dictValue"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+            </div>
+          
+            <div style="width:100%;height:40px" class="clearfix">
+            <el-form-item label="经营方式" style="width:50%;float:left;margin-bottom:16px">
               <el-select
                 v-model="form.ownerMangerType"
                 placeholder="请选择经营方式"
@@ -253,21 +257,24 @@
               </el-select>
             </el-form-item>
 
-            <el-form-item label="联系人" prop="ownerLxr">
+            <el-form-item label="联系人" prop="ownerLxr" style="width:50%;float:left;margin-bottom:16px">
               <el-input v-model="form.ownerLxr" placeholder="请输入联系人" />
             </el-form-item>
-            <el-form-item label="电话" prop="ownerLxrPhone">
+            </div>
+             <div style="width:100%;height:40px" class="clearfix">
+            <el-form-item label="电话" prop="ownerLxrPhone" style="width:50%;float:left;margin-bottom:16px">
               <el-input v-model="form.ownerLxrPhone" placeholder="请输入电话" />
             </el-form-item>
-            <el-form-item label="微信" prop="ownerLxrWx">
+            <el-form-item label="微信" prop="ownerLxrWx" style="width:50%;float:left;margin-bottom:16px"> 
               <el-input v-model="form.ownerLxrWx" placeholder="请输入微信" />
             </el-form-item>
+             </div>
           </el-tab-pane>
           <el-tab-pane label="证件信息" name="second">
-            <el-form-item label="标题" prop="ownerLxrWx">
+            <el-form-item label="标题" prop="ownerLxrWx" style="margin-bottom:16px">
               <el-input v-model="form.fileTitle1" placeholder="请输入标题" />
             </el-form-item>
-            <el-form-item label="证件信息">
+            <el-form-item label="证件信息" style="margin-bottom:16px">
               <el-upload
                 class="avatar-uploader"
                 :action="upload.url"
@@ -284,10 +291,10 @@
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </el-form-item>
-            <el-form-item label="标题" prop="ownerLxrWx">
+            <el-form-item label="标题" prop="ownerLxrWx" style="margin-bottom:16px">
               <el-input v-model="form.fileTitle2" placeholder="请输入标题" />
             </el-form-item>
-            <el-form-item label="证件信息">
+            <el-form-item label="证件信息" style="margin-bottom:16px">
               <el-upload
                 class="avatar-uploader"
                 :action="upload.url"
