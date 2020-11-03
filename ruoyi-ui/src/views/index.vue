@@ -26,7 +26,7 @@
       :total="total0"
       :page.sync="queryParams.pageNum"
       :limit.sync="queryParams.pageSize"
-      @pagination="getList"
+      @pagination="handleSetLineChartDatas('purchases')"
     />
 
       </div>
@@ -50,7 +50,7 @@
       :total="total1"
       :page.sync="queryParams.pageNum"
       :limit.sync="queryParams.pageSize"
-      @pagination="getList"
+      @pagination="handleSetLineChartDatas('newVisitis')"
     />
 
       </div>
@@ -98,7 +98,7 @@
       :total="total2"
       :page.sync="queryParams.pageNum"
       :limit.sync="queryParams.pageSize"
-      @pagination="getList"
+      @pagination="handleSetLineChartDatas('random')"
     />
     </el-row>
     <el-row  v-if="shoppings">
@@ -126,7 +126,7 @@
       :total="total3"
       :page.sync="queryParams.pageNum"
       :limit.sync="queryParams.pageSize"
-      @pagination="getList"
+      @pagination="handleSetLineChartDatas('shoppings')"
     />
     </el-row>
     <el-row style="background:#fff;padding:16px 16px 16px;margin-bottom:0px;height:auto">
@@ -292,40 +292,41 @@ export default {
         this.total0 = response.total;
         this.loading = false;
       });
-      listOwner(this.queryParams).then(response => {
-        this.ownerList = response.rows;
-        this.total1 = response.total;
-        this.loading = false;
-        this.sumNum=0
-      });
-      selectWholeAllList(this.queryParams).then((response) => {
-        this.List = response.rows;
-        console.log(this.List)
-         this.sumNum=0;
-        for(let i=0;i<response.rows.length;i++){
-            if(response.rows[i].wholeMoney==null||response.rows[i].wholeMoney==""||response.rows[i].wholeMoney==undefined){
-             response.rows[i].wholeMoney='0';
-           }else{
-              //  alert(response.rows[i].wholeMoney)
-             this.sumNum+=parseFloat(response.rows[i].wholeMoney);
-           }
+      // listOwner(this.queryParams).then(response => {
+      //   this.ownerList = response.rows;
+      //   this.total1 = response.total;
+      //   this.loading = false;
+      //   this.sumNum=0
+      // });
+      // selectWholeAllList(this.queryParams).then((response) => {
+      //   this.List = response.rows;
+      //   console.log(this.List)
+      //    this.sumNum=0;
+      //   for(let i=0;i<response.rows.length;i++){
+      //       if(response.rows[i].wholeMoney==null||response.rows[i].wholeMoney==""||response.rows[i].wholeMoney==undefined){
+      //        response.rows[i].wholeMoney='0';
+      //      }else{
+      //         //  alert(response.rows[i].wholeMoney)
+      //        this.sumNum+=parseFloat(response.rows[i].wholeMoney);
+      //      }
        
-        }
-        this.sumNum=this.sumNum.toFixed(2)
+      //   }
+      //   this.sumNum=this.sumNum.toFixed(2)
   
-        this.total3 = response.total;
-        this.loading = false;
-      });
-      listRandomInsp(this.queryParams).then(response => {
-        this.randomList = response.rows;
+      //   this.total3 = response.total;
+      //   this.loading = false;
+      // });
+      // listRandomInsp(this.queryParams).then(response => {
+      //   this.randomList = response.rows;
      
-        this.total2 = response.total;
-       // this.checking = response.rows[0].checkAddress;
-        this.loading = false;
-      });
+      //   this.total2 = response.total;
+      //  // this.checking = response.rows[0].checkAddress;
+      //   this.loading = false;
+      // });
 
     },
     handleSetLineChartData(type) {
+      this.loading =true;
       // this.lineChartData = lineChartData[type]
       if(type=="newVisitis"){
         // 节点业户
@@ -398,6 +399,78 @@ export default {
         this.loading = false;
       });
         this.queryParams.pageNum=1
+      }
+    },
+    handleSetLineChartDatas(type) {
+      this.loading =true;
+      // this.lineChartData = lineChartData[type]
+      if(type=="newVisitis"){
+        // 节点业户
+          this.newVisitis=true
+          this.purchases=false
+          this.shoppings=false
+          this.random=false
+        listOwner(this.queryParams).then(response => {
+        this.ownerList = response.rows;
+        this.total1 = response.total;
+        this.loading = false;
+        this.sumNum=0
+      });
+      }else if(type=="purchases"){
+        // 溯源单据
+           this.purchases=true
+          this.newVisitis=false
+           this.shoppings=false
+          this.random=false
+        rkdSummaryList(this.queryParams).then((response) => {
+        console.log(response)
+        this.leaseList = response.rows;
+         this.sumNum=0
+        for(let i=0;i<response.rows.length;i++){
+          // alert(this.sumNum)
+          
+          this.sumNum+=parseFloat(response.rows[i].sumNum);
+        }
+        this.total0 = response.total;
+        this.loading = false;
+        
+      });
+      }else if(type=="shoppings"){
+        // 销货单据
+          this.shoppings=true
+          this.newVisitis=false
+          this.purchases=false
+           this.random=false
+        selectWholeAllList(this.queryParams).then((response) => {
+        this.List = response.rows;
+        console.log(this.List)
+         this.sumNum=0;
+        for(let i=0;i<response.rows.length;i++){
+            if(response.rows[i].wholeMoney==null||response.rows[i].wholeMoney==""||response.rows[i].wholeMoney==undefined){
+             response.rows[i].wholeMoney='0';
+           }else{
+              //  alert(response.rows[i].wholeMoney)
+             this.sumNum+=parseFloat(response.rows[i].wholeMoney);
+           }
+       
+        }
+        this.sumNum=this.sumNum.toFixed(2)
+   
+        this.total3 = response.total;
+        this.loading = false;
+      });
+      }else if(type=="random"){
+          this.shoppings=false
+          this.newVisitis=false
+          this.purchases=false
+           this.random=true
+        listRandomInsp(this.queryParams).then(response => {
+        this.randomList = response.rows;
+   
+        this.total2 = response.total;
+       // this.checking = response.rows[0].checkAddress;
+        this.loading = false;
+      });
       }
     }
   },

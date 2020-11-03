@@ -1,6 +1,6 @@
 <template>
   <el-form ref="form" :model="user" :rules="rules" label-width="80px">
-    <el-form-item label="用户昵称" prop="nickName">
+    <el-form-item label="业户名称" prop="nickName">
       <el-input v-model="user.nickName" />
     </el-form-item> 
     <el-form-item label="手机号码" prop="phonenumber">
@@ -37,14 +37,6 @@ export default {
       rules: {
         nickName: [
           { required: true, message: "用户昵称不能为空", trigger: "blur" }
-        ],
-        email: [
-          { required: true, message: "邮箱地址不能为空", trigger: "blur" },
-          {
-            type: "email",
-            message: "'请输入正确的邮箱地址",
-            trigger: ["blur", "change"]
-          }
         ],
         phonenumber: [
           { required: true, message: "手机号码不能为空", trigger: "blur" },

@@ -741,6 +741,7 @@ export default {
           if(this.goodsList[i].goodsCode==data){
            row.goodsAddress=this.goodsList[i].goodsAddress;
             row.goodsDw=this.goodsList[i].goodsDw;
+             row.goodsName=this.goodsList[i].goodsName;
             break;
           }
         }
@@ -773,36 +774,6 @@ export default {
         this.$refs.selectGoods.visible = true;
       });
     },
-    //选择数据
-    selectData(row) {
-      //  this.selectGoodsDialog=false;
-      this.$nextTick(() => {
-        //检查是否存在重复数据
-        // for (let i = 0; i < this.tableData.length; i++) {
-        //   if (row.goodsCode == this.tableData[i].goodsCode) {
-        //     this.msgError("信息重复!");
-        //     return;
-        //   }
-        // }
-       
-        let goodsInfo = new Object();
-        goodsInfo.goodsCode = row.goodsCode;
-        goodsInfo.goodsName = row.goodsName;
-        goodsInfo.goodsDw = row.goodsDw;
-        goodsInfo.personCode = row.personCode;
-        goodsInfo.personName = row.personName;
-        goodsInfo.goodsNum = "";
-        goodsInfo.goodsPrice = "";
-        goodsInfo.goodsMoney = "";
-        goodsInfo.goodsPriceRate = "";
-        goodsInfo.goodsMoneyRate = "";
-        goodsInfo.goodsRate = "0";
-       // goodsInfo.goodsWeight = "";
-        goodsInfo.remark = "";
-        this.tableData.push(goodsInfo);
-        this.$refs.selectGoods.visible = false;
-      });
-    },
     //批量选择数据
     selectData(row) {
       //  this.selectGoodsDialog=false;
@@ -819,8 +790,8 @@ export default {
         goodsInfo.goodsCode = row.goodsCode;
         goodsInfo.goodsName = row.goodsName;
         goodsInfo.goodsDw = row.goodsDw;
-        goodsInfo.personCode =row.personName ;
-        goodsInfo.personName = "";
+        goodsInfo.personCode = row.personCode;
+        goodsInfo.personName = row.personName;
         goodsInfo.goodsNum = "";
         goodsInfo.goodsPrice = "";
         goodsInfo.goodsMoney = "";
@@ -850,8 +821,8 @@ export default {
               goodsInfo.goodsCode = row.goodsCode;
               goodsInfo.goodsName = row.goodsName;
               goodsInfo.goodsDw = row.goodsDw;
-              goodsInfo.personCode = row.personName;
-              goodsInfo.personName = "";
+            goodsInfo.personCode = row.personCode;
+        goodsInfo.personName = row.personName;
               goodsInfo.goodsNum = "";
                  goodsInfo.goodsPrice = "";
                   goodsInfo.goodsMoney = "";

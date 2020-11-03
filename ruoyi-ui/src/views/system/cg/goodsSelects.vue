@@ -27,20 +27,20 @@
         </div>
       </el-col> -->
      <el-col :span="24" :xs="24">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
-      <el-form-item label="商品名称" prop="goodsName">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="120px">
+      <el-form-item label="供应商名称" prop="goodsName">
         <el-input style="width:200px"
-          v-model="queryParams.goodsName"
-          placeholder="请输入商品名称"
+          v-model="queryParams.personName"
+          placeholder="请输入供应商名称"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="商品编码" prop="goodsCode">
+      <el-form-item label="供应商编码" prop="goodsCode">
         <el-input style="width:200px"
-          v-model="queryParams.goodsCode"
-          placeholder="请输入摊位编码"
+          v-model="queryParams.personCode"
+          placeholder="请输入供应商编码"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"

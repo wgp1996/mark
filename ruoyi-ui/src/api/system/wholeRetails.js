@@ -9,6 +9,15 @@ export function listWholeRetail(query) {
   })
 }
 
+// 查询首页数据
+export function selectNumlList() {
+  return request({
+    url: '/info/wholeRetail/selectNumlList',
+    method: 'get'
+  })
+}
+
+
 // 查询批发销货一票通列表
 export function allListWholeRetail(query) {
   return request({
@@ -17,6 +26,7 @@ export function allListWholeRetail(query) {
     params: query
   })
 }
+
 
 // 查询批发销货一票通详细
 export function getWholeRetail(id) {

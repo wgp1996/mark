@@ -9,7 +9,7 @@
           <div class="card-panel-text">
             节点业户
           </div>
-          <count-to :start-val="0" :end-val="total1" :duration="3000" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="total" :duration="3000" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -23,7 +23,7 @@
           <div class="card-panel-text">
            溯源商品
           </div>
-          <count-to :start-val="0" :end-val="847" :duration="3000" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="total1" :duration="3000" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -36,7 +36,7 @@
           <div class="card-panel-text">
            溯源单据
           </div>
-          <count-to :start-val="0" :end-val="total" :duration="3000" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="total2" :duration="3000" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -50,7 +50,7 @@
           <div class="card-panel-text">
             产地档案
           </div>
-          <count-to :start-val="0" :end-val="642" :duration="3600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="total3" :duration="3600" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -208,33 +208,9 @@
 <script>
 import CountTo from 'vue-count-to'
 import {
-  rkdSummaryList
-} from "@/api/system/cgrkd";
-import {
-  listCgrkdSingle,
+  selectNumlList,
 
-} from "@/api/system/cgrkdSingle";
-import { listOwner } from "@/api/system/owner";
-import {
-  listWholeSales,
-  getWholeSales,
-  getWholeSalesChild,
-  delWholeSales,
-  delWholeSalesChild,
-  addWholeSales,
-  updateWholeSales,
-  updateWholeSalesStatus,
-  exportWholeSales,
-  selectWholeAllList
-} from "@/api/system/wholeSales";
-import {
-  listWholeRetail,
-
-} from "@/api/system/wholeRetail";
-// 随机抽检单
-import {
-  listRandomInsp,
-} from "@/api/system/randomInsp";
+} from "@/api/system/wholeRetails";
 export default {
   components: {
     CountTo
@@ -249,15 +225,6 @@ export default {
       total3:0,
       total4:0,
       total5:0,
-        /** 查询二级市场信息列表 */
-        // 查询参数
-      queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        markCode: undefined,
-        djNumber: undefined,
-        djTime: undefined,
-      },
     }
   },
   methods: {
@@ -266,36 +233,15 @@ export default {
     },
    getList() {
       this.loading = true;
-      rkdSummaryList(this.queryParams).then((response) => {
+      selectNumlList().then((response) => {
         console.log(response)
-      this.total = response.total;
+        this.total = response.data.ownerCount;
+        this.total1 = response.data.goodsCount;
+        this.total2 = response.data.rkdCount;
+        this.total3 = response.data.addressCount;
+        this.total4 = response.data.wholeCount;
+        this.total5 = response.data.randomCount;
      });
-      listWholeSales(this.queryParams).then((response) => {
-    
-      this.total2 = response.total;
-        
-        this.loading = false;
-      });
-      listOwner(this.queryParams).then(response => {
-       
-        this.total1 = response.total;
-        this.loading = false;
-       
-      });
-      selectWholeAllList(this.queryParams).then((response) => {
-        
-        this.total4 = response.total;
-        //  alert(this.total3)
-        //  this.loading = false;
-        //    this.total4=this.total3+this.total2
-        //    alert(this.total4)
-      });
-      // 随机抽检单
-       listRandomInsp(this.queryParams).then(response => {
-       this.total5 = response.total;
-       this.loading = false;
-      });
-
     },
  
   },
