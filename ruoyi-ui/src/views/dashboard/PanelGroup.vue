@@ -1,7 +1,7 @@
 <template>
   <el-row :gutter="10" class="panel-group">
     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:16.6% !important">
-      <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
+      <div class="card-panel" @click="handleSetLineChartData('newVisitis')" >
         <div class="card-panel-icon-wrapper icon-people"  style="margin:14px 0px 0px 0px;padding:16px 0px 0px 2px">
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
         </div>
@@ -85,14 +85,15 @@
 
     </el-col>
     <!-- 蔬菜 -->
-     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:10% !important"> 
-       <div class="card-panel" @click="handleSetLineChart('1')" style="height:80px">
-        <div class="card-panel-icon-wrapper icon-message" style="margin:14px 0px 0px 0px;padding:16px 0px 0px 2px">
+     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:12% !important"> 
+       <div class="card-panel" @click="handleSetLineChart('1')" style="height:80px" v-bind:class="{ 'actives': isActive }">
+        <div class="card-panel-icon-wrapper icon-message" style="margin:14px 0px 0px 0px;padding:0px 0px 0px 6px">
           <!-- <svg-icon icon-class="documentation" class-name="card-panel-icon" /> -->
+          <img src="../../assets/shucai.png" style="width:50px;height:50px">
         </div>
         
-        <div class="card-panel-description" style="text-align:center;width:100%;margin:0">
-          <div class="card-panel-text"  style="text-align:center;width:100%;">
+        <div class="card-panel-description" >
+          <div class="card-panel-text"  style="margin-top:6px">
              蔬菜
           </div>
           <!-- <count-to :start-val="0" :end-val="total5" :duration="3600" class="card-panel-num" />  -->
@@ -100,13 +101,14 @@
       </div>
      </el-col>
         <!-- 水果 -->
-     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:10% !important"> 
-       <div class="card-panel" @click="handleSetLineChart('2')" style="height:80px">
-        <div class="card-panel-icon-wrapper icon-message" style="margin:14px 0px 0px 0px;padding:16px 0px 0px 2px">
+     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:12% !important"> 
+       <div class="card-panel" @click="handleSetLineChart('2')" style="height:80px" v-bind:class="{ 'actives': isActive1 }">
+        <div class="card-panel-icon-wrapper icon-message" style="margin:14px 0px 0px 0px;padding:0px 0px 0px 6px">
           <!-- <svg-icon icon-class="documentation" class-name="card-panel-icon" /> -->
+            <img src="../../assets/shuiguo.png" style="width:50px;height:50px">
         </div>
-        <div class="card-panel-description" style="text-align:center;width:100%;margin:0">
-          <div class="card-panel-text"  style="text-align:center;width:100%;">
+        <div class="card-panel-description" >
+          <div class="card-panel-text"  style="margin-top:6px">
              水果
           </div>
           <!-- <count-to :start-val="0" :end-val="total5" :duration="3600" class="card-panel-num" />  -->
@@ -114,13 +116,14 @@
       </div>
      </el-col>
         <!-- 肉类 -->
-     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:10% !important"> 
-       <div class="card-panel" @click="handleSetLineChart('6')" style="height:80px">
-        <div class="card-panel-icon-wrapper icon-message" style="margin:14px 0px 0px 0px;padding:16px 0px 0px 2px">
+     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:12% !important"> 
+       <div class="card-panel" @click="handleSetLineChart('6')" style="height:80px" v-bind:class="{ 'actives': isActive2 }">
+        <div class="card-panel-icon-wrapper icon-message" style="margin:14px 0px 0px 0px;padding:0px 0px 0px 6px">
           <!-- <svg-icon icon-class="documentation" class-name="card-panel-icon" /> -->
+             <img src="../../assets/rou.png" style="width:50px;height:50px">
         </div>
-        <div class="card-panel-description" style="text-align:center;width:100%;margin:0">
-          <div class="card-panel-text" style="text-align:center;width:100%;">
+        <div class="card-panel-description" >
+          <div class="card-panel-text" style="margin-top:6px">
              肉类
           </div>
           <!-- <count-to :start-val="0" :end-val="total5" :duration="3600" class="card-panel-num" />  -->
@@ -128,13 +131,14 @@
       </div>
      </el-col>
         <!-- 水产 -->
-     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:10% !important"> 
-       <div class="card-panel" @click="handleSetLineChart('5')" style="height:80px">
-        <div class="card-panel-icon-wrapper icon-message" style="margin:14px 0px 0px 0px;padding:16px 0px 0px 2px">
+     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:12% !important"> 
+       <div class="card-panel" @click="handleSetLineChart('5')" style="height:80px" v-bind:class="{ 'actives': isActive3 }">
+        <div class="card-panel-icon-wrapper icon-message" style="margin:14px 0px 0px 0px;padding:0px 0px 0px 6px">
           <!-- <svg-icon icon-class="documentation" class-name="card-panel-icon" /> -->
+           <img src="../../assets/haixian.png" style="width:50px;height:50px">
         </div>
-        <div class="card-panel-description" style="text-align:center;width:100%;margin:0">
-          <div class="card-panel-text" style="text-align:center;width:100%;">
+        <div class="card-panel-description" >
+          <div class="card-panel-text" style="margin-top:6px">
              水产
           </div>
           <!-- <count-to :start-val="0" :end-val="total5" :duration="3600" class="card-panel-num" />  -->
@@ -142,13 +146,14 @@
       </div>
      </el-col>
         <!-- 冻品 -->
-     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:10% !important"> 
-       <div class="card-panel" @click="handleSetLineChart('3')" style="height:80px">
-        <div class="card-panel-icon-wrapper icon-message" style="margin:14px 0px 0px 0px;padding:16px 0px 0px 2px">
+     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:12% !important"> 
+       <div class="card-panel" @click="handleSetLineChart('3')" style="height:80px" v-bind:class="{ 'actives': isActive4 }">
+        <div class="card-panel-icon-wrapper icon-message" style="margin:14px 0px 0px 0px;padding:0px 0px 0px 6px">
           <!-- <svg-icon icon-class="documentation" class-name="card-panel-icon" /> -->
+           <img src="../../assets/dongpin.png" style="width:50px;height:50px">
         </div>
-        <div class="card-panel-description" style="text-align:center;width:100%;margin:0">
-          <div class="card-panel-text" style="text-align:center;width:100%;">
+        <div class="card-panel-description" >
+          <div class="card-panel-text" style="margin-top:6px">
              冻品
           </div>
           <!-- <count-to :start-val="0" :end-val="total5" :duration="3600" class="card-panel-num" />  -->
@@ -156,13 +161,14 @@
       </div>
      </el-col>
        <!-- 干调 -->
-     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:10% !important"> 
-       <div class="card-panel" @click="handleSetLineChart('7')" style="height:80px">
-        <div class="card-panel-icon-wrapper icon-message" style="margin:14px 0px 0px 0px;padding:16px 0px 0px 2px">
+     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:12% !important"> 
+       <div class="card-panel" @click="handleSetLineChart('7')" style="height:80px" v-bind:class="{ 'actives': isActive5 }">
+        <div class="card-panel-icon-wrapper icon-message" style="margin:14px 0px 0px 0px;padding:0px 0px 0px 6px">
           <!-- <svg-icon icon-class="documentation" class-name="card-panel-icon" /> -->
+           <img src="../../assets/tiaoliao.png" style="width:50px;height:50px">
         </div>
-        <div class="card-panel-description" style="text-align:center;width:100%;margin:0">
-          <div class="card-panel-text" style="text-align:center;width:100%;">
+        <div class="card-panel-description" >
+          <div class="card-panel-text" style="margin-top:6px">
              干调
           </div>
           <!-- <count-to :start-val="0" :end-val="total5" :duration="3600" class="card-panel-num" />  -->
@@ -170,20 +176,35 @@
       </div>
      </el-col>
         <!-- 熟食 -->
-     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:10% !important"> 
-       <div class="card-panel" @click="handleSetLineChart('4')" style="height:80px">
-        <div class="card-panel-icon-wrapper icon-message" style="margin:14px 0px 0px 0px;padding:16px 0px 0px 2px">
+     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:12% !important"> 
+       <div class="card-panel" @click="handleSetLineChart('4')" style="height:80px" v-bind:class="{ 'actives': isActive6 }">
+        <div class="card-panel-icon-wrapper icon-message" style="margin:14px 0px 0px 0px;padding:0px 0px 0px 6px">
           <!-- <svg-icon icon-class="documentation" class-name="card-panel-icon" /> -->
+           <img src="../../assets/shushi.png" style="width:50px;height:50px">
         </div>
-        <div class="card-panel-description" style="text-align:center;width:100%;margin:0">
-          <div class="card-panel-text" style="text-align:center;width:100%;">
+        <div class="card-panel-description" >
+          <div class="card-panel-text" style="margin-top:6px">
              熟食
           </div>
           <!-- <count-to :start-val="0" :end-val="total5" :duration="3600" class="card-panel-num" />  -->
         </div>
       </div>
      </el-col>
-
+          <!-- 所有 -->
+     <el-col :xs="12" :sm="12" :lg="4" class="card-panel-col" style="width:12% !important"> 
+       <div class="card-panel" @click="handleSetLineChart('')" style="height:80px" v-bind:class="{ 'actives': isActive7 }">
+        <div class="card-panel-icon-wrapper icon-message" style="margin:14px 0px 0px 0px;padding:0px 0px 0px 6px">
+          <!-- <svg-icon icon-class="documentation" class-name="card-panel-icon" /> -->
+           <img src="../../assets/all.png" style="width:50px;height:50px">
+        </div>
+        <div class="card-panel-description" >
+          <div class="card-panel-text" style="margin-top:6px">
+             所有
+          </div>
+          <!-- <count-to :start-val="0" :end-val="total5" :duration="3600" class="card-panel-num" />  -->
+        </div>
+      </div>
+     </el-col>
 
     
   </el-row>
@@ -210,25 +231,107 @@ export default {
       total3:0,
       total4:0,
       total5:0,
+      isActive:false,
+      isActive1:false,
+      isActive2:false,
+      isActive3:false,
+      isActive4:false,
+      isActive5:false,
+      isActive6:false,
+      isActive7:false,
     }
   },
   methods: {
     handleSetLineChartData(type) {
+   
       this.$emit('handleSetLineChartData', type)
     },
     handleSetLineChart(type) {
+      if(type=="1"){
+        this.isActive=true;
+        this.isActive1=false;
+        this.isActive2=false;
+        this.isActive3=false;
+        this.isActive4=false;
+        this.isActive5=false;
+        this.isActive6=false;
+           this.isActive7=false;
+      }else if(type=="2"){
+        this.isActive1=true;
+        this.isActive=false;
+        this.isActive2=false;
+        this.isActive3=false;
+        this.isActive4=false;
+        this.isActive5=false;
+        this.isActive6=false;
+           this.isActive7=false;
+      }else if(type=="6"){
+        this.isActive1=false;
+        this.isActive=false;
+        this.isActive2=true;
+        this.isActive3=false;
+        this.isActive4=false;
+        this.isActive5=false;
+        this.isActive6=false;
+         this.isActive7=false;
+      }else if(type=="5"){
+        this.isActive1=false;
+        this.isActive=false;
+        this.isActive2=false;
+        this.isActive3=true;
+        this.isActive4=false;
+        this.isActive5=false;
+        this.isActive6=false;
+        this.isActive7=false;
+      }else if(type=="3"){
+        this.isActive1=false;
+        this.isActive=false;
+        this.isActive2=false;
+        this.isActive3=false;
+        this.isActive4=true;
+        this.isActive5=false;
+        this.isActive6=false;
+        this.isActive7=false;
+      }else if(type=="7"){
+        this.isActive1=false;
+        this.isActive=false;
+        this.isActive2=false;
+        this.isActive3=false;
+        this.isActive4=false;
+        this.isActive5=true;
+        this.isActive6=false;
+        this.isActive7=false;
+      }else if(type=="4"){
+        this.isActive1=false;
+        this.isActive=false;
+        this.isActive2=false;
+        this.isActive3=false;
+        this.isActive4=false;
+        this.isActive5=false;
+        this.isActive6=true;
+        this.isActive7=false;
+      }else if(type==""){
+        this.isActive1=false;
+        this.isActive=false;
+        this.isActive2=false;
+        this.isActive3=false;
+        this.isActive4=false;
+        this.isActive5=false;
+        this.isActive6=false;
+        this.isActive7=true;
+      }
       this.$emit('handleSetLineChart', type)
     },
    getList() {
       this.loading = true;
       selectNumlList().then((response) => {
         console.log(response)
-        this.total = response.data.ownerCount;
-        this.total1 = response.data.goodsCount;
-        this.total2 = response.data.rkdCount;
-        this.total3 = response.data.addressCount;
-        this.total4 = response.data.wholeCount;
-        this.total5 = response.data.randomCount;
+        this.total = Number(response.data.ownerCount);
+        this.total1 = Number(response.data.goodsCount);
+        this.total2 = Number(response.data.rkdCount);
+        this.total3 = Number(response.data.addressCount);
+        this.total4 = Number(response.data.wholeCount);
+        this.total5 = Number(response.data.randomCount);
      });
     },
  
@@ -244,6 +347,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.actives{
+  background-color:#ffeeee !important;
+}
 .panel-group {
   margin-top: 18px;
 
