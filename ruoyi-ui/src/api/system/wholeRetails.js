@@ -95,7 +95,7 @@ export function exportWholeRetail(query) {
 // 查询分类条数
 export function selectNumFlList(type) {
   return request({
-    url: '/info/wholeRetail/selectNumFlList/'+type,
+    url: '/info/wholeRetail/selectNumFlList?dateType='+type,
     method: 'get'
   })
 }

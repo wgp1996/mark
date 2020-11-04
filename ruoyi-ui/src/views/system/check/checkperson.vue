@@ -677,7 +677,7 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "检测人员信息";
+      this.title = "检测人员备案单";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -697,7 +697,7 @@ export default {
         //   this.tableData = response.rows;
         // });
         this.open = true;
-        this.title = "修改采购单";
+        this.title = "检测人员备案单";
       });
     },
     /** 提交按钮 */
