@@ -92,3 +92,10 @@ export function exportWholeRetail(query) {
     params: query
   })
 }
+// 查询分类条数
+export function selectNumFlList(type) {
+  return request({
+    url: '/info/wholeRetail/selectNumFlList/'+type,
+    method: 'get'
+  })
+}
