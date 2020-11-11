@@ -19,7 +19,7 @@
           row-key="id"
         >
           <el-table-column type="selection" width="55" align="center" />
-          <el-table-column label="业户代码" align="center" prop="createBy" />
+          <el-table-column label="业户编号" align="center" prop="createBy" />
           <el-table-column label="业户名称" align="center" prop="createName" />
           <el-table-column label="进货日期" align="center" prop="djTime" />
           <el-table-column label="进货商品" align="center" prop="goodsName" />
@@ -79,9 +79,7 @@
         <el-table-column label="单号" align="center" prop="djNumber" />
         <el-table-column label="检测日期" align="center" prop="testResult" />
         <el-table-column label="业户名称" align="center" prop="ownerName" />
-
         <el-table-column label="检测物名称" align="center" prop="goodsName" />
-
         <el-table-column label="检测项目" align="center" prop="checkProject" />
 
         <el-table-column
@@ -113,6 +111,29 @@
         :page.sync="queryParams.pageNum"
         :limit.sync="queryParams.pageSize"
         @pagination="handleSetLineChartDatas('random')"
+      />
+    </el-row>
+     <!-- 商品信息 -->
+    <el-row v-if="messages">
+      <el-table v-loading="loading" :data="goodsList" row-key="id">
+        <el-table-column type="selection" width="55" align="center" />
+        <!-- <el-table-column type="expand"> -->
+        <!-- <template slot-scope="props"> -->
+        <!-- <el-table style="padding: 0; margin: 0" :data="props.row.childrenList"> -->
+        <el-table-column label="业户代码" align="center" prop="createBy" />
+        <el-table-column label="业户名称" align="center" prop="createName" />
+        <el-table-column label="商品编码" align="center" prop="goodsCode" />
+        <el-table-column label="商品名称" align="center" prop="goodsName" />
+        <el-table-column label="商品单位" align="center" prop="goodsDw" />
+        <el-table-column label="产地" align="center" prop="goodsAddress" />
+        <el-table-column label="商品规格" align="center" prop="goodsGg" />
+      </el-table>
+      <pagination
+        v-show="total4 > 0"
+        :total="total4"
+        :page.sync="queryParams.pageNum"
+        :limit.sync="queryParams.pageSize"
+        @pagination="handleSetLineChartDatas('messages')"
       />
     </el-row>
     <el-row v-if="shoppings">
@@ -206,6 +227,7 @@ import BarChart from "./dashboard/BarChart";
 import { rkdSummaryList } from "@/api/system/cgrkd";
 import { listOwner } from "@/api/system/owner";
 import { listCgrkdSingle } from "@/api/system/cgrkdSingle";
+import { listOwnerGoods } from "@/api/system/ownerGoods";
 import {
   listWholeSales,
   getWholeSales,
@@ -261,12 +283,15 @@ export default {
       List: [],
       //  随机抽检单
       randomList: [],
+      //  商品信息
+      goodsList: [],
       lineChartData: lineChartData.newVisitis,
       // 总条数
       total0: 0,
       total1: 0,
       total2: 0,
       total3: 0,
+      total4: 0,
       /** 查询二级市场信息列表 */
       // 查询参数
       queryParams: {
@@ -278,9 +303,8 @@ export default {
         markType: undefined,
       },
       newVisitis: false,
-      // messages:false,
+      messages:false,
       purchases: true,
-      // shopping:false,
       shoppings: false,
       random: false,
     };
@@ -298,20 +322,6 @@ export default {
           sums[index] = this.sumNum;
           return;
         }
-        //   const values = data.map(item => Number(item[column.property]));
-        //   if (!values.every(value => isNaN(value))) {
-        //     sums[index] = values.reduce((prev, curr) => {
-        //       const value = Number(curr);
-        //       if (!isNaN(value)) {
-        //         return prev + curr;
-        //       } else {
-        //         return prev;
-        //       }
-        //     }, 0);
-        //     sums[index] += ' 元';
-        //   } else {
-        //     sums[index] = 'N/A';
-        //   }
       });
 
       return sums;
@@ -328,37 +338,6 @@ export default {
         this.total0 = response.total;
         this.loading = false;
       });
-      // listOwner(this.queryParams).then(response => {
-      //   this.ownerList = response.rows;
-      //   this.total1 = response.total;
-      //   this.loading = false;
-      //   this.sumNum=0
-      // });
-      // selectWholeAllList(this.queryParams).then((response) => {
-      //   this.List = response.rows;
-      //   console.log(this.List)
-      //    this.sumNum=0;
-      //   for(let i=0;i<response.rows.length;i++){
-      //       if(response.rows[i].wholeMoney==null||response.rows[i].wholeMoney==""||response.rows[i].wholeMoney==undefined){
-      //        response.rows[i].wholeMoney='0';
-      //      }else{
-      //         //  alert(response.rows[i].wholeMoney)
-      //        this.sumNum+=parseFloat(response.rows[i].wholeMoney);
-      //      }
-
-      //   }
-      //   this.sumNum=this.sumNum.toFixed(2)
-
-      //   this.total3 = response.total;
-      //   this.loading = false;
-      // });
-      // listRandomInsp(this.queryParams).then(response => {
-      //   this.randomList = response.rows;
-
-      //   this.total2 = response.total;
-      //  // this.checking = response.rows[0].checkAddress;
-      //   this.loading = false;
-      // });
     },
     handleSetLineChart(type) {
       this.queryParams.markType = type;
@@ -374,6 +353,7 @@ export default {
         this.purchases = false;
         this.shoppings = false;
         this.random = false;
+        this.messages=false;
         listOwner(this.queryParams).then((response) => {
           this.ownerList = response.rows;
           this.total1 = response.total;
@@ -387,6 +367,7 @@ export default {
         this.newVisitis = false;
         this.shoppings = false;
         this.random = false;
+        this.messages=false;
         rkdSummaryList(this.queryParams).then((response) => {
           console.log(response);
           this.leaseList = response.rows;
@@ -406,6 +387,7 @@ export default {
         this.newVisitis = false;
         this.purchases = false;
         this.random = false;
+        this.messages=false;
         selectWholeAllList(this.queryParams).then((response) => {
           this.List = response.rows;
           console.log(this.List);
@@ -433,11 +415,24 @@ export default {
         this.newVisitis = false;
         this.purchases = false;
         this.random = true;
+        this.messages=false;
         listRandomInsp(this.queryParams).then((response) => {
           this.randomList = response.rows;
 
           this.total2 = response.total;
           // this.checking = response.rows[0].checkAddress;
+          this.loading = false;
+        });
+        this.queryParams.pageNum = 1;
+      } else if (type == "messages") {
+        this.shoppings = false;
+        this.newVisitis = false;
+        this.purchases = false;
+        this.random = false;
+        this.messages=true;
+        listOwnerGoods(this.queryParams).then((response) => {
+          this.goodsList = response.rows;
+          this.total4 = response.total;
           this.loading = false;
         });
         this.queryParams.pageNum = 1;
@@ -447,13 +442,12 @@ export default {
         this.newVisitis = false;
         this.shoppings = false;
         this.random = false;
+        this.messages=false;
         rkdSummaryList(this.queryParams).then((response) => {
           console.log(response);
           this.leaseList = response.rows;
           this.sumNum = 0;
           for (let i = 0; i < response.rows.length; i++) {
-            // alert(this.sumNum)
-
             this.sumNum += parseFloat(response.rows[i].sumNum);
           }
           this.total0 = response.total;
@@ -471,6 +465,7 @@ export default {
         this.purchases = false;
         this.shoppings = false;
         this.random = false;
+        this.messages=false;
         listOwner(this.queryParams).then((response) => {
           this.ownerList = response.rows;
           this.total1 = response.total;
@@ -483,6 +478,7 @@ export default {
         this.newVisitis = false;
         this.shoppings = false;
         this.random = false;
+        this.messages=false;
         rkdSummaryList(this.queryParams).then((response) => {
           console.log(response);
           this.leaseList = response.rows;
@@ -501,6 +497,7 @@ export default {
         this.newVisitis = false;
         this.purchases = false;
         this.random = false;
+        this.messages=false;
         selectWholeAllList(this.queryParams).then((response) => {
           this.List = response.rows;
           console.log(this.List);
@@ -527,11 +524,23 @@ export default {
         this.newVisitis = false;
         this.purchases = false;
         this.random = true;
+        this.messages=false;
         listRandomInsp(this.queryParams).then((response) => {
           this.randomList = response.rows;
 
           this.total2 = response.total;
           // this.checking = response.rows[0].checkAddress;
+          this.loading = false;
+        });
+      } else if (type == "messages") {
+        this.shoppings = false;
+        this.newVisitis = false;
+        this.purchases = false;
+        this.random = false;
+        this.messages=true;
+        listOwnerGoods(this.queryParams).then((response) => {
+          this.goodsList = response.rows;
+          this.total4 = response.total;
           this.loading = false;
         });
       }

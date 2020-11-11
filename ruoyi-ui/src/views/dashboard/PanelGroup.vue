@@ -5,7 +5,7 @@
       :sm="12"
       :lg="4"
       class="card-panel-col"
-      style="width: 16.6% !important"
+      style="width: 20% !important"
     >
       <div
         class="card-panel"
@@ -36,7 +36,7 @@
       :sm="12"
       :lg="4"
       class="card-panel-col"
-      style="width: 16.6% !important"
+      style="width: 20% !important"
     >
       <div
         class="card-panel"
@@ -68,7 +68,7 @@
       :sm="12"
       :lg="4"
       class="card-panel-col"
-      style="width: 16.6% !important"
+      style="width: 20% !important"
     >
       <div
         class="card-panel"
@@ -94,44 +94,13 @@
         </div>
       </div>
     </el-col>
+   
     <el-col
       :xs="12"
       :sm="12"
       :lg="4"
       class="card-panel-col"
-      style="width: 16.6% !important"
-    >
-      <div
-        class="card-panel"
-        @click="handleSetLineChartData('shopping')"
-        style="background-color: #ccc"
-        v-bind:class="{ activefather: father3 }"
-      >
-        <div
-          class="card-panel-icon-wrapper icon-shopping special"
-          style="margin: 14px 0px 0px 0px; padding: 16px 0px 0px 2px"
-        >
-          <!-- <svg-icon icon-class="shopping" class-name="card-panel-icon" /> -->
-          <img src="../../assets/dan.png" style="width: 50px; height: 50px" />
-        </div>
-        <div class="card-panel-description">
-          <div class="card-panel-text" style="color: #000">产地档案</div>
-          <count-to
-            :start-val="0"
-            :end-val="total3"
-            :duration="3600"
-            class="card-panel-num"
-            style="color: #000"
-          />
-        </div>
-      </div>
-    </el-col>
-    <el-col
-      :xs="12"
-      :sm="12"
-      :lg="4"
-      class="card-panel-col"
-      style="width: 16.6% !important"
+      style="width: 20% !important"
     >
       <div
         class="card-panel"
@@ -166,7 +135,7 @@
       :sm="12"
       :lg="4"
       class="card-panel-col"
-      style="width: 16.6% !important"
+      style="width: 20% !important"
     >
       <div
         class="card-panel"
