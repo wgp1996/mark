@@ -204,18 +204,12 @@
             <el-form-item label="地址" prop="markAddress" style="margin-bottom:16px">
               <el-input v-model="form.markAddress" placeholder="请输入地址" />
             </el-form-item>
-              <el-form-item label="信用代码/身份证号" prop="ownerPersonId" style="margin-bottom:16px">
-              <el-input
-                v-model="form.ownerPersonId"
-                placeholder="请输入信用代码/身份证号"
-              />
-            </el-form-item>
-            <div style="width:100%;height:40px" class="clearfix">
-                <el-form-item label="组织类型" prop="ownerOrg" style="width:50%;float:left;margin-bottom:16px">
+             <el-form-item label="组织类型" prop="ownerOrg" style="margin-bottom:16px">
                   <el-select
                     v-model="form.ownerOrg"
                     placeholder="请选择组织类型"
                     style="width: 100%"
+                 
                   >
                     <el-option
                       v-for="dict in orgOptions"
@@ -224,6 +218,20 @@
                       :value="dict.dictValue"
                     ></el-option>
                   </el-select>
+                </el-form-item>
+              <el-form-item label="信用代码" prop="creditCode" style="margin-bottom:16px" :required="isHaveTo" >
+              <el-input
+                v-model="form.creditCode"
+                :disabled="shower"
+               />
+              </el-form-item>
+              
+            <div style="width:100%;height:40px" class="clearfix">
+                  <el-form-item label="身份证号" prop="ownerPersonId" style="width:50%;float:left;margin-bottom:16px">
+                    <el-input
+                      v-model="form.ownerPersonId"
+                        placeholder="请输入身份证号"
+                    />
                 </el-form-item>
                 <el-form-item label="机构性质" prop="ownerOrgNature" style="width:50%;float:left;margin-bottom:16px">
                   <el-select
@@ -340,6 +348,16 @@ export default {
   name: "Owner",
   components: { Treeselect },
   data() {
+     let validateName = (rule, value, callback) => {
+    // 当活动名称为空值且为必填时，抛出错误，反之通过校验
+    
+    if (this.form.creditCode === "" && this.isHaveTo) {
+      callback(new Error("请输入信用代码"));
+    } else {
+     
+      callback();
+    }
+  };
     return {
       // 市场分类树选项
       markTypeOptions: [],
@@ -357,6 +375,8 @@ export default {
         // 上传的地址
         url: process.env.VUE_APP_BASE_API + "/common/upload",
       },
+      // 显示信用代码
+      shower:false,
       //组织类型
       orgOptions: [],
       //机构性质
@@ -402,6 +422,7 @@ export default {
         fileName2: undefined,
         fileTitle2: undefined,
         userName: undefined,
+      
       },
       // 表单参数
       form: {},
@@ -425,8 +446,29 @@ export default {
         markAddress: [
           { required: true, message: "请输入市场地址", trigger: "blur" },
         ],
+         creditCode: [
+         { validator: validateName },
+        ],
+         ownerPersonId: [
+          { required: true, message: "请输入身份证号", trigger: "blur" },
+        ],
+        ownerOrg: [
+          { required: true, message: "请选择组织类型", trigger: "blur" },
+        ],
       },
     };
+  },
+   computed: {
+    isHaveTo: function() {
+      //  alert(this.form.ownerOrg)
+     if(this.form.ownerOrg=='个人代表'){
+        this.shower=true
+        this.form.creditCode=''
+     }else{
+          this.shower=false
+     }
+      return this.form.ownerOrg !== `个人代表`;
+    }
   },
   created() {
     this.getList();
@@ -452,6 +494,7 @@ export default {
     selectGoods(data){
         
     },
+ 
     /** 转换市场分类数据结构 */
     normalizer(node) {
       if (node.children && !node.children.length) {
@@ -502,7 +545,7 @@ export default {
         id: undefined,
         ownerCode: undefined,
         ownerName: undefined,
-        ownerOrg: undefined,
+        ownerOrg: '',
         ownerOrgNature: undefined,
         ownerPersonId: undefined,
         ownerMangerType: undefined,
@@ -521,6 +564,7 @@ export default {
         fileName2: undefined,
         fileTitle2: undefined,
         userName: undefined,
+        creditCode:''
       };
       this.resetForm("form");
     },
