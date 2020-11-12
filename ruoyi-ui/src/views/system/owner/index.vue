@@ -460,7 +460,7 @@ export default {
   },
    computed: {
     isHaveTo: function() {
-      //  alert(this.form.ownerOrg)
+     
      if(this.form.ownerOrg=='个人代表'){
         this.shower=true
         this.form.creditCode=''
