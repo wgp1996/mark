@@ -30,30 +30,14 @@ module.exports = {
   // 如果你不需要生产环境的 source map，可以将其设置为 false 以加速生产环境构建。
   productionSourceMap: false,
   // webpack-dev-server 相关配置 类似Nginx 部署
-  devServer: {
-    host: 'localhost',
-    port: 443,
-    proxy: {
-      // detail: https://cli.vuejs.org/config/#devserver-proxy
-      //target: `https://www.lczhuisu.cn/`,
-      [process.env.VUE_APP_BASE_API]: {
-        target: `https://www.lczhuisu.cn/mark/`,
-        changeOrigin: true,
-        pathRewrite: {
-          ['^' + process.env.VUE_APP_BASE_API]: ''
-        }
-      }
-    },
-    disableHostCheck: true
-  },
   // devServer: {
   //   host: 'localhost',
-  //   port: 80,
+  //   port: 443,
   //   proxy: {
   //     // detail: https://cli.vuejs.org/config/#devserver-proxy
   //     //target: `https://www.lczhuisu.cn/`,
   //     [process.env.VUE_APP_BASE_API]: {
-  //       target: `http://keboo.cn/`,
+  //       target: `https://www.lczhuisu.cn/mark/`,
   //       changeOrigin: true,
   //       pathRewrite: {
   //         ['^' + process.env.VUE_APP_BASE_API]: ''
@@ -62,6 +46,22 @@ module.exports = {
   //   },
   //   disableHostCheck: true
   // },
+  devServer: {
+    host: 'localhost',
+    port: 80,
+    proxy: {
+      // detail: https://cli.vuejs.org/config/#devserver-proxy
+      //target: `https://www.lczhuisu.cn/`,
+      [process.env.VUE_APP_BASE_API]: {
+        target: `http://keboo.cn/`,
+        changeOrigin: true,
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_BASE_API]: ''
+        }
+      }
+    },
+    disableHostCheck: true
+  },
   //本地
   // devServer: {
   //   host: 'localhost',
@@ -70,7 +70,7 @@ module.exports = {
       
   //     // detail: https://cli.vuejs.org/config/#devserver-proxy
   //     [process.env.VUE_APP_BASE_API]: {
-  //       target: `http://2j9wyh.natappfree.cc/`,
+  //       target: `http://sg3uez.natappfree.cc/`,
   //       changeOrigin: true,
   //       pathRewrite: {
   //         ['^' + process.env.VUE_APP_BASE_API]: ''
