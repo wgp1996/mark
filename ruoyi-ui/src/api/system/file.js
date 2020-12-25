@@ -51,3 +51,19 @@ export function exportFile(query) {
     params: query
   })
 }
+
+// 检测文件
+export function checkProject(fileName) {
+  return request({
+    url: '/common/checkProject?fileName='+fileName,
+    method: 'get'
+  })
+}
+
+// 删除文件
+export function deleteProject(fileName) {
+  return request({
+    url: '/common/deleteProject?fileName='+fileName,
+    method: 'get'
+  })
+}
