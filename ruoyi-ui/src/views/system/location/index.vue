@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="app-container" style="min-height: calc(100vh - 84px)">
     <baidu-map
       class="bm-view"
       ak="cGklIMXA6RuKkir9UobkakSE0QhwyuoO"
@@ -8,7 +8,7 @@
       :min-zoom="10"
       :max-zoom="17"
       :scroll-wheel-zoom="true"
-      style="height: 500px"
+      style="height: calc(100vh - 124px)"
     >
       <bm-marker
         v-for="item in center"
@@ -50,14 +50,22 @@ export default {
   data() {
     return {
       center: [
-        { lng: "115.986989", lat: "36.462411" },
-        { lng: "115.486989", lat: "36.56211" },
-        { lng: "115.286989", lat: "36.16" },
+        { lng: "115.986989", lat: "36.562411" },
+        { lng: "115.486989", lat: "36.57211" },
+        { lng: "116.286989", lat: "36.36" },
+        { lng: "115.880989", lat: "36.56" },
+         { lng: "115.752", lat: "36.426" },
+        { lng: "115.30989", lat: "36.16" },
+         { lng: "115.452", lat: "36.326" },
       ],
       data: [
-        { carNumber: "鲁P M1854", wd: "12℃",sd:"5%rh",sd:'62km/h',wz:'山东省聊城市' },
-        { carNumber: "鲁P 85S57", wd: "25℃",sd:"4%rh",sd:'78km/h',wz:'山东省聊城市' },
-        { carNumber: "鲁P 21OP1", wd: "13℃",sd:"2%rh",sd:'54km/h',wz:'山东省聊城市' },
+        { carNumber: "鲁P M1854", wd: "12℃",sd:"5%rh",sd:'62km/h',wz:'山东省聊城市官庄村' },
+        { carNumber: "鲁P 85S57", wd: "25℃",sd:"4%rh",sd:'78km/h',wz:'山东省聊城市店子镇' },
+        { carNumber: "鲁P 21OP1", wd: "13℃",sd:"2%rh",sd:'54km/h',wz:'山东省聊城市东阿县' },
+        { carNumber: "鲁P D8421", wd: "11.5℃",sd:"2.5%rh",sd:'58km/h',wz:'山东省聊城市阎寺镇' },
+        { carNumber: "鲁P T1M71", wd: "10℃",sd:"2.9%rh",sd:'52km/h',wz:'山东省聊城市郭庄村' },
+         { carNumber: "鲁P D2564", wd: "12.5℃",sd:"2.4%rh",sd:'53km/h',wz:'山东省聊城市西付集乡' },
+        { carNumber: "鲁P T734U", wd: "11℃",sd:"2.2%rh",sd:'50km/h',wz:'山东省聊城市王奉镇' },
       ],
       zoom: 15,
       showMap: true,
@@ -92,6 +100,7 @@ export default {
         };  
         let infoWindow=new BMap.InfoWindow("<div style='line-height: 25px;margin-top: 10px;'>车辆:"+this.data[i].carNumber+"<br/>温度:"+this.data[i].wd+"<br/>湿度:"+this.data[i].sd+"<br/>速度:"+this.data[i].sd+"<br/>位置:"+this.data[i].wz+"<br/></div>",opts);//创建信息窗口对象  
         map.addOverlay(marker);
+        map.enableScrollWheelZoom()
         marker.addEventListener("click",function(){  
             map.openInfoWindow(infoWindow,point);//打开信息窗口  
         }); 
