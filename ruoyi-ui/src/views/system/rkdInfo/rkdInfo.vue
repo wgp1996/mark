@@ -707,7 +707,7 @@ export default {
       this.importUrl = process.env.VUE_APP_BASE_API + "/system/rkInfo/import";
     },
     //选择供应商
-    selectPerson(index, data) {
+    selectPerson(data) {
       //根据编码找产地
       for (let i = 0; i < this.personList.length; i++) {
         if (this.personList[i].personCode == data) {
